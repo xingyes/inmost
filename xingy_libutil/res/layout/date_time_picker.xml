@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <LinearLayout
+        android:id="@+id/picker_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+	    android:background="#fff">
+
+        <antistatic.spinnerwheel.WheelVerticalView android:id="@+id/year"
+            android:layout_height="wrap_content"
+            app:visibleItems="5"
+            app:selectionDivider="@drawable/divider_dark_gradient_horizontal"
+            app:selectionDividerWidth="1px"
+             android:layout_width="wrap_content"/>
+        <antistatic.spinnerwheel.WheelVerticalView
+            android:layout_marginLeft="6dp" 
+            android:id="@+id/month"
+            android:layout_height="wrap_content"
+            app:visibleItems="5"
+            app:selectionDivider="@drawable/divider_dark_gradient_horizontal"
+            app:selectionDividerWidth="1px"
+            android:layout_width="wrap_content"/>
+        <antistatic.spinnerwheel.WheelVerticalView android:id="@+id/date"
+            android:layout_marginLeft="6dp" 
+            android:layout_height="wrap_content"
+            app:visibleItems="5"
+            app:selectionDivider="@drawable/divider_dark_gradient_horizontal"
+            app:selectionDividerWidth="1px"
+            android:layout_width="wrap_content"/>        
+        <antistatic.spinnerwheel.WheelVerticalView 
+            android:id="@+id/hour"
+            android:layout_marginLeft="25dp"
+            android:layout_height="wrap_content"
+            app:visibleItems="5"
+            app:selectionDivider="@drawable/divider_dark_gradient_horizontal"
+            app:selectionDividerWidth="1px"
+            android:layout_width="wrap_content"/>
+        <antistatic.spinnerwheel.WheelVerticalView android:id="@+id/min"
+            app:visibleItems="5"
+            android:layout_marginLeft="6dp" 
+            app:selectionDivider="@drawable/divider_dark_gradient_horizontal"
+            app:selectionDividerWidth="1px"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+    </LinearLayout>
+    
+    <RelativeLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/picker_layout"
+        android:background="@color/global_gray_light"
+        android:padding="8dp"
+        android:gravity="center_vertical">
+        <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerInParent="true"
+           android:textColor="@color/global_blue_bright"
+           android:id="@+id/result_info"/>
+       <TextView 
+           android:paddingLeft="10dp"
+           android:paddingRight="10dp"
+           android:paddingTop="5dp"
+           android:paddingBottom="5dp"
+           android:gravity="center"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentLeft="true"
+           android:text="@string/btn_cancel"
+           android:background="@drawable/button_darkblue_round"
+           android:textColor="@color/white"
+           android:id="@+id/cancel_btn"/>
+       <TextView
+           android:paddingLeft="10dp"
+           android:paddingRight="10dp"
+           android:paddingTop="5dp"
+           android:paddingBottom="5dp"
+           android:gravity="center"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentRight="true"
+           android:text="@string/btn_ok"
+           android:textColor="@color/white"
+           android:background="@drawable/button_darkblue_round"
+           android:id="@+id/ok_btn"/>
+ 	</RelativeLayout>
+    
+</RelativeLayout>

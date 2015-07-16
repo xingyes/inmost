@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout android:id="@+id/denom_first_line"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <com.icson.lib.ui.DenomText android:id="@+id/denom_option_1"
+            android:text="@string/denom_10"
+            style="@style/denom_option"
+            android:textSize="@dimen/font_size_40xp"
+            android:layout_marginLeft="@dimen/margin_size_20xp"
+            android:layout_marginRight="@dimen/margin_size_20xp"/>
+        
+        <com.icson.lib.ui.DenomText android:id="@+id/denom_option_2"
+            android:text="@string/denom_20"
+            style="@style/denom_option"
+            android:textSize="@dimen/font_size_40xp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="@dimen/margin_size_20xp"/>
+        
+        <com.icson.lib.ui.DenomText android:id="@+id/denom_option_3"
+            android:text="@string/denom_30"
+            style="@style/denom_option"
+            android:textSize="@dimen/font_size_40xp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="@dimen/margin_size_20xp"/>
+    </LinearLayout>
+    
+    <LinearLayout android:id="@+id/denom_second_line"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_size_30xp"
+        android:layout_marginBottom="@dimen/margin_size_50xp">
+        
+        <com.icson.lib.ui.DenomText android:id="@+id/denom_option_4"
+            android:text="@string/denom_50"
+            style="@style/denom_option"
+            android:textSize="@dimen/font_size_40xp"
+            android:layout_marginLeft="@dimen/margin_size_20xp"
+            android:layout_marginRight="@dimen/margin_size_20xp"/>
+        
+        <com.icson.lib.ui.DenomText android:id="@+id/denom_option_5"
+            android:text="@string/denom_100"
+            style="@style/denom_option"
+            android:textSize="@dimen/font_size_40xp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="@dimen/margin_size_20xp"/>
+        
+        <com.icson.lib.ui.DenomText android:id="@+id/denom_option_6"
+            android:text="@string/denom_300"
+            style="@style/denom_option"
+            android:textSize="@dimen/font_size_40xp"  
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="@dimen/margin_size_20xp"/>
+    </LinearLayout>
+    
+</LinearLayout>

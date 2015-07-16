@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/global_loading"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:visibility="gone" >
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#33000000" />
+
+    <RelativeLayout
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:layout_gravity="center"
+        android:background="@drawable/x_global_loading_corners" >
+
+        <ImageView
+            android:layout_centerInParent="true"
+        	android:id="@+id/myprogressBar"
+        	android:layout_margin="10dp"
+        	android:layout_width="match_parent"
+        	android:layout_height="match_parent"
+        	android:background="@drawable/loading_bg"
+        	android:contentDescription="@null"/>
+        
+        <!--
+             com.tencent.djcity.lib.ui.LoadingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/
+        -->
+    </RelativeLayout>
+
+</FrameLayout>

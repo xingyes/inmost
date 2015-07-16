@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/global_gray_light">  
+
+    <RadioGroup
+        android:id="@+id/home_tab_rg"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+        <RadioButton
+            android:background="@drawable/pink_btn_selector"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:button="@drawable/none"
+            android:text="专题"
+            android:textSize="@dimen/bar_font_30"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:id="@+id/home_floor_rb"/>
+        <RadioButton
+            android:background="@drawable/pink_btn_selector"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:button="@drawable/none"
+            android:text="单品"
+            android:textSize="@dimen/bar_font_30"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:id="@+id/pro_list_rb"/>
+    </RadioGroup>
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:layout_below="@id/home_tab_rg"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="@android:color/transparent"
+        android:scrollingCache="false"
+        android:persistentDrawingCache="none"
+        android:alwaysDrawnWithCache="false"
+        android:divider="@color/transparent"
+        android:dividerHeight="10dp"
+        android:background="#f8f8f8"
+        android:id="@+id/pull_refresh_list"
+        android:scrollbars="none"/>
+
+
+</RelativeLayout>  

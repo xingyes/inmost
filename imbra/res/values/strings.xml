@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">IMbra</string>
+    <string name="call_help">客服</string>
+
+    <string name="menu_bra_max">BraMax</string>
+    <string name="menu_blog">甄选类感</string>
+    <string name="menu_look">爱啵秘密</string>
+    <string name="menu_o2o">O2Obra</string>
+    <string name="menu_setting">设置</string>
+
+    <string name="filter">筛选</string>
+
+
+    <string name="search_text_hint">请输入查找内容</string>
+	<!-- menu -->
+	<string name="main_home">首页</string>
+	<string name="living_spirit">家居灵感</string>
+	<string name="living_qa">家居问答</string>
+	<string name="img_gallery">家居图库</string>
+	<string name="pick_desinger">选设计师</string>
+	<string name="pan_product">淘单品</string>
+	<string name="my">我的</string>
+    <string name="click_go">点击查看  ></string>
+
+    <string name="my_address">我的地址</string>
+    <string name="relative_pro">相关商品</string>
+
+    <string name="brand_brief">品牌介绍</string>
+    <string name="brand_story">品牌故事</string>
+
+    <string name="shopping">购买</string>
+
+    <string name="shopping_flow">购买流程</string>
+    <string name="shopping_hint">购买说明</string>
+    <string name="shopping_retreat">退换货</string>
+
+
+    <string name="shopping_hint_content">氧气推荐的商品皆为海外内衣品牌的官方正品，由品牌方直接供货，并以“抢购”和“预购”两种方式在氧气平台上销售。在线销售的商品皆为现货，在你下单后的3至5个工作日内发货，顺丰包邮。如遇到商品售罄，可以添加到货通知，商品再入库时你将会收到消息提醒。</string>
+    <string name="shopping_retreat_content">购买内衣前，请完善个人身材信息，以方便氧气的内衣顾问为你推荐合适你的尺码。首次购买的用户，氧气也为你提供无条件退换的服务承诺（内衣底裤及下装类，粘贴类，情趣类的商品不接受退换）。如在收货后发现内衣尺码不合适，请在72小时内联系氧气客服，我们会在有库存的情况下为你更换到合适的尺码。</string>
+
+    <string name="brand_blog">相关甄选</string>
+
+    <string name="receiver_info">收货人信息</string>
+    <string name="receiver_info_must">收货人信息（必填）</string>
+    <string name="add_receiver">添加收货人信息</string>
+    <string name="coupon">优惠券</string>
+    <string name="no_coupon">暂无优惠券</string>
+
+    <string name="list_no_address">您还没有填写收货地址</string>
+    <string name="add_address">增加地址</string>
+
+    <string name="receiver_name_must">收货人姓名（必填）</string>
+    <string name="phone_num_must">电话(必填)</string>
+    <string name="area_3_level">省市区</string>
+    <string name="area_code">邮政编码</string>
+    <string name="address_detail">详细地址(必填)</string>
+    <string name="manager_address">管理收货地址</string>
+
+    <string name="order_detail">订单详情</string>
+    <string name="pay">付款</string>
+    <string name="pay_method">支付方式</string>
+    <string name="pay_info">支付信息</string>
+    <string name="pay_wx">微信支付</string>
+    <string name="size">尺码</string>
+    <string name="size_x">尺码:(%s)</string>
+    <string name="num">数量</string>
+    <string name="num_x">数量:(%s)</string>
+
+    <string name="cancel_order">取消订单</string>
+
+    <string name="pay_hint_nor">如有问题请联系爱啵秀客服\n微信号： xxxxxx</string>
+    <string name="pay_hint_quick">请在30分钟内完成支付\n逾期订单将自动取消</string>
+    <string name="pay_succ">支付成功</string>
+    <string name="pay_fail">支付成功</string>
+
+    <string name="after_pay_hint_nor">详细订单信息请查看个人中心订单详情\n如有问题请联系爱啵秀客服\n微信号： xxxxxx</string>
+    <string name="more_o2o_shop">更多店铺  敬请期待</string>
+
+</resources>

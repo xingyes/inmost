@@ -1,0 +1,243 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.xingy.lib.ui.NavigationBar
+        android:layout_alignParentTop="true"
+        android:id="@+id/order_nav"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        inmost:leftVisiable="true"
+        inmost:text="@string/order_detail"
+        inmost:drawableLeft="@drawable/pink_icon_back"
+        inmost:textColor="@color/global_pink"/>
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/buttom_layout"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/global_gray"
+            android:layout_alignParentTop="true"/>
+        <TextView
+            android:id="@+id/submit_pay"
+            android:layout_margin="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:paddingLeft="60dp"
+            android:paddingRight="60dp"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp"
+            android:textColor="@color/white"
+            android:background="@drawable/pink_btn_selector"
+            android:text="@string/pay"/>
+    </RelativeLayout>
+
+    <com.xingy.lib.ui.MyScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scroll_v"
+        android:background="@color/global_gray_light"
+        android:layout_above="@id/buttom_layout"
+        android:layout_below="@id/order_nav">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scroll_content"
+            android:orientation="vertical"
+            android:background="#f8f8f8">
+
+            <!-- orderdetail-->
+            <RelativeLayout
+                android:layout_marginTop="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="10dp">
+                <com.android.volley.toolbox.NetworkImageView
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:id="@+id/pro_img"/>
+                <TextView
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_toRightOf="@id/pro_img"
+                    android:id="@+id/order_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="订单状态：待支付"
+                    android:textSize="@dimen/bar_font_24"
+                    android:textColor="@color/global_pink"/>
+                <TextView
+                    android:layout_margin="6dp"
+                    android:layout_below="@id/order_status"
+                    android:layout_toRightOf="@id/pro_img"
+                    android:id="@+id/order_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="订单金额：10101"
+                    android:textSize="@dimen/bar_font_24"
+                    android:textColor="@color/global_text_info_color"/>
+
+                <TextView
+                    android:layout_below="@id/order_info"
+                    android:layout_marginLeft="6dp"
+                    android:layout_toRightOf="@id/pro_img"
+                    android:id="@+id/order_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="订单号：1121244440101"
+                    android:textSize="@dimen/bar_font_24"
+                    android:textColor="@color/global_text_info_color"/>
+
+            </RelativeLayout>
+
+            <!-- order info-->
+            <LinearLayout
+                android:layout_marginTop="1px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_margin="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/to_whom"
+                    android:textColor="@color/global_pink"
+                    android:textSize="@dimen/bar_font_30"
+                    android:text="送朋友"/>
+                <TextView
+                    android:layout_margin="5dp"
+                    android:id="@+id/size_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/size_x"
+                    android:textSize="@dimen/bar_font_24"
+                    android:textColor="@color/global_text_info_color"/>
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="30dp"
+                    android:id="@+id/num_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/num_x"
+                    android:textSize="@dimen/bar_font_24"
+                    android:textColor="@color/global_text_info_color"/>
+            </LinearLayout>
+
+            <!-- receiver-->
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:text="@string/receiver_info"
+                android:textSize="@dimen/bar_font_24"
+                android:textColor="@color/global_text_info_light"/>>
+            <include layout="@layout/address_layout"
+                android:id="@+id/order_address"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        <!-- pay -->
+        <LinearLayout
+            android:layout_marginTop="1px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/pay_info"
+                android:textSize="@dimen/bar_font_24"
+                android:textColor="@color/global_text_info_light"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="40dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:text="@string/pay_method"
+                android:textSize="@dimen/bar_font_24"
+                android:textColor="@color/global_nav_text"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:text="@string/pay_wx"
+                android:id="@+id/pay_method"
+                android:textSize="@dimen/bar_font_24"
+                android:textColor="@color/global_nav_text"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="33dp"
+                android:gravity="center_horizontal">
+
+
+                <ImageView
+                    android:id="@+id/pay_hint_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_countdown_nor"
+                    android:layout_marginBottom="10dp"/>
+                <TextView
+                    android:id="@+id/pay_hint_txt"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pay_hint_nor"
+                    android:textSize="@dimen/bar_font_24"
+                    android:layout_marginBottom="30dp"
+                    android:textColor="@color/global_text_info_color"/>
+
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </com.xingy.lib.ui.MyScrollView>
+
+</RelativeLayout>

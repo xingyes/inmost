@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    
+    <color name="global_money_color">#e51a1a</color>
+    <color name="global_blue_dark">#152f77</color>
+    <color name="global_blue_bright">#2948a2</color>
+    <color name="global_text_gray">#666666</color>
+    <color name="global_text_bold">#111111</color>
+    <color name="global_text_info_color">#ff999999</color>
+    <color name="global_text_label">#444444</color>
+    
+    <color name="global_blue_very_bright">#3667e8</color>
+    
+    
+    <color name="global_gray">#ffb9b9b9</color>
+    <color name="global_gray_light">#f7f7f7</color>
+    
+    <color name="global_white">#ffffffff</color>
+    
+    
+    <color name="global_button_submit">#ffffffff</color>
+    <color name="global_button_submit_d">#ff999999</color>
+ 
+    <color name="global_button_cancel">#ff444444</color>
+    
+    <color name="global_loading_color_default">#ffff7f02</color>
+    <color name="global_loading_color_tran">#ff317ce4</color>
+    
+    <color name="global_promo_word">#fff94a5b</color>
+    
+    <color name="global_bg">#ffffffff</color>
+    <color name="global_yellow">#ffC602</color>
+    <color name="global_alfa_yellow">#aaffC602</color>
+    
+    <color name="global_blue">#ff3382ef</color>
+    
+    <color name="global_price">#ffe01e1e</color>    
+    
+    
+    <color name="global_maret_price">#ff444444</color>
+    
+    
+    <color name="global_label">#ff444444</color>
+    
+    <color name="global_tab">#ff000000</color>
+    
+    <color name="global_tab_item_s">#fff</color>
+    <color name="global_tab_item">#999</color>
+    
+    <color name="main_tab">#ff5e5e5e</color>
+    <color name="main_tab_s">#ffffffff</color>
+    
+    <color name="review_item_s">#ff4e97f8</color>
+    
+    <color name="main_menu">#ffffffff</color>
+    <color name="main_menu_s">#ff317ce4</color>
+    
+    <color name="qiang_stock_enough">#c0c0c0</color>
+    <color name="qiang_stock_less">#ae2c0f</color>
+    <color name="qiang_stock_zero">#fff</color>
+    
+    <color name="possible_result_points">#c0ffff00</color>
+    <color name="result_image_border">#ffffffff</color>
+    <color name="result_minor_text">#ffc0c0c0</color>
+    <color name="result_points">#c000ff00</color>
+    <color name="result_text">#ffffffff</color>
+    <color name="result_view">#b0000000</color>
+    <color name="status_text">#ffffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="viewfinder_frame">#ff317ee7</color>
+    <color name="viewfinder_laser">#ff317ee7</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="user_guide_bg">#ff7bd2c9</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    
+    <color name="range_stroker">#504AA02B</color>
+    <color name="range_circle">#2066C047</color>
+    
+    <!-- color configuration for 2.0 -->
+    <color name="caption_background">#7FFFFFFF</color>
+    <color name="separator_line">#7FCCCCCC</color>
+    <color name="red">#FFFF0000</color>
+    <color name="caption">#444444</color>
+
+
+    <color name="shopping_cart_cover">#a0a0a0</color>
+    <color name="background_color">#fff1f1f1</color>
+    <color name="background_color_settings_title">#ffdadada</color>
+    <color name="off_mode_foreground">#7F000000</color>
+    
+    <color name="search_list_tab">#ff444444</color>
+    <color name="search_list_tab_s">#ff4798f8</color>
+    <color name="filter_item_checked">#ff4f97f8</color>
+    <color name="filter_item_unchecked">#ff444444</color>
+    <color name="background_textview">#7fffffff</color>
+    <color name="global_line">#ffe5e5e5</color>
+    <color name="global_text_color">#ff444444</color>
+    <color name="global_text_hint_color">#ff777777</color>
+    <color name="coupon_name_color">#ff666666</color>
+    <color name="cart_overlay">#55000000</color>
+    <color name="cart_overlay_null">#00000000</color>
+    
+    <color name="global_shadow_color">#ffb2b2b2</color>
+    <color name="my_order_phone_color">#4f8ad9</color>
+    <color name="login_press_text_color">#ff4f96f8</color>
+    <color name="global_shortcut_shadow_color">#7fffffff</color>
+    
+    <drawable name="search_edit_focused">#ffffffff</drawable>
+    <drawable name="search_edit_unfocused">#7fffffff</drawable>
+    
+    <color name="time_buy_promo_color">#ffae2c0f</color>
+    <color name="time_buy_show_price_color">#ff555555</color>
+    <color name="clicked_brown">#993300</color>
+    
+    <color name="click_state_trasparent">#01ffffff</color>
+    
+    
+</resources>

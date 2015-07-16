@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="coupon_slash_bottom_margin">100dp</dimen>
+    <dimen name="slpash_item_width">195dp</dimen>
+    <dimen name="slpash_item_height">122dp</dimen>
+    <dimen name="slpash_shadow_width">234dp</dimen>
+    <dimen name="slpash_shadow_height">20dp</dimen>
+    <dimen name="share_wxok_btn_len">170dp</dimen>
+    <dimen name="share_wxcancel_btn_len">89dp</dimen>
+    <dimen name="share_wx_btn_width">47dp</dimen>
+
+    <!-- slotmachine -->
+    <dimen name="slot_coupon_ll_top_margin">50dp</dimen>
+    <dimen name="slot_coupon_ll_height">180dp</dimen>
+    <dimen name="slot_area_height">180dp</dimen>
+    <dimen name="drop_shadow_width">187dp</dimen>
+    <dimen name="drop_shadow_height">16dp</dimen>
+    <dimen name="drop_item_width">156dp</dimen>
+    <dimen name="drop_item_height">97dp</dimen>
+    <dimen name="slot_bar_left_margin">10dp</dimen>
+    <dimen name="slot_bar_right_margin">0dp</dimen>
+    <dimen name="slot_sorry_bottom_margin">300dp</dimen>
+
+    <!-- slot about -->
+    <dimen name="single_slot_width">70dp</dimen>
+    <dimen name="single_slot_height">112dp</dimen>
+    <dimen name="single_slot_margin_side">8dp</dimen>
+    <!-- single_slot_width*3 + 4*lsv_margin_left_right + 2*lsv_margin_right" -->
+    <!-- marginLeft="8dp"  marginRight="4dp" -->
+    <dimen name="whole_slot_width">258dp</dimen>
+    <dimen name="whole_slot_height">130dp</dimen>
+    <dimen name="collection_height">420dp</dimen>
+    <dimen name="coupon_collect_textsize">14dp</dimen>
+    <dimen name="coupon_item_cdkey_textsize">13dp</dimen>
+    <dimen name="card_text_margin_top">60dp</dimen>
+    <dimen name="card_draw_textsize">20dp</dimen>
+    <dimen name="share_close_margin">8dp</dimen>
+    <dimen name="product_margin_top">60dp</dimen>
+    <dimen name="product_margin_bottom">50dp</dimen>
+	<dimen name="product_layout_margin_bottom">80dp</dimen>
+	<dimen name="pro_img_size">120dp</dimen>
+	<dimen name="share_price_margin">10dp</dimen>
+	<string name="pro_share_line_num">2</string>
+    
+    
+    
+    <!-- WelcomeActivity -->
+    <dimen name="welcome_margin_page_top">67.2dp</dimen>
+    
+    <!-- ShoppingCartActivity -->
+    <dimen name="image_height_size">38dp</dimen>
+    
+    <!-- TimeBuyAdapter -->
+    <dimen name="product_name_height">60dp</dimen>
+    
+    <!-- LoginActivity -->
+    <dimen name="drawable_padding">4.8dp</dimen>
+
+    <!-- 字体大小 -->
+    <dimen name="font_size_48xp">25.35sp</dimen>
+    <dimen name="font_size_42xp">22.08sp</dimen>
+    <dimen name="font_size_40xp">20.99sp</dimen>
+    <dimen name="font_size_36xp">18.81sp</dimen>
+    <dimen name="font_size_34xp">17.72sp</dimen>
+    <dimen name="font_size_32xp">16.63sp</dimen>
+    <dimen name="font_size_30xp">15.54sp</dimen>
+    <dimen name="font_size_28xp">14.45sp</dimen>
+    <dimen name="font_size_26xp">13.36sp</dimen>
+    <dimen name="font_size_24xp">12.27sp</dimen>
+    <dimen name="margin_size_2xp">0.96dp</dimen>
+    <dimen name="margin_size_5xp">2.4dp</dimen>
+    <dimen name="margin_size_10xp">4.8dp</dimen>
+    <dimen name="margin_size_12xp">5.76dp</dimen>
+    <dimen name="margin_size_15xp">7.2dp</dimen>
+    <dimen name="margin_size_20xp">9.6dp</dimen>
+    <dimen name="margin_size_25xp">12dp</dimen>
+    <dimen name="margin_size_30xp">14.4dp</dimen>
+    <dimen name="margin_size_35xp">16.8dp</dimen>
+    <dimen name="margin_size_40xp">19.2dp</dimen>
+    <dimen name="margin_size_45xp">21.6dp</dimen>
+    <dimen name="margin_size_50xp">24dp</dimen>
+    <dimen name="margin_size_55xp">26.4dp</dimen>
+    <dimen name="margin_size_56xp">26.9dp</dimen>
+    <dimen name="margin_size_60xp">28.8dp</dimen>
+    <dimen name="margin_size_70xp">33.6dp</dimen>
+    <dimen name="margin_size_76xp">38dp</dimen>
+    <dimen name="margin_size_80xp">38.4dp</dimen>
+    <dimen name="margin_size_85xp">40.8dp</dimen>
+    <dimen name="margin_size_88xp">42.2dp</dimen>
+    <dimen name="margin_size_90xp">43.2dp</dimen>
+    <dimen name="margin_size_100xp">48dp</dimen>
+     <dimen name="margin_size_110xp">52.8dp</dimen>
+    <dimen name="margin_size_115xp">55.2dp</dimen>
+    <dimen name="margin_size_120xp">57.6dp</dimen>
+    <dimen name="margin_size_130xp">62.4dp</dimen>
+    <dimen name="margin_size_140xp">67.2dp</dimen>
+    <dimen name="margin_size_153xp">73.4dp</dimen>
+    <dimen name="margin_size_160xp">76.8dp</dimen>
+    <dimen name="margin_size_180xp">86.4dp</dimen>
+    <dimen name="margin_size_200xp">96dp</dimen>
+    <dimen name="margin_size_220xp">105.6dp</dimen>
+    <dimen name="margin_size_250xp">120dp</dimen>
+    <dimen name="margin_size_320xp">140dp</dimen>
+
+    <string name="point_popup_shift_width">90</string>
+    <string name="point_popup_shift_height">165</string>
+
+</resources>

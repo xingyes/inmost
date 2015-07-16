@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="loadingbar">
+        <attr name="size" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="auto_height_attrs">
+        <attr format="reference|integer" name="baseWidth" />
+        <attr format="reference|integer" name="baseHeight" />
+
+    </declare-styleable>
+
+
+    <declare-styleable name="xingy_attrs">
+        <attr format="reference|string" name="leftext" />
+        <attr format="reference|string" name="caption" />
+        <attr format="reference|string" name="text" />
+        <attr format="reference|string" name="hint" />
+        <attr format="reference|string" name="info" />
+        <attr format="boolean" name="leftVisiable" />
+        <attr format="reference|string" name="editPostfix" />
+        
+        <attr format="boolean" name="hasDrawableRight" />
+        <attr format="boolean" name="editable" />
+        <attr format="boolean" name="hasSlipButton"/>
+        <attr format="boolean" name="isChecked"/>
+        <attr format="reference|integer" name="anchorHeight" />
+        
+        <attr format="reference|integer" name="startYear" />
+        <attr format="reference|integer" name="endYear" />
+        <attr format="reference|integer" name="checkboxImageOn" />
+        <attr format="reference|integer" name="checkboxImageOff" />
+        <attr format="reference|integer" name="drawableLeft" />
+        <attr format="reference|integer" name="actionBg" />
+        <attr format="reference|integer" name="drawableRight" />
+        <attr format="reference|color" name="bgColor" />
+        <attr format="reference|color" name="textColor" />
+        
+        <attr format="color" name="contentColor" />
+        <attr format="dimension" name="contentSize" />
+        <attr format="dimension" name="captionSize" />
+        <attr format="reference" name="animNextIn" />
+        <attr format="reference" name="animNextOut" />
+        <attr format="reference" name="animPrevIn" />
+        <attr format="reference" name="animPrevOut" />
+        <attr format="integer" name="referWidth" />
+        <attr format="integer" name="referHeight" />
+        <attr format="integer" name="minLines" />
+        <attr format="integer" name="maxLines" />
+        <attr format="integer" name="maxLength" />
+        <attr name="cellPosition">
+            <flag name="top" value="0x10" />
+            <flag name="middle" value="0x20" />
+            <flag name="bottom" value="0x40" />
+            <flag name="single" value="0x80" />
+        </attr>
+        <attr name="contentGravity">
+	        <flag name="top" value="0x30" />
+	        <flag name="bottom" value="0x50" />
+	        <flag name="left" value="0x03" />
+	        <flag name="right" value="0x05" />
+	        <flag name="center_vertical" value="0x10" />
+	        <flag name="fill_vertical" value="0x70" />
+	        <flag name="center_horizontal" value="0x01" />
+	        <flag name="fill_horizontal" value="0x07" />
+	        <flag name="center" value="0x11" />
+	        <flag name="fill" value="0x77" />
+	        <flag name="clip_vertical" value="0x80" />
+	        <flag name="clip_horizontal" value="0x08" />
+	    </attr>
+    </declare-styleable>
+    
+    <declare-styleable name = "loopscrollview">
+        <attr name = "imgMargin" format="integer"/>
+        <attr name = "windowFooter" format="float"/>
+    </declare-styleable>
+    
+    <declare-styleable name="PullToRefresh">
+
+        <!-- A drawable to use as the background of the Refreshable View -->
+        <attr name="ptrRefreshableViewBackground" format="reference|color" />
+
+        <!-- A drawable to use as the background of the Header and Footer Loading Views -->
+        <attr name="ptrHeaderBackground" format="reference|color" />
+
+        <!-- Text Color of the Header and Footer Loading Views -->
+        <attr name="ptrHeaderTextColor" format="reference|color" />
+
+        <!-- Text Color of the Header and Footer Loading Views Sub Header -->
+        <attr name="ptrHeaderSubTextColor" format="reference|color" />
+
+        <!-- Mode of Pull-to-Refresh that should be used -->
+        <attr name="ptrMode">
+            <flag name="disabled" value="0x0" />
+            <flag name="pullFromStart" value="0x1" />
+            <flag name="pullFromEnd" value="0x2" />
+            <flag name="both" value="0x3" />
+            <flag name="manualOnly" value="0x4" />
+
+            <!-- These last two are depreacted -->
+            <flag name="pullDownFromTop" value="0x1" />
+            <flag name="pullUpFromBottom" value="0x2" />
+        </attr>
+
+        <!-- Whether the Indicator overlay(s) should be used -->
+        <attr name="ptrShowIndicator" format="reference|boolean" />
+
+        <!-- Drawable to use as Loading Indicator. Changes both Header and Footer. -->
+        <attr name="ptrDrawable" format="reference" />
+
+        <!-- Drawable to use as Loading Indicator in the Header View. Overrides value set in ptrDrawable. -->
+        <attr name="ptrDrawableStart" format="reference" />
+
+        <!-- Drawable to use as Loading Indicator in the Footer View. Overrides value set in ptrDrawable. -->
+        <attr name="ptrDrawableEnd" format="reference" />
+
+        <!-- Whether Android's built-in Over Scroll should be utilised for Pull-to-Refresh. -->
+        <attr name="ptrOverScroll" format="reference|boolean" />
+
+        <!-- Base text color, typeface, size, and style for Header and Footer Loading Views -->
+        <attr name="ptrHeaderTextAppearance" format="reference" />
+
+        <!-- Base text color, typeface, size, and style for Header and Footer Loading Views Sub Header -->
+        <attr name="ptrSubHeaderTextAppearance" format="reference" />
+
+        <!-- Style of Animation should be used displayed when pulling. -->
+        <attr name="ptrAnimationStyle">
+            <flag name="rotate" value="0x0" />
+            <flag name="flip" value="0x1" />
+            <flag name="jingdong" value="0x2" />
+        </attr>
+
+        <!-- Whether the user can scroll while the View is Refreshing -->
+        <attr name="ptrScrollingWhileRefreshingEnabled" format="reference|boolean" />
+
+        <!--
+        	Whether PullToRefreshListView has it's extras enabled. This allows the user to be 
+        	able to scroll while refreshing, and behaves better. It acheives this by adding
+        	Header and/or Footer Views to the ListView.
+        -->
+        <attr name="ptrListViewExtrasEnabled" format="reference|boolean" />
+
+        <!--
+        	Whether the Drawable should be continually rotated as you pull. This only
+        	takes effect when using the 'Rotate' Animation Style.
+        -->
+        <attr name="ptrRotateDrawableWhilePulling" format="reference|boolean" />
+
+        <!-- BELOW HERE ARE DEPRECEATED. DO NOT USE. -->
+        <attr name="ptrAdapterViewBackground" format="reference|color" />
+        <attr name="ptrDrawableTop" format="reference" />
+        <attr name="ptrDrawableBottom" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name = "RangeSeekBar">
+        <attr name = "absoluteMinValue" format="integer|float"/>
+        <attr name = "absoluteMaxValue" format="integer|float"/>
+        <attr name="lineWidth"        format="dimension"/>
+        <attr name="insidePadding"        format="dimension"/>
+        <attr name="thumbNormal"        format="reference"/>
+        <attr name="thumbPress"        format="reference"/>
+        <attr name="thumbDisable"        format="reference"/>
+        <attr name="barBgColor"        format="reference|color"/>
+        <attr name="barBgBitmapResid"        format="reference"/>
+        <attr name="barColor"        format="reference|color"/>
+        <attr name="hideThumbMarkText"        format="boolean"/>
+
+        <attr name="singleThumb" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name = "WheelPickView">
+        <attr name = "btnBackground" format="reference"/>
+        <attr name = "btnTxtColor" format="reference"/>
+        <attr name="resultTxtColor"        format="reference"/>
+    </declare-styleable>
+
+
+
+</resources>

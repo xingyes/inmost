@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="event">活动</string>
+    <string name="friend">好友</string>
+    <string name="my">我</string>
+    
+    <string name="invited">新邀请</string>
+    <string name="sponsor">发起</string>
+    <string name="join">参加</string>
+    
+    
+    <string name="parser_error">解析错误</string>
+    <string name="parser_error_msg">抱歉，服务暂时抛锚了，正在奋力解决！</string>
+    <string name="network_error">请检查您的网络情况</string>
+    <string name="network_error_info">您的网络不给力，请稍后重新试试看</string>
+    <string name="title_network_error">网络错误</string>
+
+    <!-- buttons -->
+    <string name="caption_hint">提醒</string>
+    <string name="btn_go">跳转</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_retry">重试</string>
+    <string name="btn_delete">删除</string>
+    <string name="btn_exit">退出</string>
+    <string name="btn_edit">编辑</string>
+    <string name="btn_done">完成</string>
+    <string name="btn_ok">确定</string>
+    <string name="btn_close">关闭</string>
+    
+    <string name="btn_back">返回</string>
+    <string name="btn_refresh">刷新重试</string>
+    <string name="btn_upgrade">更新</string>
+	<string name="btn_continue">继续</string>
+	<string name="btn_install">安装</string>
+	<string name="btn_later">下次再说</string>
+	
+	<!-- captions -->
+	<string name="caption_new_version">发现新版本</string>
+    
+	<!-- share about -->
+	<string name="weixin_circle">朋友圈</string>
+	<string name="weixin_someone">微信好友</string>
+	<string name="share_title">分享给朋友</string>
+	<string name="no_support_weixin">手机未安装最新版本微信</string>
+	<string name="install_newest_weixin">是否前往安装最新版本的微信?</string>
+	<string name="install_weixin_yes">立即安装</string>
+	<string name="share_succ_title">分享成功！</string>
+	<string name="share_fail_title">分享失败！</string>
+	<string name="share_fail_net">由于网络原因，您此次未成功分享</string>
+	<string name="share_auth_denied">由于权限不足，您此次未成功分享</string>
+	<string name="share_user_cancel">您取消了此次分享</string>
+	
+	<string name="wx_share_thumb_fail">分享缩略图生成失败</string>
+	<string name="share_loading">分享</string>
+    <string name="initializing_content">正在生成分享信息, 请稍后...</string>
+    
+    <string name="permission_title">授权提示</string>
+	<string name="permission_hint_barcode">是否允许本程序打开摄像头？</string>
+	<string name="permission_hint_contact">是否允许本程序获取和展示联系人数据？</string>
+	<string name="permission_hint_cargomap">是否允许本程序使用手机定位功能？</string>
+	<string name="permission_hint_call">是否允许本程序使用拨号功能？</string>
+	<string name="phone_app_not_found">未找到拨号程序</string>
+	
+	
+	<string name="permission_agree">同意</string>
+	<string name="permission_disagree">拒绝</string>
+	<string name="wx_share_default_title"></string>
+	<string name="wx_share_default_content"></string>
+	
+	<!-- login  -->
+    <string name="create_account">创建账户</string>
+    <string name="verify_code">验证码:</string>
+	<string name="register">注册</string>
+	<string name="register_now">立即注册</string>
+	<string name="login">登录</string>
+	<string name="login_fail_title">登录失败！</string>
+	<string name="login_auth_denied">由于权限不足，您此次登录失败</string>
+	<string name="login_fail_net">由于网络原因，您此次登录失败</string>
+	<string name="login_user_cancel">您取消了此次登录！</string>
+	<string name="please_input_mobile_num">请输入您的手机号</string>
+	<string name="please_input_password">请输入密码(6-16位字母或数字)</string>
+	<string name="verify_code_resend">120秒后可重新发送</string>
+	<string name="send">发送</string>
+	<string name="left_second">%s秒</string>
+	<string name="please_input_correct_phone_num">请输入正确的手机号码</string>
+	<string name="please_input_correct_psw">请输入合适的密码</string>
+	<string name="please_input_verifycode">请输入验证码</string>
+	
+	<string name="pswd_not_empty">密码不能为空</string>
+	
+	<string name="mobile_num">手机号:</string>
+	<string name="password">密码:</string>
+	
+	<!-- 活动list -->
+	<string name="join_">参加:</string>
+	<string name="read_">已读:</string>
+   	<string name="unread_">未读:</string>
+   	<string name="quit_">退出:</string>
+   	
+   	<string name="x_person">%s人</string>
+   	<string name="x_day">yyyy年MM月dd日</string>
+   	<string name="x_minite">yyyy年MM月dd日 HH时mm分</string>
+	<string name="x_time">yyyy年MM月dd日 HH:mm:ss</string>
+	
+	<!-- 活动 -->
+	<string name="event_detail">活动详情</string>
+	<string name="create_event">创建活动</string>
+	<string name="please_input_title">点击添加活动标题(必填)</string>
+	<string name="x_nickname">昵称: %s</string>
+	<string name="send_sms">发短信</string>
+	<string name="favorite">收藏</string>
+	<string name="comment">评论</string>
+	<string name="event_brief">活动简介</string>
+	<string name="please_input_brief">请填写活动简介</string>
+	<string name="time_addr">时间地点</string>
+	<string name="please_input_city">请选择活动城市(必填)</string>
+	<string name="please_input_address">请选择详细地址(必填)</string>
+	<string name="please_input_starttime">请填写活动开始时间(必填)</string>
+	<string name="please_input_reg_endtime">请填写报名截止时间</string>
+	<string name="please_input_hint_time">请设置最后提醒时间</string>
+	<string name="event_snapshot">活动快照</string>
+	<string name="join_status">参加情况</string>
+	<string name="can_invited_more">参加者可邀请更多朋友参与</string>
+	<string name="join_limit">设定参加名额</string>
+	<string name="join_count">人数</string>
+	<string name="add_favorite_succ">加入收藏成功</string>
+	<string name="cancel_favorite">取消收藏</string>
+	<string name="cancel_favorite_succ">取消收藏成功</string>
+	<string name="start_time">开始时间:  %s</string>
+	<string name="reg_end_time">报名截止:  %s</string>
+	<string name="hint_time">最后提醒:  %s</string>
+	<string name="bigimg_error">大图查看错误</string>
+	<string name="upload_photo">上传照片</string>
+	<string name="choose_img_from_album">从相册中选择</string>
+	<string name="take_photo">拍照</string>
+	
+	<string name="want_join">报名</string>
+	<string name="publish_sure">确认发布</string>
+	<string name="varify_sure">确认修改 (仅有一次修改机会)</string>
+	<string name="ignore">忽略</string>
+	<string name="please_input_event_name">请填写活动名</string>
+	<string name="please_input_cover">请添加活动封面</string>
+	<string name="date">日期</string>
+	<string name="time">时间</string>
+	<string name="time_must_in_future">请设置未来的时间值</string>
+	<string name="reg_time_must_before_start">请设置在活动开始前</string>
+	<string name="hint_time_must_after_reg">该设置在报名时间后</string>
+	<string name="succ_sponsor_event">创建活动成功</string>
+	<string name="succ_update_event">修改活动成功</string>
+	<string name="ignore_succ">忽略成功</string>
+	<string name="join_succ">成功加入活动</string>
+	<string name="other_time_effect">请注意，其他时间相应调整</string>
+	
+	<!-- action menu -->
+	<string name="message">消息</string>
+	<string name="message_x">消息(%s)</string>
+	<string name="announce">公告</string>
+	<string name="announce_x">公告(%s)</string>
+	<string name="QA">问答</string>
+	<string name="QA_x">问答(%s)</string>
+	<string name="cancel_event">取消活动</string>
+	<string name="quit_event">退出活动</string>
+	<string name="please_input_quit_reason">请填写退出此次活动的原因(必填)</string>
+	<string name="please_input_cancel_reason">请填写取消此次活动的原因(必填)</string>
+	<string name="submit">提交</string>
+	<string name="quit_event_succ">退出活动成功</string>
+	<string name="cancel_event_succ">取消活动成功</string>
+	
+	<!-- my -->
+	<string name="avatar">头像</string>
+	<string name="please_input_nickname">请填写昵称</string>
+	<string name="clubook_id">聚乐号</string>
+	<string name="clubook_id_x">聚乐号： %s</string>
+	<string name="real_name">真实姓名</string>
+	<string name="gender">性别</string>
+	<string name="district">地区</string>
+	<string name="address_detail">详细地址</string>
+	<string name="phone_num">电话</string>
+
+    <string name="weixin_id">微信号</string>
+	<string name="id_card">身份证</string>
+	<string name="email">邮箱</string>
+	<string name="emergency_contact">紧急联系人</string>
+	<string name="emergency_contact_phone">紧急联系人电话</string>
+	<string name="personal_slogan">个性签名</string>
+	<string name="dustbin">垃圾箱</string>
+	<string name="setting">设置</string>
+	<string name="please_set_myinfo">请设置您的头像和昵称，让朋友们更容易认识您</string>
+	
+	
+	<string name="alter_info">修改信息</string>
+	<string name="submit_succ">提交成功</string>
+	<string name="no_empty_allowed">内容不可为空</string>
+	<string name="male">男</string>
+	<string name="female">女</string>
+	<string name="save">保存</string>
+	<string name="clear_empty">清空</string>
+	<string name="clear_draft">清空草稿</string>
+	
+	<string name="clear_empty_succ">清空成功</string>
+	
+	<string name="feed_back">意见反馈</string>
+	<string name="logout">退出登录</string>
+	<string name="add_my_head">点击添加头像</string>
+	<string name="change_my_head">点击修改头像</string>
+	<string name="nick_name">昵称</string>
+	<string name="function">操作</string>
+	<string name="copy_create">复制创建</string>
+	<string name="del">删除</string>
+	<string name="my_favorites">我的收藏活动</string>
+	<string name="only_9_snapshot">最多上传9张图片</string>
+	<string name="snapshot_modify_succ">快照修改成功</string>
+	
+	
+	<!-- friend -->
+	<string name="add_friend">添加好友</string>
+	<string name="friend_request_x">好友请求(%s)</string>
+	<string name="search">查找</string>
+	<string name="search_friend">查找好友</string>
+	<string name="please_input_id_to_search_friend">请输入聚乐号或手机号查找</string>
+	<string name="user_detail">用户详情</string>
+	<string name="add_friend_sent">添加好友请求发送成功,请耐心等待对方同意</string>
+	<string name="new_friend_req">新的好友请求</string>
+	<string name="del_friend_succ">删除好友成功</string>
+	<string name="wait_friend_accept">等待好友验证同意</string>
+	
+	
+	<!-- announce -->
+	<string name="publish_new_announce">发布新公告</string>
+	<string name="publish_succ">发布成功</string>
+	<string name="del_succ">删除成功</string>
+	<string name="no_content">暂无内容</string>
+	<!-- QA -->
+	<string name="quiz_list">问题列表</string>
+	<string name="whose_question">%s的问题</string>
+	<string name="go_publish">转公告</string>
+    
+	<!-- follow -->
+	<string name="follower">参加者</string>
+    <string name="select_all">全选</string>
+    <string name="notice">通知</string>
+    <string name="notice_succ">通知成功</string>
+    <string name="btn_add">增加</string>
+    <string name="notice_all_onceonly">批量通知(仅可使用一次)</string>
+    <string name="notice_all_already">您已批量通知过(仅可使用一次)</string>
+	<string name="select_friend">选择好友</string>
+	<string name="add_follow_succ">邀请好友成功</string>
+	
+	<string name="recharge">话费充值</string>
+	<string name="denom_10">10元</string>
+	<string name="denom_20">20元</string>
+	<string name="denom_30">30元</string>
+	<string name="denom_50">50元</string>
+	<string name="denom_100">100元</string>
+	<string name="denom_300">300元</string>
+	<string name="recharge_choose_phone">选择充值号码</string>
+	
+	<string name="wait_for_submit">正在提交, 请稍候...</string>
+	<string name="x_wan">%s万</string>
+	<string name="x_yi">%s亿</string>
+	
+	<string name="capricorn">摩羯座</string>
+	<string name="aquarius">水瓶座</string>
+	<string name="pisces">双鱼座</string>
+	<string name="aries">白羊座</string>
+	<string name="taurus">金牛座</string>
+	<string name="gemini">双子座</string>
+	<string name="cancer">巨蟹座</string>
+	<string name="leo">狮子座</string>
+	<string name="virgo">处女座</string>
+	<string name="libra">天秤座</string>
+	<string name="scorpio">天蝎座</string>
+	<string name="sagittarius">射手座</string>
+	
+	<string name="animal_1">鼠</string>
+	<string name="animal_2">牛</string>
+	<string name="animal_3">虎</string>
+	<string name="animal_4">兔</string>
+	<string name="animal_5">龙</string>
+	<string name="animal_6">蛇</string>
+	<string name="animal_7">马</string>
+	<string name="animal_8">羊</string>
+	<string name="animal_9">猴</string>
+	<string name="animal_10">鸡</string>
+	<string name="animal_11">狗</string>
+	<string name="animal_12">猪</string>
+
+	<string name="rmb">¥</string>
+	<string name="back_ag_to_exit">再按一次退出程序</string>
+
+
+</resources>

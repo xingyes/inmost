@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/global_gray">
+
+    <com.xingy.lib.ui.NavigationBar
+        android:layout_alignParentTop="true"
+        android:id="@+id/pg_nav"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        inmost:leftVisiable="true"
+        inmost:text="@string/app_name"
+        inmost:drawableLeft="@drawable/pink_icon_back"
+        inmost:textColor="@color/black"/>
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/pg_nav"
+        android:id="@+id/pg_bg_imv"
+        />
+    <android.support.v4.view.ViewPager
+        android:layout_below="@id/pg_nav"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewpager"
+        android:background="@color/global_75_transparent"
+        android:clipChildren="false"/>
+</RelativeLayout>

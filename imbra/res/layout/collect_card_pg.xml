@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/transparent"
+    android:padding="28dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/pro_status"
+        android:textSize="@dimen/bar_font_30"
+        android:textColor="@color/global_pink"
+        android:text="status"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_white_10round_shape">
+        <com.xingy.lib.ui.AutoHeightImageView
+            android:layout_margin="14dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            inmost:baseWidth="1"
+            inmost:baseHeight="1"
+            android:id="@+id/pro_img"
+            android:layout_alignParentTop="true"/>
+
+        <CheckBox
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fav_btn"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            android:button="@drawable/fav_btn_selector"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pro_intro"
+            android:textColor="@color/global_nav_text"
+            android:textSize="@dimen/bar_font_24"
+            android:layout_below="@id/pro_img"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:maxLines="5"
+            android:ellipsize="end"
+            android:lineSpacingExtra="8.64dp"/>
+         <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:id="@+id/pro_price"
+             android:textSize="@dimen/bar_font_30"
+             android:textColor="@color/global_pink"
+             android:layout_alignParentBottom="true"
+             android:layout_alignParentRight="true"
+             android:layout_margin="19.2dp"
+             android:text="111"/>
+    </RelativeLayout>
+</RelativeLayout>

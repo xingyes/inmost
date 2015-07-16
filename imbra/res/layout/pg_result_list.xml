@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/global_gray_light">  
+
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:id="@+id/top_opt_layout"
+        android:padding="10dp">
+        <TextView
+       	android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/left_opt"
+        android:text="fenlei"
+        android:drawablePadding="5dp"
+        android:drawableRight="@drawable/right_arrow"/>
+        <TextView
+       	android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:id="@+id/right_opt"
+        android:text="排序"
+        android:drawablePadding="5dp"/>
+    </RelativeLayout>
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:layout_below="@id/top_opt_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="@android:color/transparent"
+        android:scrollingCache="false"
+        android:persistentDrawingCache="none"
+        android:alwaysDrawnWithCache="false"
+        android:divider="#ffe5e5e5"
+        android:dividerHeight="1px"
+        android:background="#f8f8f8"
+        android:id="@+id/pull_refresh_list"
+        android:scrollbars="none"/>
+    
+     <LinearLayout
+        android:layout_below="@id/top_opt_layout"
+        android:id="@+id/option_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#33000000"
+        android:orientation="horizontal">
+     <View
+        android:id="@+id/opt_blank"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="match_parent"/>
+    <RelativeLayout
+        android:id="@+id/opt_content"
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:background="@color/white"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="2dp"
+        android:visibility="invisible"/>
+    </LinearLayout>
+    
+    <!-- RelativeLayout
+        android:layout_below="@id/top_opt_layout"
+        android:id="@+id/option_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/-->
+         
+</RelativeLayout>  

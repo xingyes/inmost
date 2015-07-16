@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    
+    <TextView android:id="@+id/editfield_caption"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/font_size_30xp"
+        android:textColor="@color/global_label"
+        />
+    
+    <!-- margin_size_85xp -->
+	        
+    <RelativeLayout android:id="@+id/editfield_right"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <ImageView android:id="@+id/editfield_button"
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:layout_alignParentRight="true"
+	        android:scaleType="fitXY"
+	        android:src="@drawable/spinner_bg"/>
+        
+        <RelativeLayout 
+            android:layout_width="fill_parent"
+            android:layout_toLeftOf="@id/editfield_button"
+	        android:layout_height="40dp"
+	        android:background="@drawable/input_bg_with_right">
+	        <TextView 
+            android:id="@+id/editfield_postfix"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:textSize="@dimen/font_size_30xp"
+	        android:textColor="#ff444444"
+	        android:text="222"
+	        android:gravity="center_vertical"
+	        android:layout_margin="4dp"
+	        android:layout_centerVertical="true"/>
+	    <EditText android:id="@+id/editfield_content"
+	        android:layout_width="fill_parent"
+	        android:layout_height="@dimen/margin_size_85xp"
+	        android:layout_toLeftOf="@id/editfield_postfix"
+	        android:background="@null"
+	        android:inputType="text"
+	        android:gravity="center_vertical"
+	        android:paddingLeft="@dimen/margin_size_30xp"
+	        android:textSize="@dimen/font_size_30xp"
+	        android:textColor="#ff444444"
+	        android:singleLine="true" />
+        </RelativeLayout>
+        
+        
+        
+    </RelativeLayout>
+</LinearLayout>

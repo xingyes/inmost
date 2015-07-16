@@ -1,0 +1,40 @@
+package com.xingy.util.cache;
+
+import android.os.Environment;
+
+import com.xingy.util.Config;
+import com.xingy.util.Log;
+import com.xingy.util.ToolUtil;
+
+import java.io.File;
+
+public class SDCache extends FileStorage {
+
+	private final String LOG_TAG = SDCache.class.getName();
+
+	private String mRoot;
+
+	/**
+	 * 该�???????��?��?????�???��??sd card??????�????�?�????�?�???��????��??�????�???��?��??常�??�????�????�???��?????sd card??????�?�????建�??�????�?Config.TMPDIRNAME???
+	 */
+	public SDCache() {
+		if (!ToolUtil.isSDExists()) {
+			RuntimeException ex = new RuntimeException("sd card is not exists.");
+			Log.e(LOG_TAG, ex);
+			throw ex;
+		}
+
+		mRoot = Environment.getExternalStorageDirectory() + "/" + Config.TMPDIRNAME;
+
+		File file = new File(mRoot);
+
+		if (!file.exists()) {
+			file.mkdir();
+		}
+	}
+
+	@Override
+	public String getRootPath() {
+		return mRoot + "/";
+	}
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/global_gray_shadow_click_state"
+    android:paddingLeft="@dimen/margin_size_40xp"
+    android:paddingRight="@dimen/margin_size_40xp"
+    android:paddingTop="@dimen/margin_size_25xp"
+    android:paddingBottom="@dimen/margin_size_25xp">
+
+    <TextView
+        android:id="@+id/search_item_name"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/coupon_name_color"
+        android:textSize="@dimen/font_size_32xp" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/search_item_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/global_text_info_color"
+        android:textSize="@dimen/font_size_28xp" >
+    </TextView>
+
+</LinearLayout>

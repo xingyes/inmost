@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.xingy.lib.ui.CubicRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/global_gray">
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/home_bg_iv"/>
+
+    <!--collect bar -->
+    <RelativeLayout
+        android:id="@+id/collect_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="14dp"
+        android:background="@color/global_75_black"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/collect_title"
+            android:gravity="center"
+            android:text="11111"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/bar_font_30"
+            android:textColor="@color/white"
+            android:singleLine="true"
+            android:layout_alignParentLeft="true"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_right_gray"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <!-- blog layout-->
+    <RelativeLayout
+        android:id="@+id/blog_layout"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/blog_title"
+            android:textSize="@dimen/bar_font_40"
+            android:layout_margin="10dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:singleLine="true"
+            android:text="1111111111111111111111111111111111111111111111111111"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/author"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/author"
+            android:textSize="@dimen/bar_font_24"
+            android:text="111111111111111111111"
+            android:textColor="@color/global_nav_text"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/publish_date"
+            android:textSize="@dimen/bar_font_24"
+            android:textColor="@color/global_nav_text"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/author"
+            android:layout_marginTop="50dp"/>
+        
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:text="@string/click_go"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textSize="@dimen/bar_font_24"
+            android:layout_below="@id/publish_date"
+            android:background="@drawable/plant_pink_rond"/>
+        <View
+            android:layout_width="175.5dp"
+            android:layout_height="1px"
+            android:background="@color/global_pink"
+            android:layout_below="@id/publish_date"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="9dp"/>
+
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:id="@+id/blog_cover"
+            android:layout_margin="10dp"
+            android:layout_above="@id/blog_title"/>
+
+    </RelativeLayout>
+
+    <!-- look layout-->
+    <RelativeLayout
+        android:id="@+id/look_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <View
+            android:id="@+id/cutting_line"
+            android:layout_width="175.5dp"
+            android:layout_height="1px"
+            android:layout_centerInParent="true"
+            android:background="@color/global_bg"
+            android:layout_marginTop="9dp"/>
+        <TextView
+            android:layout_marginBottom="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/cutting_line"
+            android:id="@+id/look_title"
+            android:textSize="@dimen/bar_font_48"
+            android:textColor="@color/global_bg"/>
+        <TextView
+            android:layout_marginTop="70dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:text="@string/click_go"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textSize="@dimen/bar_font_24"
+            android:layout_below="@id/cutting_line"
+            android:background="@drawable/plant_pink_rond"/>
+
+    </RelativeLayout>
+</com.xingy.lib.ui.CubicRelativeLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+    android:background="@color/transparent"
+    android:paddingRight="30dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="title－－－title"
+        android:textColor="@color/white"
+        android:id="@+id/title"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="120dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/bar_font_36"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="author"
+        android:layout_below="@id/title"
+        android:textColor="@color/white"
+        android:id="@+id/author"
+        android:layout_marginTop="9dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/bar_font_30"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="authoadfdffdfdfdfdfauthoadfdffdfdfdfdfauthoadfdffdfdfdfdfauthoadfdffdfdfdfdfauthoadfdffdfdfdfdf \ndfdfdfdf\n\nadfdf"
+        android:layout_below="@id/author"
+        android:textColor="@color/white"
+        android:id="@+id/intro"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="left"
+        android:lineSpacingExtra="8.64dp"
+        android:textSize="@dimen/bar_font_24"
+        />
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="67dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/view_count_tv"
+        android:textColor="@color/global_50_transparent"
+        android:text="111"
+        android:layout_below="@id/intro"
+        android:textSize="@dimen/bar_font_24"
+        />
+</RelativeLayout>

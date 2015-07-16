@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <item name="c_global_item_pressed" type="drawable">#ffedf4fe</item>
+    <item name="c_global_item_normal" type="drawable">#ffffffff</item>
+    <item name="c_global_btn_pressed" type="drawable">#ffdfdfdf</item>
+    <item name="none" type="drawable">#00ffffff</item>
+    <item name="c_search_hotkey_item_pressed" type="drawable">#fff1f1f1</item>
+    <item name="c_search_hotkey_item_normal" type="drawable">#fff1f1f1</item>
+    <item name="tuan_category_item_normal" type="drawable">#fff1f1f1</item>
+    <item name="tuan_category_item_pressed" type="drawable">#ffe3e3e3</item>
+</resources>

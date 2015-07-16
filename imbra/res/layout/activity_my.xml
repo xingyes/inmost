@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.xingy.lib.ui.NavigationBar
+        android:layout_alignParentTop="true"
+        android:id="@+id/my_nav"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        inmost:leftVisiable="true"
+        inmost:text="@string/my"
+        inmost:drawableLeft="@drawable/pink_icon_back"
+        inmost:textColor="@color/global_pink"/>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="@android:color/transparent"
+        android:scrollingCache="false"
+        android:persistentDrawingCache="none"
+        android:alwaysDrawnWithCache="false"
+        android:divider="@color/transparent"
+        android:dividerHeight="10dp"
+        android:background="#f8f8f8"
+        android:id="@+id/pull_refresh_list"
+        android:scrollbars="none"/>
+</LinearLayout>
+
+

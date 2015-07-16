@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+	<LinearLayout
+	    android:id="@+id/global_title"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginBottom="@dimen/margin_size_10xp"
+	    android:layout_marginTop="@dimen/margin_size_10xp"
+	    android:orientation="horizontal" >
+		<EditText
+            android:id="@+id/search_edittext"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/search_edittext_bg"
+            android:hint="@string/search_text_hint"
+            android:inputType="textAutoComplete"
+            android:maxLength="100"
+            android:paddingLeft="@dimen/margin_size_30xp"
+            android:paddingTop="@dimen/margin_size_20xp"
+            android:paddingBottom="@dimen/margin_size_20xp"
+            android:singleLine="true"
+            android:drawableLeft="@drawable/icon_search"
+            android:drawablePadding="@dimen/margin_size_10xp"
+            android:textColor="@color/global_text_color"
+            android:textColorHint="@color/global_text_info_color"
+            android:textSize="@dimen/font_size_32xp"
+            android:imeOptions="actionSearch"
+            android:layout_marginLeft="@dimen/margin_size_20xp"/>
+        <ImageView
+        	android:id="@+id/search_button_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:paddingLeft="@dimen/margin_size_10xp"
+            android:paddingRight="@dimen/margin_size_20xp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/i_search_delete"
+            android:background="@color/global_white"
+            android:contentDescription="@string/app_name" />
+         <ImageView
+            android:id="@+id/search_button_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/global_transparent_shadow_click_state"
+            android:layout_gravity="right|center_vertical"
+            android:padding="@dimen/margin_size_20xp"
+            android:layout_marginRight="@dimen/margin_size_10xp"
+            android:src="@drawable/i_search_go"
+            android:scaleType="center"
+            android:contentDescription="@string/app_name" />
+    </LinearLayout>
+	<HorizontalScrollView
+        android:id="@+id/search_cate_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:alwaysDrawnWithCache="false"
+        android:animationCache="false"
+        android:persistentDrawingCache="none"
+        android:layout_below="@id/global_title"
+        android:scrollbars="none" >
+
+        <RadioGroup
+            android:id="@+id/search_cate_group"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal">
+            <RadioButton 
+            	android:padding="10dp"
+            	android:background="@null"
+        	    android:gravity="center"
+        	    android:layout_width="0dp"
+            	android:layout_weight="1"
+            	android:layout_height="fill_parent"
+            	android:button="@null"
+            	android:text="@string/living_spirit"/>
+        	<RadioButton
+        	    android:padding="10dp"
+            	android:background="@null"
+        	    android:gravity="center"
+        	    android:layout_width="0dp"
+            	android:layout_weight="1"
+            	android:layout_height="fill_parent"
+            	android:button="@null"
+            	android:text="@string/living_qa"/>
+        	<RadioButton 
+        	    android:padding="10dp"
+            	android:background="@null"
+        	    android:gravity="center"
+        	    android:layout_width="0dp"
+            	android:layout_weight="1"
+            	android:layout_height="fill_parent"
+            	android:button="@null"
+            	android:text="@string/img_gallery"/>
+        	<RadioButton 
+        	    android:padding="10dp"
+            	android:background="@null"
+        	    android:gravity="center"
+        	    android:layout_width="0dp"
+            	android:layout_weight="1"
+            	android:layout_height="fill_parent"
+            	android:button="@null"
+            	android:text="@string/pick_desinger"/>
+        	<RadioButton
+        	    android:padding="10dp"
+            	android:background="@null"
+        	    android:gravity="center"
+        	    android:layout_width="0dp"
+            	android:layout_weight="1"
+            	android:layout_height="fill_parent"
+            	android:button="@null"
+            	android:text="@string/pan_product"/>
+        </RadioGroup>
+    </HorizontalScrollView>
+	
+   <!-- result suggest + history listview -->
+    <FrameLayout
+        style="@style/search_listview_hotkey"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/search_cate_layout"
+        android:background="@color/background_color" >
+
+        <ListView
+            android:id="@+id/search_listview"
+            style="@style/search_listview_hotkey"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        
+        <!-- LinearLayout
+            android:id="@+id/search_relative_empty"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:orientation="vertical" 
+            android:visibility="gone">
+
+            <ListView
+                android:id="@+id/hotkeys_listview"
+                style="@style/search_listview_hotkey"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" >
+            </ListView>
+        </LinearLayout-->
+    </FrameLayout>
+
+</RelativeLayout>

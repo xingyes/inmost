@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <RelativeLayout
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/brand_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/brand_brief"
+        android:textColor="@color/global_pink"
+        android:textSize="@dimen/bar_font_30"
+        android:layout_centerInParent="true"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_margin="30dp"
+            android:layout_toRightOf="@id/brand_mark"
+            android:layout_centerVertical="true"
+            android:background="@color/global_nav_text"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_margin="30dp"
+            android:layout_toLeftOf="@id/brand_mark"
+            android:layout_centerVertical="true"
+            android:background="@color/global_nav_text"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/brand_info"
+        android:textColor="@color/global_text_gray"
+        android:textSize="@dimen/bar_font_30"
+        android:lineSpacingExtra="2dp"
+        android:layout_marginTop="7dp"
+        android:lineSpacingMultiplier="1.5"/>
+
+    <TextView
+        android:layout_marginTop="23dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/brand_go_btn"
+        android:textSize="@dimen/bar_font_30"
+        android:singleLine="true"
+        android:text="@string/brand_story"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+
+        android:textColor="@color/white"
+        android:background="@drawable/home_tag_choose_state"
+        />
+</LinearLayout>

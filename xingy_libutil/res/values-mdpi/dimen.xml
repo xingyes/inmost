@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主页面 -->
+    <dimen name="container_marginOffset">10dp</dimen>
+    <dimen name="container_marginLeftOffset">3.9dp</dimen>
+    <dimen name="container_marginRightOffset">3.9dp</dimen>
+    <dimen name="container_marginTopOffset">6.5dp</dimen>
+    <dimen name="container_marginBottomOffset">6.5dp</dimen>
+    
+    <dimen name="container_widgetPaddingOffset_largest">19.5dp</dimen>
+    <dimen name="container_widgetPaddingOffset_larger">13dp</dimen>
+    <dimen name="container_widgetPaddingOffset_larger_less">11.7dp</dimen>
+    <dimen name="container_widgetPaddingOffset_larger_more">10.4dp</dimen>
+    <dimen name="container_widgetPaddingOffset_large">9.1dp</dimen>
+    <dimen name="container_widgetPaddingOffset_normal_more">7.8dp</dimen>
+    <dimen name="container_widgetPaddingOffset_normal">6.5dp</dimen>
+    
+    <dimen name="home_recharge_promo_width">30dp</dimen>
+    <dimen name="home_recharge_promo_height">18dp</dimen>
+    
+    <dimen name="announceView_height">32.5dp</dimen>
+    <dimen name="container_views_topOffset">6.5dp</dimen> 
+    <dimen name="container_shortcut_topOffset">3.5dp</dimen> 
+    <dimen name="container_shortcut_recharge_topOffset">3dp</dimen> 
+    <dimen name="container_caption_topOffset">8dp</dimen>
+    
+    <dimen name="seach_editview_height">32.5dp</dimen>
+    <dimen name="seach_editview_marginLeft">8dp</dimen>
+    <dimen name="seach_editview_marginBottom">4dp</dimen>
+        
+    <!-- 主页字体大小 -->
+	<dimen name="text_line_distance_large">3.6dp</dimen> 
+    <dimen name="textsize_large">18sp</dimen>
+    <dimen name="textsize_small">15.6sp</dimen>
+    <dimen name="textsize_smaller">13sp</dimen>
+    <dimen name="textsize_smallest">11.5sp</dimen>
+    <dimen name="RMB_symbol_size">10sp</dimen> 
+    <dimen name="home_price_size">14sp</dimen>
+    
+    <!-- 分格线宽度 -->
+    <dimen name="line_size">1dp</dimen>
+    
+    <!-- 关于页面  -->
+    <dimen name="more_contactus_logo_padding_w">20dp</dimen>
+    <dimen name="more_contactus_logo_padding_h">22dp</dimen>
+    <dimen name="copytight_container_bottomPadding">5dp</dimen>
+    <dimen name="more_container_paddingleft">19.2dp</dimen>
+    <dimen name="more_container_textviewpaddingTop">22dp</dimen>
+    <dimen name="more_container_textviewpaddingLeft">14dp</dimen>
+    <dimen name="text_line_distance">7dp</dimen> 
+    <dimen name="copyright_line_distance">1dp</dimen> 
+    <dimen name="about_textsize">13sp</dimen>
+
+    <!-- 应用推荐界面 -->
+    <dimen name="tablecell_leftOffset">17dp</dimen>
+    <dimen name="tablecell_topOffset">9dp</dimen>
+    <dimen name="tablecell_textlines_space">6dp</dimen>
+    <dimen name="appinfo_image_size">52dp</dimen>
+    <dimen name="cell_caption_size">15.6sp</dimen>
+    <dimen name="cell_subtitle_size">13sp</dimen>
+    
+    <!-- 设置页面  -->
+    <dimen name="setting_cell_leftPadding">14.5dp</dimen>
+    
+    <!-- navagation bar -->
+    <dimen name="nav_leftOffset">12dp</dimen>
+    <dimen name="nav_rightOffset">12dp</dimen>
+    <dimen name="nav_verOffset">4dp</dimen>
+    
+    <!-- 登录界面 -->
+    <dimen name="login_text_topOffset">18dp</dimen>
+    <dimen name="login_text_bottomOffset">15dp</dimen> 
+    <dimen name="login_container_paddingLeft">11dp</dimen>
+    <dimen name="login_button_bottomOffset">11dp</dimen>
+    <dimen name="login_contact_bottomOffset">11dp</dimen>
+    <dimen name="qq_button_textsize">12sp</dimen>
+    <dimen name="checkbox_leftpadding">33dp</dimen>
+    
+</resources>

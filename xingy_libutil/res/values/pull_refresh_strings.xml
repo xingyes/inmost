@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Just use standard Pull Down String when pulling up. These can be set for languages which require it -->
+    <string name="pull_to_refresh_header_hint_normal">下拉刷新&#8230;</string>
+    <string name="pull_to_refresh_header_hint_normal2">上拉刷新&#8230;</string>
+    <string name="pull_to_refresh_header_hint_ready">松开刷新&#8230;</string>
+    <string name="pull_to_refresh_header_hint_loading">更新中&#8230;</string>
+    <string name="pull_to_refresh_header_last_time">最后更新时间 : </string>
+    <string name="pull_to_refresh_no_more_data">已经到底啦</string>
+    <string name="pull_to_refresh_header_title_text">让购物更便捷</string>
+    
+
+    
+    <string name="load_more_loading">@string/pull_to_refresh_header_hint_loading</string>
+    <string name="load_more_error">载入失败 点击重试</string>
+    <string name="load_more_reach_end">已加载全部数据</string>  
+    
+</resources>

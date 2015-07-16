@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:layout_width="match_parent"  
+    android:layout_height="match_parent"  
+    android:orientation="horizontal"
+    android:background="#fff"
+    >  
+  
+    <LinearLayout 
+         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/picker_layout"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:padding="3dp">
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/date"
+        android:textColor="@color/black"
+        android:layout_gravity="center_vertical"/>
+        
+    <DatePicker
+        android:id="@+id/date_picker"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"/>
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/time"
+        android:textColor="@color/black"
+        android:layout_gravity="center_vertical"/>
+     <TimePicker
+        android:id="@+id/time_picker"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"/>
+	</LinearLayout>
+	<RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/picker_layout">
+	<TextView 
+	     android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancel_btn"
+        android:text="no"
+        android:layout_alignParentLeft="true"/>
+	<TextView 
+	    android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ok_btn"
+        android:text="yes"
+        android:layout_alignParentRight="true"/>
+	<TextView 
+	    android:gravity="center_horizontal"
+	    android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/cancel_btn"
+        android:layout_toLeftOf="@id/ok_btn"
+        android:id="@+id/time_info"
+        android:text="111"/>
+	
+	    </RelativeLayout>
+    
+</RelativeLayout>

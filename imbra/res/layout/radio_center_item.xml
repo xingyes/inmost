@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="12dp">
+
+    <TextView
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/radio_item_name"
+        android:textSize="@dimen/bar_font_36"
+        android:singleLine="true"
+        android:text="111"
+        android:textColor="@color/txt_pink_gray_selector"/>
+    </RelativeLayout>

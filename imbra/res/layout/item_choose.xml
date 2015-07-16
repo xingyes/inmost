@@ -1,0 +1,27 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/param_info"
+        android:background="@drawable/choose_btn_normal"
+        android:gravity="center"
+        android:text="param_del"
+        android:textSize="@dimen/font_size_30xp"/>
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignRight="@id/param_info"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="-10dp"
+        android:id="@+id/param_del"
+        android:src="@drawable/i_search_delete"
+        android:visibility="gone"/>
+</RelativeLayout>

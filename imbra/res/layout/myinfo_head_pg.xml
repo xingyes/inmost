@@ -1,0 +1,115 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f8f8f8">
+
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:layout_alignParentTop="true"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/no_head"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/user_img"/>
+    <ImageView
+        android:layout_alignBottom="@id/user_img"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:src="@drawable/no_head"
+        android:clickable="false"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/user_img"
+        android:text="Carrie"
+        android:gravity="center"
+        android:textSize="@dimen/bar_font_24"
+        android:layout_marginTop="9dp"
+        android:textColor="@color/global_nav_text"
+        android:id="@+id/user_name"/>
+
+
+
+
+
+    <RadioGroup
+        android:layout_below="@id/user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:id="@+id/my_tab_rg"
+        android:orientation="horizontal"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp">
+
+        <RadioButton
+            android:drawablePadding="6dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/tab_favor"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="我的收藏"
+            android:drawableTop="@drawable/fav_icon"
+            android:textColor="@color/txt_pink_gray_selector"
+            android:textSize="@dimen/bar_font_30"
+            android:gravity="center"
+            android:button="@drawable/none"
+            android:background="@color/transparent"
+            android:checked="false" />
+        <RadioButton
+            android:drawablePadding="6dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/tab_coupon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="代金券"
+            android:drawableTop="@drawable/coupon_icon_nor"
+            android:textColor="@color/txt_pink_gray_selector"
+            android:textSize="@dimen/bar_font_30"
+            android:gravity="center"
+            android:button="@drawable/none"
+            android:background="@color/transparent"
+            android:checked="false" />
+        <RadioButton
+            android:drawablePadding="6dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/tab_orderlist"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="订单"
+            android:drawableTop="@drawable/order_icon_nor"
+            android:textColor="@color/txt_pink_gray_selector"
+            android:textSize="@dimen/bar_font_30"
+            android:gravity="center"
+            android:button="@drawable/none"
+            android:background="@color/transparent"
+            android:checked="false" />
+        <!--<RadioButton-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:id="@+id/tab_myinfo"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="我的数据"-->
+            <!--android:drawableTop="@drawable/data_icon_nor"-->
+            <!--android:textColor="@color/txt_pink_gray_selector"-->
+            <!--android:textSize="@dimen/bar_font_30"-->
+            <!--android:gravity="center"-->
+            <!--android:button="@drawable/none"-->
+            <!--android:background="@color/transparent"-->
+            <!--android:checked="false" />-->
+
+    </RadioGroup>
+</RelativeLayout>

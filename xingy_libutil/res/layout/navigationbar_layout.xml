@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/margin_size_10xp"
+    android:paddingRight="@dimen/margin_size_10xp"
+    android:paddingTop="@dimen/margin_size_5xp" >
+
+    <RelativeLayout
+        android:id="@+id/navbar_back"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/nav_leftOffset"
+        android:paddingRight="@dimen/nav_rightOffset"
+            >
+
+        <ImageView
+            android:layout_alignParentLeft="true"
+            android:id="@+id/navigationbar_drawable_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ico_back" />
+        <TextView
+            android:layout_toRightOf="@id/navigationbar_drawable_left"
+            android:id="@+id/navigationbar_text_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/font_size_26xp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="5dp"
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/navigationbar_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_size_10xp"
+        android:layout_centerInParent="true"
+        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:textColor="@color/white"
+        android:maxWidth="180dp"
+        android:singleLine="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:ellipsize="marquee"
+        android:focusable="true" 
+        android:focusableInTouchMode="true" 
+        android:textSize="@dimen/font_size_36xp" />
+        
+    <TextView
+       	android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:paddingLeft="@dimen/nav_rightOffset"
+    	android:paddingRight="@dimen/nav_rightOffset" 
+    	android:layout_centerVertical="true"
+    	android:gravity="center_vertical"  
+  		android:id="@+id/navigationbar_right_text"
+        style="@style/text_message"
+        android:drawablePadding="2dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+    	android:visibility="gone"/>
+    
+    <ImageView
+	    android:id="@+id/navigationbar_right_icon"
+	    android:layout_width="wrap_content"
+	    android:layout_height="45dp"
+	    android:layout_alignParentRight="true"
+	    android:layout_centerVertical="true"
+	    android:layout_toLeftOf="@id/navigationbar_right_text"
+	    android:background="@drawable/global_transparent_shadow_click_state"
+	    android:paddingLeft="@dimen/nav_rightOffset"
+	    android:paddingRight="@dimen/nav_rightOffset"
+        android:scaleType="fitCenter"
+	    android:visibility="gone"/>
+ </RelativeLayout>

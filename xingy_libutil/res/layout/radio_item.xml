@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/global_transparent_shadow_click_state"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+    
+    <ImageView android:id="@+id/radio_item_tick"
+        android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:src="@drawable/dialog_list_button"
+	    android:layout_alignParentRight="true"
+	    android:layout_centerVertical="true"
+	    android:layout_marginRight="@dimen/margin_size_25xp"/>
+      
+  	<TextView android:id="@+id/radio_item_name"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_toRightOf="@id/radio_item_tick"
+	    android:layout_centerVertical="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_marginTop="@dimen/margin_size_30xp"
+	    android:layout_marginBottom="@dimen/margin_size_30xp"
+	    android:paddingRight="@dimen/margin_size_85xp"
+	    android:layout_marginLeft="@dimen/margin_size_25xp"
+	    android:textSize="@dimen/font_size_32xp"
+	    android:textColor="@color/caption" />
+  	
+  	<View 
+  	    android:id="@+id/radio_item_line"
+  	    style="@style/global_line2"
+  	    android:layout_below="@+id/radio_item_name"/>
+</RelativeLayout>

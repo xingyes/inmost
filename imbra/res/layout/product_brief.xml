@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    android:orientation="vertical">
+    <com.xingy.lib.ui.AutoHeightImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        inmost:baseWidth="1"
+        inmost:baseHeight="1"
+        android:id="@+id/main_pro_img"/>
+    <TextView
+        android:id="@+id/main_pro_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|center_vertical"
+        android:maxLines="2"
+        android:text="11111111111\n1111"
+        android:lineSpacingExtra="6.72dp"
+        android:layout_marginTop="10.5dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/global_nav_text"
+        android:textSize="@dimen/bar_font_30"/>
+
+    <TextView
+        android:id="@+id/main_pro_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|center_vertical"
+        android:singleLine="true"
+        android:text="11.1"
+        android:textColor="@color/global_pink"
+        android:textSize="@dimen/bar_font_30"/>
+
+    <LinearLayout
+        android:id="@+id/main_opt_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingRight="80dp"
+        android:paddingLeft="80dp">
+        <TextView
+            android:id="@+id/shopping_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/shopping"
+            android:drawablePadding="6.72dp"
+            android:gravity="center"
+            android:drawableTop="@drawable/shopping_icon"/>
+
+        <TextView
+            android:id="@+id/fav_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="收藏"
+            android:drawablePadding="6.72dp"
+            android:gravity="center"
+            android:drawableTop="@drawable/fav_icon"/>
+        <TextView
+            android:id="@+id/share_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="分享"
+            android:drawablePadding="6.72dp"
+            android:gravity="center"
+            android:drawableTop="@drawable/fav_icon"/>
+
+     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/global_text_info_color"
+        android:layout_marginTop="48dp"/>
+</LinearLayout>

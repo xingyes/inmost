@@ -1,0 +1,26 @@
+<resources>
+
+    <!-- 下拉刷新 -->
+    <dimen name="picture_pull_to_refresh_last_update_time_text_size">10sp</dimen>
+    <dimen name="picture_pull_to_refresh_last_update_time_top_margin">6dp</dimen>
+    
+	<dimen name="pull_to_refresh_speed_left_margin">15dp</dimen>
+	<dimen name="pull_to_refresh_people_left_margin">-30dp</dimen>
+	<dimen name="pull_to_refresh_goods_left_margin">-30dp</dimen>
+	<dimen name="pull_to_refresh_tips_left_margin">25dp</dimen>
+	
+    <dimen name="indicator_right_padding">10dp</dimen>
+    <dimen name="indicator_corner_radius">12dp</dimen>
+    <dimen name="indicator_internal_padding">4dp</dimen>
+    <dimen name="header_footer_left_right_padding">24dp</dimen>
+    <dimen name="header_footer_top_bottom_padding">12dp</dimen>
+
+    <dimen name="ptr_indicator_right_padding">10dp</dimen>
+    <dimen name="ptr_indicator_corner_radius">12dp</dimen>
+    <dimen name="ptr_indicator_internal_padding">4dp</dimen>
+    <dimen name="ptr_header_footer_left_right_padding">24dp</dimen>
+    <dimen name="ptr_header_footer_top_bottom_padding">12dp</dimen>
+    
+    <dimen name="progressbar_size">34dp</dimen>
+    <dimen name="progressbar_size_small">24dp</dimen>
+</resources>

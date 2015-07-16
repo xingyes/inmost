@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.inmost.imbra"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="15" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    -->
+
+    <!-- 可选权限： -->
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+
+
+    <application
+        android:name=".main.IMbraApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".splash.SplashActivity"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".main.MainActivity"
+            android:screenOrientation="portrait">
+            <!-- intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter-->
+            </activity>
+
+        <activity android:name=".login.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".login.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".login.MyInfoActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".collect.CollectPagerActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".blog.BlogVolleyActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".imgallery.ImageCheckActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".main.ContactUsActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".product.ProductDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".brand.BrandInfoActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".shopping.ShoppingActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".shopping.AddressListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".shopping.AddressEditActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".shopping.OrderActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".shopping.AfterPayActivity"
+            android:screenOrientation="portrait"/>
+
+
+
+
+        <!-- thrid api -->
+        <!-- QQ loging -->
+        <activity
+        android:name="com.tencent.tauth.AuthActivity"
+        android:noHistory="true"
+        android:launchMode="singleTask" >
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="tencent100273020" />
+        </intent-filter>
+        </activity>
+        <activity android:name="com.tencent.connect.common.AssistActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="orientation|keyboardHidden"/>
+
+        <activity android:name="com.inmost.imbra.thirdapi.WeiboShareResponseActivity"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            </activity>
+
+        <activity
+            android:name="com.inmost.wxapi.WXEntryActivity"
+            android:label="@string/app_name"
+            android:exported="true"/>
+    <!-- end of thrid -->
+
+        <activity android:name=".search.SearchActivity"
+            android:screenOrientation="portrait"/>
+        </application>
+</manifest>

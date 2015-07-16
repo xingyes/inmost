@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/filter_relative_attr_item_top"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingBottom="@dimen/margin_size_35xp"
+    android:paddingLeft="@dimen/margin_size_40xp"
+    android:paddingRight="@dimen/margin_size_30xp"
+    android:paddingTop="@dimen/margin_size_35xp" >
+
+    <ImageView
+        android:id="@+id/filter_attr_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/i_filter_down"/>
+    <TextView
+        android:layout_alignParentLeft="true"
+        android:id="@+id/filterattr_textview_attr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="111"
+        android:textColor="@color/global_text_color"
+        android:textSize="@dimen/font_size_32xp" />
+
+    <TextView
+        android:id="@+id/filterattr_textview_option"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_size_10xp"
+        android:layout_marginRight="@dimen/margin_size_76xp"
+        android:layout_toRightOf="@+id/filterattr_textview_attr"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/global_text_color"
+        android:textSize="@dimen/font_size_28xp" />
+
+    
+
+</RelativeLayout>

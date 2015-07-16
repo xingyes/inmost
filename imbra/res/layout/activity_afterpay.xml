@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.xingy.lib.ui.NavigationBar
+        android:layout_alignParentTop="true"
+        android:id="@+id/afterpay_nav"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        inmost:leftVisiable="true"
+        inmost:text="@string/pay_succ"
+        inmost:drawableLeft="@drawable/pink_icon_back"
+        inmost:textColor="@color/global_pink"/>
+
+    <!-- hint Title-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp">
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pay_hint_txt"
+            android:textColor="@color/global_nav_text"
+            android:textSize="@dimen/bar_font_38"
+            android:text="订单支付成功"
+            android:layout_marginLeft="5dp"/>
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/pay_hint_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pay_hint_img"
+            android:src="@drawable/icon_succ"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="70dp"
+        android:background="@color/global_gray"/>
+    
+    <TextView
+        android:layout_marginTop="21dp"
+        android:lineSpacingExtra="6dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/after_pay_hint_nor"
+        android:textSize="@dimen/bar_font_30"
+        android:textColor="@color/global_text_info_color"/>
+
+
+    <TextView
+        android:layout_marginTop="53dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/go_home"
+        android:layout_marginLeft="10dp"
+        android:text="返回首页"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@drawable/long_pink_btn_selector"/>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/go_orderdetail"
+        android:layout_marginLeft="10dp"
+        android:text="查看订单"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@drawable/long_pink_btn_selector"/>
+
+</LinearLayout>
+
+

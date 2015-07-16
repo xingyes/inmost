@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <!-- Hours -->
+    <RelativeLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="1dp">
+        <TextView android:id="@+id/timing_hours_ten"
+	        style="@style/timing_num"/>
+        <ImageView style="@style/timing_line"/>
+    </RelativeLayout>
+    <RelativeLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="1dp">
+        <TextView android:id="@+id/timing_hours_single"
+	        style="@style/timing_num"/>
+        <ImageView style="@style/timing_line"/>
+    </RelativeLayout>
+    
+    <ImageView
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+        android:src="@drawable/timing_divide"/>
+    
+    <!-- Minutes -->
+    <RelativeLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp">
+        <TextView android:id="@+id/timing_minutes_ten"
+	        style="@style/timing_num"/>
+        <ImageView style="@style/timing_line"/>
+    </RelativeLayout>
+    
+    <RelativeLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="1dp">
+        <TextView android:id="@+id/timing_minutes_single"
+	        style="@style/timing_num"/>
+        <ImageView style="@style/timing_line"/>
+    </RelativeLayout>
+    
+    <ImageView
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+        android:src="@drawable/timing_divide"/>
+    
+    <!-- Seconds -->
+    <RelativeLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp">
+        <TextView android:id="@+id/timing_seconds_ten"
+	        style="@style/timing_num"/>
+        <ImageView style="@style/timing_line"/>
+    </RelativeLayout>
+    <RelativeLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="1dp">
+        <TextView android:id="@+id/timing_seconds_single"
+	        style="@style/timing_num"/>
+        <ImageView style="@style/timing_line"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/filter_relative_option_item_top"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:background="#ffeeeeee" >
+        <TextView
+            android:layout_alignParentLeft="true"
+            android:id="@+id/filteroption_textview_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="#ff444444"
+            android:paddingTop="@dimen/margin_size_30xp"
+      		android:paddingBottom="@dimen/margin_size_30xp"
+            android:paddingLeft="@dimen/margin_size_60xp"
+            android:paddingRight="@dimen/margin_size_160xp"
+            android:textSize="@dimen/font_size_30xp" />
+</RelativeLayout>

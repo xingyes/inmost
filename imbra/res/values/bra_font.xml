@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bar_font_24">15dp</dimen>
+    <dimen name="bar_font_30">16dp</dimen>
+    <dimen name="bar_font_36">18dp</dimen>
+    <dimen name="bar_font_38">20dp</dimen>
+    <dimen name="bar_font_48">30dp</dimen>
+    <dimen name="bar_font_40">24dp</dimen>
+
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/transparent">
+
+    <com.xingy.lib.ui.VerticalRangeSeekBar
+        android:layout_width="match_parent"
+        android:layout_margin="30dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/price_seekbar"
+        android:layout_centerInParent="true"
+        inmost:lineWidth="4dp"
+        inmost:insidePadding="10dp"
+        inmost:barBgColor="@color/global_text_info_color"
+        inmost:barBgBitmapResid="@drawable/price_bar"
+        inmost:barColor="@color/global_pink"
+        inmost:thumbNormal="@drawable/price_thumb_nor"
+        inmost:thumbPress="@drawable/price_thumb_act"
+        inmost:thumbDisable="@drawable/price_thumb_nor"
+        />
+
+</RelativeLayout>

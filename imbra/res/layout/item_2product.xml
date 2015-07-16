@@ -1,0 +1,28 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent">
+    <View
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:background="@color/black"
+        android:id="@+id/center_pos"/>
+
+    <include layout="@layout/product_item"
+        android:id="@+id/product_one"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="7dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/center_pos"/>
+
+    <include layout="@layout/product_item"
+        android:id="@+id/product_two"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/center_pos"/>
+
+</RelativeLayout>  

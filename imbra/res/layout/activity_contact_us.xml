@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"  
+    android:orientation="vertical">
+
+    <com.xingy.lib.ui.NavigationBar
+        android:layout_alignParentTop="true"
+        android:id="@+id/contact_nav"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        inmost:leftVisiable="true"
+        inmost:text="@string/call_help"
+        inmost:drawableLeft="@drawable/pink_icon_back"
+        inmost:textColor="@color/global_pink"/>
+
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/buttom_layout"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/global_gray"
+            android:layout_alignParentTop="true"/>
+        <TextView
+            android:layout_margin="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:paddingLeft="60dp"
+            android:paddingRight="60dp"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp"
+            android:textColor="@color/white"
+            android:background="@drawable/pink_btn_selector"
+            android:text="@string/submit"/>
+    </RelativeLayout>
+
+    <EditText
+        android:layout_below="@id/contact_nav"
+        android:drawableLeft="@drawable/icon_user"
+        android:drawablePadding="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:id="@+id/name"
+        android:padding="10dp"
+        android:background="@drawable/input_bg_with_right"
+        android:hint="@string/nick_name"
+        android:textSize="@dimen/bar_font_30"
+        android:textColor="@color/global_nav_text"
+        android:textColorHint="@color/global_text_info_color"/>
+    <EditText
+        android:layout_below="@id/name"
+        android:drawableLeft="@drawable/icon_phone"
+        android:drawablePadding="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:id="@+id/phone"
+        android:padding="10dp"
+        android:inputType="phone"
+        android:background="@drawable/input_bg_with_right"
+        android:hint="@string/phone_num"
+        android:textSize="@dimen/bar_font_30"
+        android:textColor="@color/global_nav_text"
+        android:textColorHint="@color/global_text_info_color"/>
+
+
+    <EditText
+        android:layout_below="@id/phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/feedback_content"
+        android:padding="10dp"
+        android:gravity="left|top"
+        android:minLines="10"
+        android:background="@drawable/input_bg_with_right"
+        android:hint="输入问题或反馈"
+        android:textColor="@color/global_nav_text"
+        android:textColorHint="@color/global_text_info_color"
+        android:textSize="@dimen/bar_font_30"/>
+
+</RelativeLayout>
