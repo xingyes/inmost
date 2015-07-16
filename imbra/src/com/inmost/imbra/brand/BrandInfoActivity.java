@@ -102,6 +102,8 @@ public class BrandInfoActivity extends BaseActivity implements OnSuccessListener
 
     @Override
     public void onSuccess(JSONObject jsonObject, Response response) {
+        closeLoadingLayer();
+
         JSONObject brandjson = jsonObject.optJSONObject("brand");
         mNavBar.setText(brandjson.optString("name"));
         mNavBar.setTextColor(this.getResources().getColor(R.color.global_pink));

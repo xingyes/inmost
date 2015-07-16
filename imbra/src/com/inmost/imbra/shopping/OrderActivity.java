@@ -202,6 +202,7 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
 
     @Override
     public void onSuccess(JSONObject jsonObject, Response response) {
+        closeLoadingLayer();
         if(AJAX_CANCEL_ORDER == response.getId())
         {
             finish();

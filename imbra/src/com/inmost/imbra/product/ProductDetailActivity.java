@@ -108,6 +108,8 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
 
     @Override
     public void onSuccess(JSONObject jsonObject, Response response) {
+
+        closeLoadingLayer();
         JSONObject projson = jsonObject.optJSONObject("product");
         proModel = new ProductModel();
         proModel.parse(projson);

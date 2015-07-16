@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:inmost="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,6 +16,7 @@
         inmost:textColor="@color/black"/>
 
     <ListView
+        android:layout_below="@id/list_nav"
         android:cacheColorHint="@android:color/transparent"
         android:scrollingCache="false"
         android:persistentDrawingCache="none"
@@ -28,4 +29,5 @@
         android:layout_height="match_parent"
         android:id="@+id/list_content"/>
 
-</LinearLayout>
+    <include layout="@layout/global_loading" />
+</RelativeLayout>

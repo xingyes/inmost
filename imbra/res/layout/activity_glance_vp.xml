@@ -27,4 +27,6 @@
         android:id="@+id/viewpager"
         android:background="@color/global_75_transparent"
         android:clipChildren="false"/>
+
+    <include layout="@layout/global_loading" />
 </RelativeLayout>

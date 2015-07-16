@@ -159,8 +159,10 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 	
 	private void requestPage(int page) {
         mAjax = ServiceConfig.getAjax(mTabIdx == TAB_HOME ? braConfig.URL_HOME_FLOOR : braConfig.URL_SEARCH);
-		if (null == mAjax)
-			return;
+		if (null == mAjax) {
+            mActivity.closeLoadingLayer();
+            return;
+        }
 
         mAjax.setData("page", page);
 		mAjax.setId(mTabIdx);

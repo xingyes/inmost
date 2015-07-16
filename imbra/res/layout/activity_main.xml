@@ -250,4 +250,5 @@
         </RelativeLayout>
 
 
+    <include layout="@layout/global_loading" />
  </RelativeLayout>  

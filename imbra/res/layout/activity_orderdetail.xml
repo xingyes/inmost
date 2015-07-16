@@ -240,4 +240,5 @@
         </LinearLayout>
     </com.xingy.lib.ui.MyScrollView>
 
+    <include layout="@layout/global_loading" />
 </RelativeLayout>
