@@ -40,9 +40,11 @@ public class braConfig extends Config {
     public static final String URL_ADD_ADDRESS = "URL_ADD_ADDRESS";
 
     //login
-	public static final String URL_REGISTER = "URL_REGISTER";
-	public static final String URL_VERIFYCODE_SMS = "URL_VERIFYCODE_SMS";
-	public static final String URL_LOGIN = "URL_LOGIN";
+    public static final String URL_LOGIN = "URL_LOGIN";
+    public static final String URL_REGISTER = "URL_REGISTER";
+
+    public static final String URL_VERIFYCODE_SMS = "URL_VERIFYCODE_SMS";
+	public static final String URL_VERIFY_LOGIN = "URL_VERIFY_LOGIN";
 	
 	//weibo about
 	public static final String WB_APP_KEY = "3721412749";

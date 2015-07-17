@@ -55,7 +55,7 @@
 
         <activity android:name=".login.LoginActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".login.LoginActivity"
+        <activity android:name=".login.VerifyLoginActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".login.MyInfoActivity"
             android:screenOrientation="portrait"/>

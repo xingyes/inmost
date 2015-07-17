@@ -207,7 +207,7 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
         {
             finish();
         }
-        else {
+        else{
             finish();
             Bundle bundle = new Bundle();
             bundle.putString(AfterPayActivity.ORDER_ID, "121212");

@@ -32,6 +32,7 @@ import com.inmost.imbra.login.Account;
 import com.inmost.imbra.login.ILogin;
 import com.inmost.imbra.login.LoginActivity;
 import com.inmost.imbra.login.MyInfoActivity;
+import com.inmost.imbra.login.VerifyLoginActivity;
 import com.inmost.imbra.product.SearchModel;
 import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.IPageCache;
@@ -512,7 +513,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
                         showO2OPg();
                         break;
                     case 4:
-                        UiUtils.startActivity(MainActivity.this, LoginActivity.class,true);
+                        UiUtils.startActivity(MainActivity.this, VerifyLoginActivity.class,true);
                         // setting
                         break;
                     case 2:

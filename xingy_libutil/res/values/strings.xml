@@ -70,11 +70,13 @@
 	
 	<!-- login  -->
     <string name="create_account">创建账户</string>
+    <string name="send_verify_code">发送验证码</string>
     <string name="verify_code">验证码:</string>
 	<string name="register">注册</string>
 	<string name="register_now">立即注册</string>
 	<string name="login">登录</string>
-	<string name="login_fail_title">登录失败！</string>
+    <string name="login_weixin">微信登录</string>
+    <string name="login_fail_title">登录失败！</string>
 	<string name="login_auth_denied">由于权限不足，您此次登录失败</string>
 	<string name="login_fail_net">由于网络原因，您此次登录失败</string>
 	<string name="login_user_cancel">您取消了此次登录！</string>
@@ -176,7 +178,7 @@
 	<string name="gender">性别</string>
 	<string name="district">地区</string>
 	<string name="address_detail">详细地址</string>
-	<string name="phone_num">电话</string>
+	<string name="phone_num">手机号</string>
 
     <string name="weixin_id">微信号</string>
 	<string name="id_card">身份证</string>
