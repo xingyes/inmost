@@ -295,16 +295,16 @@ public class BlogVolleyActivity extends BaseActivity implements
 //        SpannableStringBuilder style=new SpannableStringBuilder(content);
 //        style.setSpan(new BackgroundColorSpan(Color.BLACK),0,content.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 //        tv.setText(style);
-        LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+        tv.setText(content);
+        LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
         tv.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-        float txtPx = context.getResources().getDimension(R.dimen.bar_font_36);
+        float txtPx = context.getResources().getDimension(R.dimen.bar_font_38);
         int txtSp = DPIUtil.px2sp(context, txtPx);
         tv.setTextSize(txtSp);
-        tv.setLineSpacing(DPIUtil.dip2px(10), 1.25f);  //2.5
+        tv.setLineSpacing(DPIUtil.dip2px(1), 1.25f);  //2.5
 
-        tv.setBackgroundColor(context.getResources().getColor(R.color.black));
-        tv.setTextColor(context.getResources().getColor(R.color.white));
+        tv.setTextColor(context.getResources().getColor(R.color.global_text_gray));
         tv.setPadding(DPIUtil.dip2px(5),DPIUtil.dip2px(5),DPIUtil.dip2px(5),DPIUtil.dip2px(5));
 
         ll.leftMargin =  DPIUtil.dip2px(15);
@@ -331,8 +331,7 @@ public class BlogVolleyActivity extends BaseActivity implements
         int txtSp = DPIUtil.px2sp(context,txtPx);
         tv.setTextSize(txtSp);
 
-        tv.setBackgroundColor(context.getResources().getColor(R.color.black));
-        tv.setTextColor(context.getResources().getColor(R.color.white));
+        tv.setTextColor(context.getResources().getColor(R.color.global_pink));
         tv.setPadding(DPIUtil.dip2px(5),DPIUtil.dip2px(5),DPIUtil.dip2px(5),DPIUtil.dip2px(5));
 
         ll.leftMargin =  DPIUtil.dip2px(15);

@@ -59,6 +59,10 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".login.MyInfoActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".login.MySettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".login.AlterInfoActivity"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".collect.CollectPagerActivity"
             android:screenOrientation="portrait"/>

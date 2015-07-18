@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/global_gray_light">
+
+    <com.xingy.lib.ui.NavigationBar
+        android:layout_alignParentTop="true"
+        android:id="@+id/mysetting_nav"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        inmost:leftVisiable="true"
+        inmost:text="@string/my_info"
+        inmost:drawableLeft="@drawable/pink_icon_back"
+        inmost:textColor="@color/global_pink"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mysetting_nav"
+        android:background="#fff"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+        <View  style="@style/global_line2"/>
+        <com.xingy.lib.ui.TextField
+            android:id="@+id/nickname"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/global_white_shadow_click_state"
+            android:paddingBottom="@dimen/margin_size_25xp"
+            android:paddingLeft="@dimen/margin_size_30xp"
+            android:paddingRight="@dimen/margin_size_30xp"
+            android:paddingTop="@dimen/margin_size_25xp"
+            inmost:caption="@string/modify_nikename"
+            inmost:contentColor="@color/black"
+            inmost:contentGravity="left"
+            inmost:contentSize="@dimen/font_size_30xp"
+            inmost:drawableRight="@drawable/right_arrow" />
+        <View  style="@style/global_line2"/>
+        <com.xingy.lib.ui.TextField
+            android:id="@+id/head"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/global_white_shadow_click_state"
+            android:paddingBottom="@dimen/margin_size_25xp"
+            android:paddingLeft="@dimen/margin_size_30xp"
+            android:paddingRight="@dimen/margin_size_30xp"
+            android:paddingTop="@dimen/margin_size_25xp"
+            inmost:caption="@string/modify_pic"
+            inmost:contentColor="@color/black"
+            inmost:contentGravity="left"
+            inmost:contentSize="@dimen/font_size_30xp"
+            inmost:drawableRight="@drawable/right_arrow" />
+        <View  style="@style/global_line2"/>
+        <com.xingy.lib.ui.TextField
+            android:id="@+id/address"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/global_white_shadow_click_state"
+            android:paddingBottom="@dimen/margin_size_25xp"
+            android:paddingLeft="@dimen/margin_size_30xp"
+            android:paddingRight="@dimen/margin_size_30xp"
+            android:paddingTop="@dimen/margin_size_25xp"
+            inmost:caption="@string/manager_address"
+            inmost:contentColor="@color/black"
+            inmost:contentGravity="left"
+            inmost:contentSize="@dimen/font_size_30xp"
+            inmost:drawableRight="@drawable/right_arrow" />
+        <View  style="@style/global_line2"/>
+        <com.xingy.lib.ui.TextField
+            android:visibility="gone"
+            android:id="@+id/feed_back"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/global_white_shadow_click_state"
+            android:paddingBottom="@dimen/margin_size_25xp"
+            android:paddingLeft="@dimen/margin_size_30xp"
+            android:paddingRight="@dimen/margin_size_30xp"
+            android:paddingTop="@dimen/margin_size_25xp"
+            inmost:caption="@string/feed_back"
+            inmost:contentColor="@color/black"
+            inmost:contentGravity="left"
+            inmost:contentSize="@dimen/font_size_30xp"
+            inmost:drawableRight="@drawable/right_arrow" />
+        <View  style="@style/global_line2"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:id="@+id/logout_btn"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="40dp"
+        android:text="@string/logout"
+        android:gravity="center"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/pink_btn_selector"
+        android:layout_marginBottom="20dp"/>
+</RelativeLayout>
+ 

@@ -4,7 +4,9 @@
     <dimen name="bar_font_30">16dp</dimen>
     <dimen name="bar_font_36">18dp</dimen>
     <dimen name="bar_font_38">20dp</dimen>
-    <dimen name="bar_font_48">30dp</dimen>
     <dimen name="bar_font_40">24dp</dimen>
+    <dimen name="bar_font_48">30dp</dimen>
+    <dimen name="bar_font_60">36dp</dimen>
+    <dimen name="bar_font_70">41dp</dimen>
 
 </resources>

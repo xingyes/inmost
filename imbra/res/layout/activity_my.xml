@@ -14,10 +14,52 @@
         inmost:drawableLeft="@drawable/pink_icon_back"
         inmost:textColor="@color/global_pink"/>
 
+    <RelativeLayout
+        android:layout_margin="20dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/buttom_layout"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:padding="2dp"
+        android:visibility="gone">
+
+        <TextView
+                android:gravity="center"
+                android:layout_alignParentRight="true"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:id="@+id/submit_coupon"
+                android:textColor="@color/white"
+                android:text="@string/submit"
+                android:background="@drawable/pink_btn_selector"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/coupon_usage"
+            android:padding="4dp"
+            android:src="@drawable/icon_user"
+            android:layout_toLeftOf="@id/submit_coupon"/>
+            <EditText
+                android:layout_toLeftOf="@id/coupon_usage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:id="@+id/input_coupon_code"
+                android:padding="10dp"
+                android:background="@drawable/none"
+                android:hint="@string/input_coupon"
+                android:textSize="@dimen/bar_font_30"
+                android:textColor="@color/global_nav_text"
+                android:textColorHint="@color/global_text_info_color"/>
+        </RelativeLayout>
+
+
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:layout_below="@id/my_nav"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_above="@id/buttom_layout"
         android:cacheColorHint="@android:color/transparent"
         android:scrollingCache="false"
         android:persistentDrawingCache="none"
@@ -27,6 +69,7 @@
         android:background="#f8f8f8"
         android:id="@+id/pull_refresh_list"
         android:scrollbars="none"/>
+
 
     <include layout="@layout/global_loading" />
 </RelativeLayout>

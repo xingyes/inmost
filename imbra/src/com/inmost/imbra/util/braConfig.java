@@ -31,6 +31,7 @@ public class braConfig extends Config {
     public static final String URL_SEARCH_PARAMS = "URL_SEARCH_PARAMS";
 
     public static final String URL_SEARCH = "URL_SEARCH";
+    public static final String URL_SET_INFO = "URL_SET_INFO";
 
 
     public static final String URL_QUERY_SUGGEST = "URL_QUERY_SUGGEST";

@@ -3,6 +3,8 @@
 
     <string name="app_name">IMbra</string>
     <string name="call_help">客服</string>
+    <string name="my_info">我的信息</string>
+    <string name="about_imbra">关于我们</string>
 
     <string name="menu_bra_max">BraMax</string>
     <string name="menu_blog">甄选类感</string>
@@ -77,5 +79,10 @@
 
     <string name="after_pay_hint_nor">详细订单信息请查看个人中心订单详情\n如有问题请联系爱啵秀客服\n微信号： xxxxxx</string>
     <string name="more_o2o_shop">更多店铺  敬请期待</string>
+
+    <string name="modify_nikename">修改昵称</string>
+    <string name="modify_pic">修改头像</string>
+
+    <string name="input_coupon">请输入优惠码</string>
 
 </resources>

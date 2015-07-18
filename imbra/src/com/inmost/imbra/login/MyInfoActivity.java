@@ -10,7 +10,10 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -22,6 +25,8 @@ import com.android.volley.toolbox.Volley;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.inmost.imbra.R;
+import com.inmost.imbra.coupon.CouponAdapter;
+import com.inmost.imbra.coupon.CouponModel;
 import com.inmost.imbra.main.IMbraApplication;
 import com.inmost.imbra.product.Product2RowAdapter;
 import com.inmost.imbra.product.ProductDetailActivity;
@@ -31,6 +36,7 @@ import com.inmost.imbra.shopping.OrderActivity;
 import com.inmost.imbra.shopping.OrderAdapter;
 import com.inmost.imbra.shopping.OrderModel;
 import com.inmost.imbra.util.braConfig;
+import com.xingy.lib.ui.TextField;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
 import com.xingy.util.ToolUtil;
@@ -50,6 +56,7 @@ import java.util.ArrayList;
 public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JSONObject>,
         RadioGroup.OnCheckedChangeListener, AdapterView.OnItemClickListener {
 
+    public static final int MY_SETTING_CODE = 12304;
 	private Intent  mIntent = null;
     private Ajax    mAjax;
     private PullToRefreshListView pullList;
@@ -61,6 +68,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
     private NetworkImageView usrImgv;
     private TextView         usrNamev;
     private ImageLoader      mImgLoader;
+    private TextField        hintField;
 
     private Product2RowAdapter favAdapter;
     private ArrayList<ProductModel> mFavArray;
@@ -72,7 +80,14 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
     private ArrayList<OrderModel> mOrderArray;
     private int  mOrderNextPageNum;
 
-    private OrderAdapter       couponAdapter;
+    private CouponAdapter couponAdapter;
+    private class CouponBottom
+    {
+        public View     couponLayout;
+        public EditText inputCoupon;
+    }
+    private CouponBottom  couponHolder;
+    private ArrayList<CouponModel> mCouponArray;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +118,10 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
 //			mHandler.sendEmptyMessageDelayed(FINISH_LOGIN, 1500);
 		}
 
+        mOrderArray = new ArrayList<OrderModel>();
+        mCouponArray =  new ArrayList<CouponModel>();
+        mFavArray = new ArrayList<ProductModel>();
+
         mTabRid = -1;
         tabGroup.check(R.id.tab_favor);
 
@@ -111,43 +130,42 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
 	private void initViews() {
         loadNavBar(R.id.my_nav);
 
-        mNavBar.setRightInfo(R.string.manager_address,new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UiUtils.startActivity(MyInfoActivity.this, AddressListActivity.class,true);
-            }
-        });
-        TextView nrtv = (TextView) mNavBar.findViewById(R.id.navigationbar_right_text);
-        nrtv.setTextColor(getResources().getColor(R.color.global_pink));
-
-        pullList = (PullToRefreshListView)findViewById(R.id.pull_refresh_list);
-//        pullList.setOnScrollListener(new AbsListView.OnScrollListener() {
-//
+//        mNavBar.setRightInfo(R.string.manager_address,new View.OnClickListener() {
 //            @Override
-//            public void onScroll(AbsListView view, int firstVisibleItem,
-//                                 int visibleItemCount, int totalItemCount) {
-//                if(mTabIdx == TAB_HOME) {
-//                    if (firstVisibleItem + visibleItemCount >= totalItemCount && mFloorNextPageNum>1) {
-//                        UiUtils.makeToast(mActivity, "first:" + firstVisibleItem + ",vis:" +
-//                                visibleItemCount + ",totalItemCount" + totalItemCount);
-//                        requestPage(mFloorNextPageNum);
-//                    }
-//                }
-//                else {
-//                    if (firstVisibleItem + visibleItemCount >= totalItemCount && mProNextPageNum > 1) {
-//                        UiUtils.makeToast(mActivity, "first:" + firstVisibleItem + ",vis:" +
-//                                visibleItemCount + ",totalItemCount" + totalItemCount);
-//                        requestPage(mProNextPageNum);
-//                    }
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onScrollStateChanged(AbsListView view, int scrollState) {
-//
+//            public void onClick(View v) {
+//                UiUtils.startActivity(MyInfoActivity.this, AddressListActivity.class,true);
 //            }
 //        });
+//        TextView nrtv = (TextView) mNavBar.findViewById(R.id.navigationbar_right_text);
+//        nrtv.setTextColor(getResources().getColor(R.color.global_pink));
+
+        pullList = (PullToRefreshListView)findViewById(R.id.pull_refresh_list);
+        pullList.setOnScrollListener(new AbsListView.OnScrollListener(){
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                if(mTabRid == R.id.tab_favor) {
+                    if (firstVisibleItem + visibleItemCount >= totalItemCount && mFavNextPageNum>1) {
+                            UiUtils.makeToast(MyInfoActivity.this, "first:" + firstVisibleItem + ",vis:" +
+                                    visibleItemCount + ",totalItemCount" + totalItemCount);
+                            requestFav(mFavNextPageNum);
+                    }
+                 }
+                 else if(mTabRid == R.id.tab_orderlist) {
+                        if (firstVisibleItem + visibleItemCount >= totalItemCount && mOrderNextPageNum > 1) {
+                            UiUtils.makeToast(MyInfoActivity.this, "first:" + firstVisibleItem + ",vis:" +
+                                    visibleItemCount + ",totalItemCount" + totalItemCount);
+                            requestOrderlist(mOrderNextPageNum);
+                        }
+                    }
+                }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+        });
 
         pullList.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>(){
 
@@ -155,39 +173,58 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
             public void onRefresh(PullToRefreshBase<ListView> refreshView) {
                 if(mTabRid == R.id.tab_favor) {
                     mFavArray.clear();
+                    favAdapter.notifyDataSetChanged();
                     mFavNextPageNum = 1;
                     requestFav(mFavNextPageNum);
                 }
-                else {
+                else if(mTabRid == R.id.tab_coupon){
+                    mCouponArray.clear();
+                    couponAdapter.notifyDataSetChanged();
+
+                    requestCoupon();
+                }
+                else if(mTabRid == R.id.tab_orderlist)
+                {
+                    mOrderArray.clear();
+                    orderAdapter.notifyDataSetChanged();
+
+                    mOrderNextPageNum = 1;
+                    requestOrderlist(mOrderNextPageNum);
+
                 }
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         pullList.onRefreshComplete();
-                    }},5000);
+                    }},2000);
             }
         });
 
         mListV = pullList.getRefreshableView();
-        headV = getLayoutInflater().inflate(R.layout.myinfo_head_pg,null);
+        headV = getLayoutInflater().inflate(R.layout.myinfo_head_pg, null);
         mListV.setOnItemClickListener(this);
         usrImgv = (NetworkImageView)headV.findViewById(R.id.user_img);
+        headV.findViewById(R.id.go_mysetting).setOnClickListener(this);
         usrImgv.setImageUrl("http://img2.imgtn.bdimg.com/it/u=921607941,1665261509&fm=21&gp=0.jpg",mImgLoader);
-        usrImgv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UploadPhotoUtil.createUploadPhotoDlg(MyInfoActivity.this).show();
-            }
-        });
+        usrImgv.setOnClickListener(this);
+
         usrNamev = (TextView)headV.findViewById(R.id.user_name);
         usrNamev.setText("King");
 
         tabGroup = (RadioGroup)headV.findViewById(R.id.my_tab_rg);
         tabGroup.setOnCheckedChangeListener(this);
 
+        hintField = (TextField)headV.findViewById(R.id.my_hint);
+        hintField.setVisibility(View.GONE);
+
         mListV.addHeaderView(headV);
 
-
+        couponHolder = new CouponBottom();
+        couponHolder.couponLayout = this.findViewById(R.id.buttom_layout);
+        couponHolder.couponLayout.setVisibility(View.GONE);
+        couponHolder.inputCoupon = (EditText)couponHolder.couponLayout.findViewById(R.id.input_coupon_code);
+        couponHolder.couponLayout.findViewById(R.id.coupon_usage).setOnClickListener(this);
+        couponHolder.couponLayout.findViewById(R.id.submit_coupon).setOnClickListener(this);
 
 	}
 
@@ -215,12 +252,38 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         mAjax.send();
     }
 
+    private void requestCoupon() {
+        mAjax = ServiceConfig.getAjax(braConfig.URL_SEARCH);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+        mAjax.setId(R.id.tab_coupon);
+        mAjax.setOnSuccessListener(this);
+        mAjax.send();
+    }
+
 	@Override
 	public void onClick(View v)
 	{
-//        switch (v.getId())
-//        {
-//        }
+        switch (v.getId())
+        {
+            case R.id.user_img:
+                UploadPhotoUtil.createUploadPhotoDlg(MyInfoActivity.this).show();
+                break;
+            case R.id.go_mysetting:
+                Intent ait = new Intent(MyInfoActivity.this,MySettingActivity.class);
+                this.startActivityForResult(ait,MY_SETTING_CODE);
+                break;
+            case R.id.coupon_usage:
+                UiUtils.makeToast(this, "Show coupon usage");
+                break;
+            case R.id.submit_coupon:
+                UiUtils.makeToast(this,"Submit coupon code");
+                break;
+            default:
+                break;
+        }
 	}
 
 	private void requestLogin() {
@@ -251,7 +314,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
             mFavNextPageNum++;
             JSONArray feeds = v.optJSONArray("products");
             if (null != feeds) {
-                for (int i = 0; i < feeds.length() - 1; i++) {
+                for (int i = 0; i < feeds.length(); i++) {
                     ProductModel pro = new ProductModel();
                     pro.parse(feeds.optJSONObject(i));
                     mFavArray.add(pro);
@@ -265,7 +328,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
             mOrderNextPageNum++;
             JSONArray feeds = v.optJSONArray("products");
             if (null != feeds) {
-                for (int i = 0; i < feeds.length() - 1; i++) {
+                for (int i = 0; i < feeds.length(); i++) {
                     OrderModel order = new OrderModel();
                     order.orderid = ""+i;
                     order.parse(feeds.optJSONObject(i));
@@ -275,7 +338,22 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
             orderAdapter.setData(mOrderArray);
             orderAdapter.notifyDataSetChanged();
         }
-
+        else if(response.getId() == R.id.tab_coupon)
+        {
+            JSONArray feeds = v.optJSONArray("products");
+            if (null != feeds) {
+                for (int i = 0; i < feeds.length() - 1; i++) {
+                    CouponModel coup = new CouponModel();
+                    coup.id = ""+i;
+                    coup.discountNum = 10*i;
+                    coup.title = "本券仅限手机端购买使用，逾期自动作废";
+                    coup.expireTime = 0;
+                    mCouponArray.add(coup);
+                }
+            }
+            couponAdapter.setData(mCouponArray);
+            couponAdapter.notifyDataSetChanged();
+        }
 	}
 
 
@@ -290,20 +368,26 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
                 mFavNextPageNum = 1;
                 favAdapter = new Product2RowAdapter(this, mImgLoader);
                 requestFav(mFavNextPageNum);
-                mFavArray = new ArrayList<ProductModel>();
             }
+            couponHolder.couponLayout.setVisibility(View.GONE);
+
             pullList.setAdapter(favAdapter);
         }
         else if(checkedId == R.id.tab_coupon)
         {
-            pullList.setAdapter(favAdapter);
+            if(null == couponAdapter)
+            {
+                couponAdapter = new CouponAdapter(this);
+                requestCoupon();
+
+            }
+            couponHolder.couponLayout.setVisibility(View.VISIBLE);
+            pullList.setAdapter(couponAdapter);
         }
         else if(checkedId == R.id.tab_orderlist)
         {
             if(null==orderAdapter)
             {
-                mOrderNextPageNum = 1;
-
                 orderAdapter = new OrderAdapter(this,mImgLoader,new OrderAdapter.OrderClickListener() {
                     @Override
                     public void onProClick(int pos) {
@@ -319,10 +403,10 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
                     }
 
                 });
-                mOrderArray = new ArrayList<OrderModel>();
+                mOrderNextPageNum = 1;
                 requestOrderlist(mOrderNextPageNum);
-
             }
+            couponHolder.couponLayout.setVisibility(View.GONE);
             pullList.setAdapter(orderAdapter);
         }
 
@@ -347,7 +431,11 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
             return;
         }
 
-        if (requestCode == UploadPhotoUtil.PHOTO_PICKED_WITH_DATA && null != data)
+        if(requestCode == MY_SETTING_CODE)
+        {
+            UiUtils.makeToast(this,"will refresh myinfo");
+        }
+        else if (requestCode == UploadPhotoUtil.PHOTO_PICKED_WITH_DATA && null != data)
         {
             // 雷军个傻逼
 //            mIsProcessing = true;

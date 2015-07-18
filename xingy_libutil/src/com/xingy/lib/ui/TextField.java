@@ -79,7 +79,7 @@ public class TextField extends UiBase {
 			} else {
 				mSubCaption.setText(aSubCap);
 				mSubCaption.setVisibility(View.VISIBLE);
-				mContentLL.setVisibility(View.GONE);
+//				mContentLL.setVisibility(View.GONE);
 			}
 		}
 	}
@@ -87,7 +87,7 @@ public class TextField extends UiBase {
 	@Override
 	protected void onInit(Context context) {
 		// Get children components.
-		mContentLL = (LinearLayout) findViewById(R.id.textfield_content_layout);
+//		mContentLL = (LinearLayout) findViewById(R.id.textfield_content_layout);
 		mCaption = (TextView)findViewById(R.id.textfield_caption);
 		mCaption.setText(mCaptionString);
 		mSubCaption = (TextView)findViewById(R.id.textfield_sub_caption);
@@ -146,7 +146,7 @@ public class TextField extends UiBase {
 		}
 	}
 	
-	private LinearLayout mContentLL;
+//	private LinearLayout mContentLL;
 	private String       mCaptionString;
 	private TextView     mCaption;
 	private TextView     mSubCaption;

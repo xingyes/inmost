@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/coupon_bg"
+        android:padding="8dp">
+
+    <LinearLayout
+        android:id="@+id/left_layout"
+        android:layout_marginLeft="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥"
+            android:textColor="@color/global_pink"
+            android:textSize="@dimen/bar_font_36"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/discount"
+            android:textColor="@color/global_pink"
+            android:textSize="@dimen/bar_font_48"
+            android:text="20"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="120dp"
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:textSize="@dimen/bar_font_30"
+        android:textColor="@color/global_text_info_color"
+        android:text="本券仅限手机端购买使用，逾期自动作废"/>
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:id="@+id/expire_time"
+        android:textSize="@dimen/bar_font_30"
+        android:textColor="@color/global_text_info_color"
+        android:text="截止日期：2016-07-01"/>
+    </RelativeLayout>
+
+</RelativeLayout>
