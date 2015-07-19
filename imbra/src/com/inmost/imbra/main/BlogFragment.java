@@ -1,15 +1,12 @@
 package com.inmost.imbra.main;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
@@ -20,7 +17,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.inmost.imbra.R;
 import com.inmost.imbra.blog.BlogVolleyActivity;
 import com.inmost.imbra.collect.CollectPagerActivity;
-import com.inmost.imbra.search.SearchActivity;
+import com.inmost.imbra.search_backup.SearchActivity;
 import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;

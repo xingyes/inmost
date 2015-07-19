@@ -1,6 +1,8 @@
 package com.inmost.imbra.main;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -23,12 +25,12 @@ import com.android.volley.toolbox.ImageLoader;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.inmost.imbra.R;
+import com.inmost.imbra.basic.BasicParamModel;
+import com.inmost.imbra.basic.ParamDtModel;
 import com.inmost.imbra.blog.BlogVolleyActivity;
 import com.inmost.imbra.collect.CollectPagerActivity;
 import com.inmost.imbra.product.Product2RowAdapter;
 import com.inmost.imbra.product.ProductModel;
-import com.inmost.imbra.product.SearchModel;
-import com.inmost.imbra.product.SearchParamModel;
 import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.IPageCache;
 import com.xingy.lib.ui.UiUtils;
@@ -49,7 +51,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
         AdapterView.OnItemClickListener,OnItemLongClickListener
 {
 	
-	private BaseActivity    mActivity;
+	private MainActivity    mActivity;
 	private View  mRootView;
 	
 	private PullToRefreshListView pullList;
@@ -65,7 +67,6 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 	private ArrayList<HomeFloorModel> mHomeFloors;
     private HomeFloorAdapter mFloorAdapter;
     private int  mFloorNextPageNum;
-    private String[] homeTags = {"tag1","tag2","tag3","tag4","tag5","tag6"};
 
 
     /**
@@ -77,7 +78,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 
 
     private LayoutInflater    mInflater;
-    private SearchModel mSearchParams;
+    private BasicParamModel mSearchParams;
 
 
 
@@ -133,6 +134,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 		
 		mRootView = inflater.inflate(R.layout.pg_home_floor, container, false);
 
+
         initView();
         initParams();
 
@@ -147,7 +149,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 	@Override
 	public void onAttach(Activity activity)
 	{
-		mActivity = (BaseActivity) activity;
+		mActivity = (MainActivity) activity;
 		super.onAttach(activity);
 	}
 	
@@ -349,12 +351,12 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
                             mSearchListener.onBrandParamCancel();
                         }
                         else if (v == paramHolder.funcLLayout) {
-                            mSearchParams.filterTagIdx = -1;
+                            mSearchParams.filterFuncIdx = -1;
                             mSearchListener.onFuncParamCancel();
                         }
                         else if (v == paramHolder.priceLayout) {
-                            mSearchParams.filterHighPrice = -1;
-                            mSearchParams.filterLowPrice = -1;
+                            mSearchParams.filterHighPriceIdx = -1;
+                            mSearchParams.filterLowPriceIdx = -1;
                             mSearchListener.onPriceParamCancel();
                         }
                     }
@@ -402,18 +404,18 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
             mFloorAdapter.setData(mHomeFloors);
             mFloorAdapter.notifyDataSetChanged();
         }
-        else if(response.getId() == AJAX_PARAM)
-        {
-            mSearchParams.parse(v);
-
-            IPageCache cache = new IPageCache();
-            cache.set(SearchModel.CACHE_KEY, v.toString(), 86400);
-
-            renderParamPanel();
-            return;
-        }
+//        else if(response.getId() == AJAX_PARAM)
+//        {
+//            mSearchParams.parse(v);
+//
+//            IPageCache cache = new IPageCache();
+//            cache.set(BasicParamModel.CACHE_KEY, v.toString(), 86400);
+//
+//            renderParamPanel();
+//            return;
+//        }
         else if(response.getId()==AJAX_SEARCH) {
-            UiUtils.makeToast(mActivity,"searched " + mProNextPageNum);
+            UiUtils.makeToast(mActivity, "searched " + mProNextPageNum);
 
             mProNextPageNum++;
             JSONArray feeds = v.optJSONArray("products");
@@ -478,45 +480,71 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
     }
 
 
-    private void renderParamPanel() {
-        ArrayList<Integer> numArray;
-        numArray = mSearchParams.sizeArray;
-        paramHolder.sizeGroup.removeAllViews();
-        RadioGroup.LayoutParams rl = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT,RadioGroup.LayoutParams.WRAP_CONTENT);
-//        rl.weight = 1;
-        rl.leftMargin = DPIUtil.dip2px(10);
-        rl.rightMargin = DPIUtil.dip2px(10);
+    public void renderParamPanel() {
+        RadioGroup.LayoutParams rl;
+        ArrayList<ParamDtModel> numArray;
+        numArray = mSearchParams.sizeModel.dtArray;
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.choose_btn_focus);
+        int w = bm.getWidth();
+        if(numArray != null && numArray.size()>0) {
+            paramHolder.sizeGroup.removeAllViews();
 
-        for(int i=0 ; null!= numArray && i < numArray.size(); i++)
-        {
-            RadioButton rb = new RadioButton(mActivity);
-            rb.setBackgroundResource(R.drawable.param_btn_choose_state);
-            rb.setTextColor(mActivity.getResources().getColorStateList(R.color.txt_pink_white_selector));
+            int margin = (DPIUtil.getWidth() - numArray.size()*w)/(numArray.size()+1)/2;
+            if(margin<0)
+            {
+                margin = 10;
+                w = (DPIUtil.getWidth() - (numArray.size()+1)*margin)/numArray.size();
+            }
+            rl = new RadioGroup.LayoutParams(w, w);
 
-            rb.setButtonDrawable(R.drawable.none);
-            rb.setSingleLine(true);
-            rb.setGravity(Gravity.CENTER);
-            rb.setText(""+numArray.get(i));
+            rl.leftMargin = margin;
+            rl.rightMargin = margin;
 
-            paramHolder.sizeGroup.addView(rb,rl);
+            for (int i = 0; null != numArray && i < numArray.size(); i++) {
+                RadioButton rb = new RadioButton(mActivity);
+                rb.setBackgroundResource(R.drawable.param_btn_choose_state);
+                rb.setTextColor(mActivity.getResources().getColorStateList(R.color.txt_pink_white_selector));
+                rb.setTextSize(DPIUtil.px2sp(mActivity,w/2));
+
+                rb.setButtonDrawable(R.drawable.none);
+                rb.setSingleLine(true);
+                rb.setGravity(Gravity.CENTER);
+                rb.setText(numArray.get(i).info);
+
+                paramHolder.sizeGroup.addView(rb, rl);
+            }
         }
 
-        ArrayList<SearchParamModel> paramArray;
-        paramArray = mSearchParams.cupArray;
-        paramHolder.cupGroup.removeAllViews();
-        for(int i=0 ; null!= paramArray && i < paramArray.size(); i++)
-        {
-            RadioButton rb = new RadioButton(mActivity);
-            rb.setText(paramArray.get(i).info);
-            rb.setBackgroundResource(R.drawable.param_btn_choose_state);
-            rb.setTextColor(mActivity.getResources().getColorStateList(R.color.txt_pink_white_selector));
-            rb.setButtonDrawable(R.drawable.none);
-            rb.setSingleLine(true);
-            rb.setGravity(Gravity.CENTER);
 
-            paramHolder.cupGroup.addView(rb,rl);
+        ArrayList<ParamDtModel> paramArray;
+        paramArray = mSearchParams.cupModel.dtArray;
+        w = bm.getWidth();
+        bm.recycle();
+        bm = null;
+        if(paramArray != null && paramArray.size()>0) {
+            int margin = (DPIUtil.getWidth() - paramArray.size() * w) / (paramArray.size() + 1) / 2;
+            if (margin < 0) {
+                margin = 10;
+                w = (DPIUtil.getWidth() - (paramArray.size() + 1) * margin) / paramArray.size();
+            }
+            rl = new RadioGroup.LayoutParams(w, w);
+
+            rl.leftMargin = margin;
+            rl.rightMargin = margin;
+            paramHolder.cupGroup.removeAllViews();
+            for (int i = 0; null != paramArray && i < paramArray.size(); i++) {
+                RadioButton rb = new RadioButton(mActivity);
+                rb.setText(paramArray.get(i).info);
+                rb.setTextSize(DPIUtil.px2sp(mActivity,w/2));
+                rb.setBackgroundResource(R.drawable.param_btn_choose_state);
+                rb.setTextColor(mActivity.getResources().getColorStateList(R.color.txt_pink_white_selector));
+                rb.setButtonDrawable(R.drawable.none);
+                rb.setSingleLine(true);
+                rb.setGravity(Gravity.CENTER);
+
+                paramHolder.cupGroup.addView(rb, rl);
+            }
         }
-
 //        mOptPanelHolder.brandAdapter.setList(mSearchParams.brandStringArray,-1);
 //        mOptPanelHolder.brandAdapter.notifyDataSetChanged();
 //        mOptPanelHolder.tagAdapter.setList(mSearchParams.tagStringArray,-1);
@@ -527,69 +555,59 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 
     private void initParams() {
 
-        mSearchParams = new SearchModel();
+        mSearchParams = mActivity.mSearchParams;
+        renderParamPanel();
 
-        IPageCache cache = new IPageCache();
-        String content = cache.get(SearchModel.CACHE_KEY);
-        if(!TextUtils.isEmpty(content) && !cache.isExpire(SearchModel.CACHE_KEY))
-        {
-            try {
-                JSONObject json = new JSONObject(content);
-                mSearchParams.parse(json);
-                renderParamPanel();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        else
-        {
-            mAjax = ServiceConfig.getAjax(braConfig.URL_SEARCH_PARAMS);
-            if (null == mAjax)
-                return;
-
-            mAjax.setId(AJAX_PARAM);
-            mAjax.setOnSuccessListener(this);
-            mAjax.send();
-        }
+//        IPageCache cache = new IPageCache();
+//        String content = cache.get(BasicParamModel.CACHE_KEY);
+//        if(!TextUtils.isEmpty(content) && !cache.isExpire(BasicParamModel.CACHE_KEY))
+//        {
+//            try {
+//                JSONObject json = new JSONObject(content);
+//                mSearchParams.parse(json);
+//                renderParamPanel();
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        else
+//        {
+//            mAjax = ServiceConfig.getAjax(braConfig.URL_BASIC_PARAMS);
+//            if (null == mAjax)
+//                return;
+//
+//            mAjax.setId(AJAX_PARAM);
+//            mAjax.setOnSuccessListener(this);
+//            mAjax.send();
+//        }
 
     }
 
 
 
-    public void onFilterSubmit(SearchModel searchParams) {
-        boolean changed = false;
-        if (mSearchParams.filterTagIdx != searchParams.filterTagIdx) {
-            mSearchParams.filterTagIdx = searchParams.filterTagIdx;
-            changed = true;
-            if (mSearchParams.filterTagIdx < 0)
-                paramHolder.funcLLayout.setVisibility(View.GONE);
-            else {
-                paramHolder.funcTv.setText(mSearchParams.tagStringArray.get(mSearchParams.filterTagIdx));
-                paramHolder.funcLLayout.setVisibility(View.VISIBLE);
-            }
+    public void onFilterSubmit() {
+        if (mSearchParams.filterFuncIdx < 0)
+            paramHolder.funcLLayout.setVisibility(View.GONE);
+        else {
+            paramHolder.funcTv.setText(mSearchParams.funcModel.dtStrArray.get(mSearchParams.filterFuncIdx));
+            paramHolder.funcLLayout.setVisibility(View.VISIBLE);
         }
-        if (mSearchParams.filterBrandIdx != searchParams.filterBrandIdx) {
-            mSearchParams.filterBrandIdx = searchParams.filterBrandIdx;
-            changed = true;
-            if (mSearchParams.filterBrandIdx < 0)
-                paramHolder.brandLayout.setVisibility(View.GONE);
-            else {
-                paramHolder.brandTv.setText(mSearchParams.brandStringArray.get(mSearchParams.filterBrandIdx));
-                paramHolder.brandLayout.setVisibility(View.VISIBLE);
-            }
+
+        if (mSearchParams.filterBrandIdx < 0)
+            paramHolder.brandLayout.setVisibility(View.GONE);
+        else {
+            paramHolder.brandTv.setText(mSearchParams.brandModel.dtStrArray.get(mSearchParams.filterBrandIdx));
+            paramHolder.brandLayout.setVisibility(View.VISIBLE);
         }
-        if (mSearchParams.filterLowPrice != searchParams.filterLowPrice ||
-                mSearchParams.filterHighPrice != searchParams.filterHighPrice) {
-            changed = true;
-            mSearchParams.filterLowPrice = searchParams.filterLowPrice;
-            mSearchParams.filterHighPrice = searchParams.filterHighPrice;
-            if (mSearchParams.filterLowPrice > 0 && mSearchParams.filterHighPrice > 0) {
-                paramHolder.priceLayout.setVisibility(View.VISIBLE);
-                paramHolder.priceTv.setText("" + mSearchParams.filterLowPrice + "~" + mSearchParams.filterHighPrice);
-            } else
-                paramHolder.priceLayout.setVisibility(View.GONE);
-        }
+
+
+        if (mSearchParams.filterLowPriceIdx >= 0 && mSearchParams.filterHighPriceIdx >= 0) {
+            paramHolder.priceLayout.setVisibility(View.VISIBLE);
+            paramHolder.priceTv.setText("" + mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterLowPriceIdx) + "~"
+                    + mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterHighPriceIdx));
+        } else
+            paramHolder.priceLayout.setVisibility(View.GONE);
 
         if (mTabIdx != TAB_PRO)
             return;
@@ -601,10 +619,8 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
         else
             paramHolder.extraLayout.setVisibility(View.VISIBLE);
 
-        if(changed)
-        {
-            mProNextPageNum = 1;
-            requestPage(mFloorNextPageNum);
-        }
+        mProNextPageNum = 1;
+        requestPage(mFloorNextPageNum);
+
     }
 }

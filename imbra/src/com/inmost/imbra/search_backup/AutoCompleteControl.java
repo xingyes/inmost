@@ -1,4 +1,4 @@
-package com.inmost.imbra.search;
+package com.inmost.imbra.search_backup;
 
 import com.inmost.imbra.util.braConfig;
 import com.xingy.util.ServiceConfig;

@@ -3,6 +3,7 @@ package com.inmost.imbra.main;
 
 import com.android.volley.utils.MemDiskImageCache;
 import com.xingy.util.MyApplication;
+import com.xingy.util.ServiceConfig;
 
 public class IMbraApplication extends MyApplication {
 

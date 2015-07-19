@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -28,12 +27,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.inmost.imbra.R;
+import com.inmost.imbra.basic.BasicParamModel;
+import com.inmost.imbra.basic.ParamDtModel;
 import com.inmost.imbra.login.Account;
 import com.inmost.imbra.login.ILogin;
-import com.inmost.imbra.login.LoginActivity;
 import com.inmost.imbra.login.MyInfoActivity;
 import com.inmost.imbra.login.VerifyLoginActivity;
-import com.inmost.imbra.product.SearchModel;
 import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.IPageCache;
 import com.xingy.lib.ui.NavigationBar.OnLeftButtonClickListener;
@@ -45,7 +44,6 @@ import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
 import com.xingy.util.ajax.Response;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -300,11 +298,15 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
                 hideOptLayout();
                 if(mOptPanelHolder.optPager.getCurrentItem() == PARAM_TAB_PRICE ||
                         mOptPanelHolder.priceActive) {
-                    mSearchParams.filterLowPrice = mOptPanelHolder.priceSeekbar.getSelectedMinValue();
-                    mSearchParams.filterHighPrice = mOptPanelHolder.priceSeekbar.getSelectedMaxValue();
+
+                    mSearchParams.filterLowPriceIdx = mOptPanelHolder.priceSeekbar.getSelectedMinValue() /
+                            mOptPanelHolder.priceSeekbar.getStep();
+
+                    mSearchParams.filterHighPriceIdx = mOptPanelHolder.priceSeekbar.getSelectedMaxValue()/
+                            mOptPanelHolder.priceSeekbar.getStep();
                 }
                 if(null!=mHomePg)
-                    mHomePg.onFilterSubmit(mSearchParams);
+                    mHomePg.onFilterSubmit();
                 break;
             /**
              * menu layout click
@@ -587,7 +589,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         public TranslateAnimation optInAnim;
         public TranslateAnimation optOutAnim;
     }
-    private SearchModel mSearchParams;
+    public BasicParamModel mSearchParams;
 
     private optPanelHolder mOptPanelHolder;
     private ArrayList<View> pageViews;
@@ -604,13 +606,13 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         if(parent == mOptPanelHolder.tagListv)
         {
             mOptPanelHolder.tagAdapter.setPickIdx(position);
-            mSearchParams.setTagIdx(position);
+            mSearchParams.filterFuncIdx = position;
             mOptPanelHolder.tagAdapter.notifyDataSetChanged();
         }
         else if(parent == mOptPanelHolder.brandListv)
         {
             mOptPanelHolder.brandAdapter.setPickIdx(position);
-            mSearchParams.setBrandIdx(position);
+            mSearchParams.filterBrandIdx = position;
             mOptPanelHolder.brandAdapter.notifyDataSetChanged();
         }
     }
@@ -645,7 +647,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
     @Override
     public void onFuncParamCancel() {
-        mSearchParams.filterTagIdx = -1;
+        mSearchParams.filterFuncIdx = -1;
         mOptPanelHolder.tagAdapter.setPickIdx(-1);
         mOptPanelHolder.tagAdapter.notifyDataSetChanged();
     }
@@ -653,8 +655,8 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
     @Override
     public void onPriceParamCancel() {
         mOptPanelHolder.priceActive = false;
-        mSearchParams.filterHighPrice = -1;
-        mSearchParams.filterLowPrice = -1;
+        mSearchParams.filterHighPriceIdx = -1;
+        mSearchParams.filterLowPriceIdx = -1;
     }
 
 
@@ -688,7 +690,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
                 mOptPanelHolder.homeTagAdapter.notifyDataSetChanged();
                 mSearchParams.filterHomeIdx = position;
 
-                mHomePg.onFilterSubmit(mSearchParams);
+                mHomePg.onFilterSubmit();
 
                 hideOptLayout();
             }
@@ -777,7 +779,8 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
             }
         });
 
-        mOptPanelHolder.optPager.setCurrentItem(0);
+        mOptPanelHolder.optTab.check(R.id.tab_brand_rb);
+
     }
 
 
@@ -829,24 +832,24 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
     private void initParams() {
 
-        mSearchParams = new SearchModel();
+        mSearchParams = new BasicParamModel();
 
-        IPageCache cache = new IPageCache();
-        String content = cache.get(com.inmost.imbra.product.SearchModel.CACHE_KEY);
-        if(!TextUtils.isEmpty(content) && !cache.isExpire(com.inmost.imbra.product.SearchModel.CACHE_KEY))
+//        IPageCache cache = new IPageCache();
+//        String content = cache.get(BasicParamModel.CACHE_KEY);
+//        if(!TextUtils.isEmpty(content) && !cache.isExpire(BasicParamModel.CACHE_KEY))
+//        {
+//            try {
+//                JSONObject json = new JSONObject(content);
+//                mSearchParams.parse(json);
+//                renderParamPanel();
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        else
         {
-            try {
-                JSONObject json = new JSONObject(content);
-                mSearchParams.parse(json);
-                renderParamPanel();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        else
-        {
-            mAjax = ServiceConfig.getAjax(braConfig.URL_SEARCH_PARAMS);
+            mAjax = ServiceConfig.getAjax(braConfig.URL_BASIC_PARAMS);
             if (null == mAjax)
                 return;
 
@@ -859,24 +862,19 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
     private void renderParamPanel() {
         if(null == mOptPanelHolder)
             initOptPanel();
-        mOptPanelHolder.brandAdapter.setList(mSearchParams.brandStringArray,-1);
+        mOptPanelHolder.brandAdapter.setList(mSearchParams.brandModel.dtStrArray,-1);
         mOptPanelHolder.brandAdapter.notifyDataSetChanged();
-        mOptPanelHolder.tagAdapter.setList(mSearchParams.tagStringArray,-1);
+        mOptPanelHolder.tagAdapter.setList(mSearchParams.funcModel.dtStrArray,-1);
         mOptPanelHolder.tagAdapter.notifyDataSetChanged();
 
         mOptPanelHolder.homeTagAdapter.mPickIdx = 0;
         mOptPanelHolder.homeTagAdapter.notifyDataSetChanged();
 
-        mOptPanelHolder.priceSeekbar.setRangeValues(200, 700);
-        mOptPanelHolder.priceSeekbar.setStep(100);
-        ArrayList<String> marks = new ArrayList<String>();
-        marks.add("200");
-        marks.add("300");
-        marks.add("400");
-        marks.add("500");
-        marks.add("600");
-        marks.add("600+");
-        mOptPanelHolder.priceSeekbar.setLabels(marks);
+
+        mOptPanelHolder.priceSeekbar.setStep(200);
+        mOptPanelHolder.priceSeekbar.setRangeValues(0, 200*(mSearchParams.pricerangeModel.dtArray.size()-1));
+
+        mOptPanelHolder.priceSeekbar.setLabels(mSearchParams.pricerangeModel.dtStrArray);
         mOptPanelHolder.priceSeekbar.invalidate();
     }
 
@@ -885,9 +883,10 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         mSearchParams.parse(jsonObject);
 
         IPageCache cache = new IPageCache();
-        cache.set(com.inmost.imbra.product.SearchModel.CACHE_KEY, jsonObject.toString(), 86400);
+        cache.set(BasicParamModel.CACHE_KEY, jsonObject.toString(), 86400);
 
         renderParamPanel();
+        mHomePg.renderParamPanel();
 
         return;
     }
@@ -900,8 +899,8 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         mOptPanelHolder.tagAdapter.setPickIdx(-1);
         mOptPanelHolder.brandAdapter.notifyDataSetChanged();
         mOptPanelHolder.tagAdapter.notifyDataSetChanged();
-        mSearchParams.setBrandIdx(-1);
-        mSearchParams.setTagIdx(-1);
+        mSearchParams.filterBrandIdx = -1;
+        mSearchParams.filterFuncIdx = -1;
 
     }
 
@@ -914,12 +913,12 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         public int mPickIdx = -1;
         @Override
         public int getCount() {
-            return (mSearchParams==null || mSearchParams.homeTagArray==null) ? 0 : mSearchParams.homeTagArray.size();
+            return (mSearchParams==null || mSearchParams.optiontypeModel.dtArray==null) ? 0 : mSearchParams.optiontypeModel.dtArray.size();
        }
 
         @Override
         public Object getItem(int position) {
-            return (mSearchParams==null || mSearchParams.homeTagArray==null) ? null : mSearchParams.homeTagArray.get(position);
+            return (mSearchParams==null || mSearchParams.optiontypeModel.dtArray==null) ? null : mSearchParams.optiontypeModel.dtArray.get(position);
         }
 
         @Override
@@ -941,8 +940,8 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
                 holder = (ItemHolder) convertView.getTag();
 
             // set data
-            String strName = (String)getItem(position);
-            holder.mName.setText(strName);
+            ParamDtModel dtitem = mSearchParams.optiontypeModel.dtArray.get(position);
+            holder.mName.setText(dtitem.info);
             holder.mName.setEnabled(mPickIdx == position);
             return convertView;
         }

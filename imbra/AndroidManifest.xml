@@ -124,7 +124,7 @@
             android:exported="true"/>
     <!-- end of thrid -->
 
-        <activity android:name=".search.SearchActivity"
+        <activity android:name=".search_backup.SearchActivity"
             android:screenOrientation="portrait"/>
         </application>
 </manifest>

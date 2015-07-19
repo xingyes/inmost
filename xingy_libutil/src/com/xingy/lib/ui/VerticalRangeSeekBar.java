@@ -45,8 +45,8 @@ public class VerticalRangeSeekBar<T extends Number> extends ImageView {
     private T absoluteMinValue, absoluteMaxValue;
     private NumberType numberType;
     private double absoluteMinValuePrim, absoluteMaxValuePrim;
-    private double normalizedMinValue = 0d;
-    private double normalizedMaxValue = 1d;
+    public double normalizedMinValue = 0d;
+    public double normalizedMaxValue = 1d;
     private Thumb pressedThumb = null;
     private boolean notifyWhileDragging = false;
     private OnRangeSeekBarChangeListener<T> listener;
@@ -57,6 +57,7 @@ public class VerticalRangeSeekBar<T extends Number> extends ImageView {
 //    private NinePatchDrawable nineDrawable;
     private int    barColor;
     private boolean  bHideMarkText = true;
+    private boolean  bMinMaxSame = true;
     /**
      * Default color of a {@link com.xingy.lib.ui.VerticalRangeSeekBar}, #FF33B5E5. This is also known as "Ice Cream Sandwich" blue.
      */
@@ -166,6 +167,7 @@ public class VerticalRangeSeekBar<T extends Number> extends ImageView {
 
             barColor = UiUtils.getColor(context,typeArray,R.styleable.RangeSeekBar_barColor,DEFAULT_COLOR);
             bHideMarkText = UiUtils.getBoolean(context,typeArray,R.styleable.RangeSeekBar_hideThumbMarkText);
+            bMinMaxSame = UiUtils.getBoolean(context,typeArray,R.styleable.RangeSeekBar_minSameMax);
             typeArray.recycle();
         }
 
@@ -201,6 +203,8 @@ public class VerticalRangeSeekBar<T extends Number> extends ImageView {
     {
         mStep = step;
     }
+    public int getStep()
+    {return mStep;}
     public void setRangeValues(T minValue, T maxValue) {
         this.absoluteMinValue = minValue;
         this.absoluteMaxValue = maxValue;
@@ -694,6 +698,10 @@ public class VerticalRangeSeekBar<T extends Number> extends ImageView {
      */
     private void setNormalizedMinValue(double value) {
         normalizedMinValue = Math.max(0d, Math.min(1d, Math.min(value, normalizedMaxValue)));
+        if(normalizedMinValue == normalizedMaxValue && !bMinMaxSame)
+        {
+            normalizedMinValue -= 1.0/(mLabels.size()-1);
+        }
         invalidate();
     }
 
@@ -704,6 +712,11 @@ public class VerticalRangeSeekBar<T extends Number> extends ImageView {
      */
     private void setNormalizedMaxValue(double value) {
         normalizedMaxValue = Math.max(0d, Math.min(1d, Math.max(value, normalizedMinValue)));
+        if(normalizedMinValue == normalizedMaxValue && !bMinMaxSame)
+        {
+            normalizedMaxValue += 1.0/(mLabels.size()-1);
+        }
+
         invalidate();
     }
 

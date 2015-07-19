@@ -85,7 +85,7 @@ public class OptPanelAdapter extends BaseAdapter {
             // set data
         String strName = mList.get(position);
         holder.mName.setText(strName);
-        holder.mName.setEnabled(mPickIdx == position);
+        holder.mName.setSelected(mPickIdx == position);
         return convertView;
     }
 

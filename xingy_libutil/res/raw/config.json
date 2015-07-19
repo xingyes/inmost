@@ -4,6 +4,7 @@
 "URL_GET_BLOG":{"url":"http:\/\/www.o2bra.com.cn\/api\/blogs\/","method":"GET"},
 "URL_GET_LOOK":{"url":"http:\/\/www.o2bra.com.cn\/api\/lookbooks\/","method":"GET"},
 "URL_SEARCH":{"url":"http:\/\/www.o2bra.com.cn\/api\/products\/search","method":"GET"},
+"URL_BASIC_PARAMS":{"url":"http:\/\/api.imbraa.com\/basic\/data.json","method":"GET"},
 "URL_SEARCH_PARAMS":{"url":"http:\/\/www.o2bra.com.cn\/api\/products\/searchCondition","method":"GET"},
 "URL_PRODUCT_DETAIL":{"url":"http:\/\/www.o2bra.com.cn\/api\/products\/","method":"GET"},
 "URL_BRAND_INFO":{"url":"http:\/\/www.o2bra.com.cn\/api\/brands\/","method":"GET"}

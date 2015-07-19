@@ -167,6 +167,7 @@
         <attr name="hideThumbMarkText"        format="boolean"/>
 
         <attr name="singleThumb" format="boolean"/>
+        <attr name="minSameMax" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name = "WheelPickView">

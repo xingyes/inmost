@@ -1,4 +1,4 @@
-package com.inmost.imbra.search;
+package com.inmost.imbra.search_backup;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -20,6 +20,7 @@
         inmost:thumbNormal="@drawable/price_thumb_nor"
         inmost:thumbPress="@drawable/price_thumb_act"
         inmost:thumbDisable="@drawable/price_thumb_nor"
+        inmost:minSameMax ="false"
         />
 
 </RelativeLayout>

@@ -28,7 +28,8 @@ public class braConfig extends Config {
 
     public static final String URL_FULL_DISTRICT = "URL_FULL_DISTRICT";
 
-    public static final String URL_SEARCH_PARAMS = "URL_SEARCH_PARAMS";
+    public static final String O2_SEARCH_PARAMS = "O2_SEARCH_PARAMS";
+    public static final String URL_BASIC_PARAMS = "URL_BASIC_PARAMS";
 
     public static final String URL_SEARCH = "URL_SEARCH";
     public static final String URL_SET_INFO = "URL_SET_INFO";

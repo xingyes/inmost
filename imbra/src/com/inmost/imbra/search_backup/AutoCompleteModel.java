@@ -1,4 +1,4 @@
-package com.inmost.imbra.search;
+package com.inmost.imbra.search_backup;
 
 import org.json.JSONArray;
 import org.json.JSONException;
