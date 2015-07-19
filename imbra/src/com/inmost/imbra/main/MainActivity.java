@@ -779,7 +779,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
             }
         });
 
-        mOptPanelHolder.optTab.check(R.id.tab_brand_rb);
+
 
     }
 
@@ -822,6 +822,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
             mOptPanelHolder.optInAnim.setFillAfter(true);
 
         }
+        mOptPanelHolder.optTab.check(R.id.tab_brand_rb);
         mOptPanelHolder.optContent.startAnimation(mOptPanelHolder.optInAnim);
         mOptPanelHolder.optContent.setVisibility(View.VISIBLE);
     }
@@ -899,8 +900,12 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         mOptPanelHolder.tagAdapter.setPickIdx(-1);
         mOptPanelHolder.brandAdapter.notifyDataSetChanged();
         mOptPanelHolder.tagAdapter.notifyDataSetChanged();
+        mOptPanelHolder.priceSeekbar.resetSelectedValues();
         mSearchParams.filterBrandIdx = -1;
         mSearchParams.filterFuncIdx = -1;
+        mSearchParams.filterLowPriceIdx = -1;
+        mSearchParams.filterHighPriceIdx = -1;
+        mOptPanelHolder.priceActive = false;
 
     }
 
