@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -32,17 +31,14 @@ import com.inmost.imbra.collect.CollectPagerActivity;
 import com.inmost.imbra.product.Product2RowAdapter;
 import com.inmost.imbra.product.ProductModel;
 import com.inmost.imbra.util.braConfig;
-import com.xingy.lib.IPageCache;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.DPIUtil;
 import com.xingy.util.ServiceConfig;
-import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
 import com.xingy.util.ajax.Response;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -109,7 +105,6 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
     public static int        TAB_PRO = 1;
 
     public static final int  AJAX_HOMEFLOOR = TAB_HOME;
-    public static final int  AJAX_PARAM = 3;
     public static final int  AJAX_SEARCH = TAB_PRO;
 
 
@@ -404,16 +399,6 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
             mFloorAdapter.setData(mHomeFloors);
             mFloorAdapter.notifyDataSetChanged();
         }
-//        else if(response.getId() == AJAX_PARAM)
-//        {
-//            mSearchParams.parse(v);
-//
-//            IPageCache cache = new IPageCache();
-//            cache.set(BasicParamModel.CACHE_KEY, v.toString(), 86400);
-//
-//            renderParamPanel();
-//            return;
-//        }
         else if(response.getId()==AJAX_SEARCH) {
             UiUtils.makeToast(mActivity, "searched " + mProNextPageNum);
 

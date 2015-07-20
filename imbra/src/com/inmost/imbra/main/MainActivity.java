@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -44,6 +45,7 @@ import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
 import com.xingy.util.ajax.Response;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -835,20 +837,21 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
         mSearchParams = new BasicParamModel();
 
-//        IPageCache cache = new IPageCache();
-//        String content = cache.get(BasicParamModel.CACHE_KEY);
-//        if(!TextUtils.isEmpty(content) && !cache.isExpire(BasicParamModel.CACHE_KEY))
-//        {
-//            try {
-//                JSONObject json = new JSONObject(content);
-//                mSearchParams.parse(json);
-//                renderParamPanel();
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        else
+        IPageCache cache = new IPageCache();
+        String content = cache.get(BasicParamModel.CACHE_KEY);
+        if(!TextUtils.isEmpty(content) && !cache.isExpire(BasicParamModel.CACHE_KEY))
+        {
+            try {
+                JSONObject json = new JSONObject(content);
+                mSearchParams.parse(json);
+                renderParamPanel();
+                if(null !=mHomePg)
+                    mHomePg.renderParamPanel();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else
         {
             mAjax = ServiceConfig.getAjax(braConfig.URL_BASIC_PARAMS);
             if (null == mAjax)
@@ -887,13 +890,11 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         cache.set(BasicParamModel.CACHE_KEY, jsonObject.toString(), 86400);
 
         renderParamPanel();
-        mHomePg.renderParamPanel();
+        if(null!=mHomePg)
+            mHomePg.renderParamPanel();
 
         return;
     }
-
-
-
 
     private void clearFilter() {
         mOptPanelHolder.brandAdapter.setPickIdx(-1);
