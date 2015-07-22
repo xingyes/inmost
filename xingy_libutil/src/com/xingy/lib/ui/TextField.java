@@ -88,6 +88,11 @@ public class TextField extends UiBase {
 	protected void onInit(Context context) {
 		// Get children components.
 //		mContentLL = (LinearLayout) findViewById(R.id.textfield_content_layout);
+        mPreIcon = (ImageView)findViewById(R.id.left_drawable);
+        if(mPreDrawableRid!=0)
+            mPreIcon.setImageResource(mPreDrawableRid);
+        else
+            mPreIcon.setVisibility(View.GONE);
 		mCaption = (TextView)findViewById(R.id.textfield_caption);
 		mCaption.setText(mCaptionString);
 		mSubCaption = (TextView)findViewById(R.id.textfield_sub_caption);
@@ -133,7 +138,7 @@ public class TextField extends UiBase {
 		mGravity = UiUtils.getInteger(aContext, aArray, R.styleable.xingy_attrs_contentGravity);
 		mContentSize = UiUtils.getDimension(aContext, aArray, R.styleable.xingy_attrs_contentSize);
 		mCaptionSize = UiUtils.getDimension(aContext, aArray, R.styleable.xingy_attrs_captionSize);
-		
+        mPreDrawableRid = UiUtils.getResId(aContext, aArray, R.styleable.xingy_attrs_drawableLeft);
 	}
 	
 	public void setCaption(final String ainfo)
@@ -149,6 +154,8 @@ public class TextField extends UiBase {
 //	private LinearLayout mContentLL;
 	private String       mCaptionString;
 	private TextView     mCaption;
+    private ImageView    mPreIcon;
+    private int          mPreDrawableRid;
 	private TextView     mSubCaption;
 	private String       mContentString;
 	private TextView     mContent;

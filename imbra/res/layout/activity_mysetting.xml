@@ -14,14 +14,33 @@
         inmost:drawableLeft="@drawable/pink_icon_back"
         inmost:bgColor="@color/white"
         inmost:textColor="@color/global_pink"/>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/global_pink"
+        android:layout_below="@id/mysetting_nav"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/mysetting_nav"
         android:background="#fff"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="1px"
         android:orientation="vertical">
+        <com.xingy.lib.ui.TextField
+            android:id="@+id/head"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/global_white_shadow_click_state"
+            android:paddingBottom="@dimen/margin_size_25xp"
+            android:paddingLeft="@dimen/margin_size_30xp"
+            android:paddingRight="@dimen/margin_size_30xp"
+            android:paddingTop="@dimen/margin_size_25xp"
+            inmost:caption="@string/modify_pic"
+            inmost:drawableLeft="@drawable/no_head"
+            inmost:contentColor="@color/black"
+            inmost:contentGravity="left"
+            inmost:contentSize="@dimen/font_size_30xp"
+            inmost:drawableRight="@drawable/right_arrow" />
         <View  style="@style/global_line2"/>
         <com.xingy.lib.ui.TextField
             android:id="@+id/nickname"
@@ -34,21 +53,7 @@
             android:paddingTop="@dimen/margin_size_25xp"
             inmost:caption="@string/modify_nikename"
             inmost:contentColor="@color/black"
-            inmost:contentGravity="left"
-            inmost:contentSize="@dimen/font_size_30xp"
-            inmost:drawableRight="@drawable/right_arrow" />
-        <View  style="@style/global_line2"/>
-        <com.xingy.lib.ui.TextField
-            android:id="@+id/head"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/global_white_shadow_click_state"
-            android:paddingBottom="@dimen/margin_size_25xp"
-            android:paddingLeft="@dimen/margin_size_30xp"
-            android:paddingRight="@dimen/margin_size_30xp"
-            android:paddingTop="@dimen/margin_size_25xp"
-            inmost:caption="@string/modify_pic"
-            inmost:contentColor="@color/black"
+            inmost:drawableLeft="@drawable/icon_edit_name"
             inmost:contentGravity="left"
             inmost:contentSize="@dimen/font_size_30xp"
             inmost:drawableRight="@drawable/right_arrow" />
@@ -64,6 +69,23 @@
             android:paddingTop="@dimen/margin_size_25xp"
             inmost:caption="@string/manager_address"
             inmost:contentColor="@color/black"
+            inmost:drawableLeft="@drawable/icon_manage_addr"
+            inmost:contentGravity="left"
+            inmost:contentSize="@dimen/font_size_30xp"
+            inmost:drawableRight="@drawable/right_arrow" />
+        <View  style="@style/global_line2"/>
+        <com.xingy.lib.ui.TextField
+            android:id="@+id/bind_phone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/global_white_shadow_click_state"
+            android:paddingBottom="@dimen/margin_size_25xp"
+            android:paddingLeft="@dimen/margin_size_30xp"
+            android:paddingRight="@dimen/margin_size_30xp"
+            android:paddingTop="@dimen/margin_size_25xp"
+            inmost:caption="@string/bind_phone"
+            inmost:contentColor="@color/black"
+            inmost:drawableLeft="@drawable/icon_bind_phone"
             inmost:contentGravity="left"
             inmost:contentSize="@dimen/font_size_30xp"
             inmost:drawableRight="@drawable/right_arrow" />
@@ -80,6 +102,7 @@
             android:paddingTop="@dimen/margin_size_25xp"
             inmost:caption="@string/feed_back"
             inmost:contentColor="@color/black"
+            inmost:drawableLeft="@drawable/no_head"
             inmost:contentGravity="left"
             inmost:contentSize="@dimen/font_size_30xp"
             inmost:drawableRight="@drawable/right_arrow" />

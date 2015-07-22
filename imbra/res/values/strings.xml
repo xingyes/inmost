@@ -82,10 +82,13 @@
 
     <string name="modify_nikename">修改昵称</string>
     <string name="modify_pic">修改头像</string>
+    <string name="bind_phone">绑定手机</string>
 
     <string name="input_coupon">请输入优惠码</string>
     <string name="no_coupon_hint">Opps，您还没有优惠券呢～</string>
     <string name="no_order_hint">Opps，您还没有订单呢～</string>
     <string name="no_fav_hint">Opps，您还没有收藏商品呢～</string>
+
+
 
 </resources>

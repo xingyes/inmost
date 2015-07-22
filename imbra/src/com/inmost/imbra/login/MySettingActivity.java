@@ -91,11 +91,13 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
 	private void initViews() {
         loadNavBar(R.id.mysetting_nav);
 
-        this.findViewById(R.id.nickname).setOnClickListener(this);
         imgSetting = (TextField)findViewById(R.id.head);
         imgSetting.setOnClickListener(this);
 
-        this.findViewById(R.id.address).setOnClickListener(this);
+
+        findViewById(R.id.nickname).setOnClickListener(this);
+        findViewById(R.id.address).setOnClickListener(this);
+        findViewById(R.id.bind_phone).setOnClickListener(this);
 
         usrImgv = (NetworkImageView)imgSetting.findViewById(R.id.left_net_drawable);
 
@@ -205,12 +207,13 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
     @Override
     public void onClick(View v)
     {
+        Intent ait = null;
         switch (v.getId()) {
             case R.id.head:
                 UploadPhotoUtil.createUploadPhotoDlg(MySettingActivity.this).show();
                 break;
             case R.id.nickname:
-                Intent ait = new Intent(this,AlterInfoActivity.class);
+                ait = new Intent(this,AlterInfoActivity.class);
                 ait.putExtra(AlterInfoActivity.ALTER_ITEM, getString(R.string.real_name));
                 ait.putExtra(AlterInfoActivity.SERVICE_URL_KEY, braConfig.URL_SET_INFO);
                 ait.putExtra(AlterInfoActivity.PARAM_KEY, "修改昵称");
@@ -220,6 +223,16 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
                 break;
             case R.id.address:
                 UiUtils.startActivity(MySettingActivity.this, AddressListActivity.class, true);
+                break;
+            case R.id.bind_phone:
+                ait = new Intent(this,AlterInfoActivity.class);
+                ait.putExtra(AlterInfoActivity.ALTER_ITEM, getString(R.string.real_name));
+                ait.putExtra(AlterInfoActivity.SERVICE_URL_KEY, braConfig.URL_SET_INFO);
+                ait.putExtra(AlterInfoActivity.PARAM_KEY, "绑定手机");
+                ait.putExtra(AlterInfoActivity.ORI_INFO, "请绑定手机，便于我们联系您");
+                this.startActivityForResult(ait,MyInfoActivity.MY_SETTING_CODE);
+
+
             default:
                 super.onClick(v);
         }
