@@ -448,7 +448,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
                 R.string.menu_bra_max,R.string.menu_blog,
                 R.string.menu_look, R.string.menu_o2o,R.string.menu_setting};
         @Override
-        public int getCount() {return 5;}
+        public int getCount() {return iconRes.length;}
 
         @Override
         public Object getItem(int position) { return position;}

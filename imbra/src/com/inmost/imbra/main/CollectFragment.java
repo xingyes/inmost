@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
@@ -99,23 +100,23 @@ public class CollectFragment extends Fragment implements OnSuccessListener<JSONO
 
     private void initView() {
         pullList = (PullToRefreshListView) mRootView.findViewById(R.id.pull_refresh_list);
-//        pullList.setOnScrollListener(new OnScrollListener() {
-//
-//            @Override
-//            public void onScroll(AbsListView view, int firstVisibleItem,
-//                                 int visibleItemCount, int totalItemCount) {
-//                if (firstVisibleItem + visibleItemCount >= totalItemCount && mNextPageNum > 1) {
-//                    UiUtils.makeToast(mActivity, "first:" + firstVisibleItem + ",vis:" +
-//                            visibleItemCount + ",totalItemCount" + totalItemCount);
-//                    requestPage(mNextPageNum);
-//                }
-//            }
-//
-//            @Override
-//            public void onScrollStateChanged(AbsListView view, int scrollState) {
-//
-//            }
-//        });
+        pullList.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem + visibleItemCount >= totalItemCount && mNextPageNum > 1) {
+                    UiUtils.makeToast(mActivity, "first:" + firstVisibleItem + ",vis:" +
+                            visibleItemCount + ",totalItemCount" + totalItemCount);
+                    requestPage(mNextPageNum);
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+        });
 
         pullList.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
 
@@ -164,7 +165,7 @@ public class CollectFragment extends Fragment implements OnSuccessListener<JSONO
         if (null != feeds) {
             for (int i = 0; i < feeds.length(); i++) {
                 HomeFloorModel model = new HomeFloorModel();
-                model.parseBlog(feeds.optJSONObject(i));
+                model.parse(feeds.optJSONObject(i));
                 if(model.type.equals(HomeFloorModel.TYPE_COLLECTION))
                     mHomeFloors.add(model);
             }
