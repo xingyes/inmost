@@ -13,6 +13,7 @@
         inmost:text="@string/app_name"
         inmost:actionBg="@color/transparent"
         inmost:drawableLeft="@drawable/nav_menu_nor"
+        inmost:bgColor="@color/white"
         inmost:textColor="@color/global_pink"/>
     
     <LinearLayout

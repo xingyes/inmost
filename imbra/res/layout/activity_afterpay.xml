@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         inmost:leftVisiable="true"
         inmost:text="@string/pay_succ"
+        inmost:bgColor="@color/white"
         inmost:drawableLeft="@drawable/pink_icon_back"
         inmost:textColor="@color/global_pink"/>
 

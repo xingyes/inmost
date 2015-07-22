@@ -3,9 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/root_layout"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="#f8f8f8"
+    android:orientation="vertical"
+    android:paddingTop="10dp">
     <RelativeLayout
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp">
@@ -44,6 +46,7 @@
         android:background="@color/global_gray"/>
 
     <RelativeLayout
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp">

@@ -65,10 +65,11 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
     private Handler mHandler = new Handler();
 
     private RadioGroup  tabGroup;
+    private TextView   noHintView;
     private NetworkImageView usrImgv;
     private TextView         usrNamev;
     private ImageLoader      mImgLoader;
-    private TextField        hintField;
+//    private TextField        hintField;
 
     private Product2RowAdapter favAdapter;
     private ArrayList<ProductModel> mFavArray;
@@ -129,7 +130,13 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
 
 	private void initViews() {
         loadNavBar(R.id.my_nav);
-
+        mNavBar.setOnDrawableRightClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent ait = new Intent(MyInfoActivity.this,MySettingActivity.class);
+                MyInfoActivity.this.startActivityForResult(ait,MY_SETTING_CODE);
+            }
+        });
 //        mNavBar.setRightInfo(R.string.manager_address,new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -204,7 +211,6 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         headV = getLayoutInflater().inflate(R.layout.myinfo_head_pg, null);
         mListV.setOnItemClickListener(this);
         usrImgv = (NetworkImageView)headV.findViewById(R.id.user_img);
-        headV.findViewById(R.id.go_mysetting).setOnClickListener(this);
         usrImgv.setImageUrl("http://img2.imgtn.bdimg.com/it/u=921607941,1665261509&fm=21&gp=0.jpg",mImgLoader);
         usrImgv.setOnClickListener(this);
 
@@ -214,8 +220,8 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         tabGroup = (RadioGroup)headV.findViewById(R.id.my_tab_rg);
         tabGroup.setOnCheckedChangeListener(this);
 
-        hintField = (TextField)headV.findViewById(R.id.my_hint);
-        hintField.setVisibility(View.GONE);
+        noHintView = (TextView)headV.findViewById(R.id.no_hint);
+        noHintView.setVisibility(View.GONE);
 
         mListV.addHeaderView(headV);
 
@@ -271,10 +277,6 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
             case R.id.user_img:
                 UploadPhotoUtil.createUploadPhotoDlg(MyInfoActivity.this).show();
                 break;
-            case R.id.go_mysetting:
-                Intent ait = new Intent(MyInfoActivity.this,MySettingActivity.class);
-                this.startActivityForResult(ait,MY_SETTING_CODE);
-                break;
             case R.id.coupon_usage:
                 UiUtils.makeToast(this, "Show coupon usage");
                 break;
@@ -322,6 +324,13 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
             }
             favAdapter.setData(mFavArray);
             favAdapter.notifyDataSetChanged();
+            if(mFavArray.size() <=0)
+            {
+                noHintView.setText(R.string.no_fav_hint);
+                noHintView.setVisibility(View.VISIBLE);
+            }
+            else
+                noHintView.setVisibility(View.GONE);
         }
         else if(response.getId() == R.id.tab_orderlist)
         {
@@ -337,6 +346,13 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
             }
             orderAdapter.setData(mOrderArray);
             orderAdapter.notifyDataSetChanged();
+            if(mOrderArray.size() <=0)
+            {
+                noHintView.setText(R.string.no_order_hint);
+                noHintView.setVisibility(View.VISIBLE);
+            }
+            else
+                noHintView.setVisibility(View.GONE);
         }
         else if(response.getId() == R.id.tab_coupon)
         {
@@ -353,6 +369,13 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
             }
             couponAdapter.setData(mCouponArray);
             couponAdapter.notifyDataSetChanged();
+            if(mCouponArray.size() <=0)
+            {
+                noHintView.setText(R.string.no_coupon_hint);
+                noHintView.setVisibility(View.VISIBLE);
+            }
+            else
+                noHintView.setVisibility(View.GONE);
         }
 	}
 
@@ -370,7 +393,6 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
                 requestFav(mFavNextPageNum);
             }
             couponHolder.couponLayout.setVisibility(View.GONE);
-
             pullList.setAdapter(favAdapter);
         }
         else if(checkedId == R.id.tab_coupon)

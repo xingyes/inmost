@@ -13,7 +13,8 @@
         inmost:leftVisiable="true"
         inmost:text="@string/my_address"
         inmost:drawableLeft="@drawable/pink_icon_back"
-        inmost:textColor="@color/black"/>
+        inmost:bgColor="@color/white"
+        inmost:textColor="@color/global_pink"/>
 
 
     <RelativeLayout

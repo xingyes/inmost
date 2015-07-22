@@ -12,6 +12,7 @@
         inmost:leftVisiable="true"
         inmost:text="@string/my_info"
         inmost:drawableLeft="@drawable/pink_icon_back"
+        inmost:bgColor="@color/white"
         inmost:textColor="@color/global_pink"/>
 
     <LinearLayout

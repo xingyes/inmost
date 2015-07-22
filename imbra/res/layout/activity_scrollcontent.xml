@@ -11,6 +11,7 @@
         inmost:leftVisiable="true"
         inmost:text="@string/app_name"
         inmost:drawableLeft="@drawable/pink_icon_back"
+        inmost:bgColor="@color/white"
         inmost:textColor="@color/global_pink"/>
 
     <com.xingy.lib.ui.MyScrollView

@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         inmost:text="@string/alter_info"
         inmost:drawableLeft="@drawable/pink_icon_back"
+        inmost:bgColor="@color/white"
         inmost:textColor="@color/global_pink"/>
     <TextView
         android:layout_below="@id/submit_info_navbar"

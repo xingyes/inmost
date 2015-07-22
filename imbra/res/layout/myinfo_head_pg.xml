@@ -2,14 +2,14 @@
     xmlns:inmost="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f8f8f8">
+    android:background="@color/white">
 
 
     <com.android.volley.toolbox.NetworkImageView
         android:layout_alignParentTop="true"
         android:layout_width="58dp"
         android:layout_height="58dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/no_head"
         android:layout_centerHorizontal="true"
         android:id="@+id/user_img"/>
@@ -21,15 +21,6 @@
         android:clickable="false"
         android:layout_centerHorizontal="true"
         android:visibility="gone"/>
-
-    <ImageView
-        android:id="@+id/go_mysetting"
-        android:padding="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/user_img"
-        android:src="@drawable/right_arrow"
-        android:layout_toRightOf="@id/user_img"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -118,26 +109,40 @@
             <!--android:checked="false" />-->
     </RadioGroup>
     <View
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/global_gray"
         android:layout_below="@id/my_tab_rg"/>
 
-    <com.xingy.lib.ui.TextField
-        android:visibility="gone"
-        android:layout_below="@+id/my_tab_rg"
-        android:id="@+id/my_hint"
-        android:layout_width="fill_parent"
+    <!--<com.xingy.lib.ui.TextField-->
+        <!--android:visibility="gone"-->
+        <!--android:layout_below="@+id/my_tab_rg"-->
+        <!--android:id="@+id/my_hint"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/global_white_shadow_click_state"-->
+        <!--android:paddingBottom="@dimen/margin_size_25xp"-->
+        <!--android:paddingLeft="@dimen/margin_size_30xp"-->
+        <!--android:paddingRight="@dimen/margin_size_30xp"-->
+        <!--android:paddingTop="@dimen/margin_size_25xp"-->
+        <!--inmost:caption="@string/coupon"-->
+        <!--inmost:contentColor="@color/black"-->
+        <!--inmost:contentGravity="left"-->
+        <!--inmost:contentSize="@dimen/font_size_30xp"-->
+        <!--inmost:drawableRight="@drawable/right_arrow"-->
+        <!--android:layout_marginTop="10dp"/>-->
+    <TextView
+        android:drawableTop="@drawable/icon_sorry"
+        android:layout_marginTop="40dp"
+        android:drawablePadding="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/global_white_shadow_click_state"
-        android:paddingBottom="@dimen/margin_size_25xp"
-        android:paddingLeft="@dimen/margin_size_30xp"
-        android:paddingRight="@dimen/margin_size_30xp"
-        android:paddingTop="@dimen/margin_size_25xp"
-        inmost:caption="@string/coupon"
-        inmost:contentColor="@color/black"
-        inmost:contentGravity="left"
-        inmost:contentSize="@dimen/font_size_30xp"
-        inmost:drawableRight="@drawable/right_arrow"
-        android:layout_marginTop="10dp"/>
+        android:id="@+id/no_hint"
+        android:layout_below="@id/my_tab_rg"
+        android:text="@string/no_coupon_hint"
+        android:textColor="@color/global_text_info_color"
+        android:textSize="@dimen/bar_font_24"
+        />
 </RelativeLayout>

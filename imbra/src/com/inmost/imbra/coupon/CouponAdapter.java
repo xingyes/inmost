@@ -56,10 +56,11 @@ public class CouponAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.item_coupon, null);
             holder = new ItemHolder();
 
+            holder.root = convertView.findViewById(R.id.coupon_root);
             holder.titlev = (TextView)convertView.findViewById(R.id.title);
             holder.discountv = (TextView)convertView.findViewById(R.id.discount);
             holder.expirev = (TextView)convertView.findViewById(R.id.expire_time);
-
+            holder.rmb = (TextView)convertView.findViewById(R.id.rmb);
             convertView.setTag(holder);
         } else {
             holder = (ItemHolder) convertView.getTag();
@@ -71,10 +72,29 @@ public class CouponAdapter extends BaseAdapter {
         holder.discountv.setText("" + item.discountNum);
         holder.expirev.setText(ToolUtil.formatSuitableDate(item.expireTime));
 
+//        if(item.expireTime)
+        if(position %3 == 1)
+        {
+            holder.root.setBackgroundResource(R.drawable.coupon_disable_bg);
+            holder.rmb.setTextColor(mActivity.getResources().getColor(R.color.global_text_info_light));
+            holder.titlev.setTextColor(mActivity.getResources().getColor(R.color.global_text_info_light));
+            holder.discountv.setTextColor(mActivity.getResources().getColor(R.color.global_text_info_light));
+            holder.expirev.setTextColor(mActivity.getResources().getColor(R.color.global_text_info_light));
+        }
+        else
+        {
+            holder.root.setBackgroundResource(R.drawable.coupon_bg);
+            holder.rmb.setTextColor(mActivity.getResources().getColor(R.color.global_pink));
+            holder.discountv.setTextColor(mActivity.getResources().getColor(R.color.global_pink));
+            holder.titlev.setTextColor(mActivity.getResources().getColor(R.color.global_text_info_color));
+            holder.expirev.setTextColor(mActivity.getResources().getColor(R.color.global_text_info_color));
+        }
         return convertView;
     }
 
     public static class ItemHolder {
+        View     root;
+        TextView rmb;
         TextView titlev;
         TextView discountv;
         TextView expirev;
