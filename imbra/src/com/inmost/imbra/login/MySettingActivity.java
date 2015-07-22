@@ -216,7 +216,7 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
                 ait = new Intent(this,AlterInfoActivity.class);
                 ait.putExtra(AlterInfoActivity.ALTER_ITEM, getString(R.string.real_name));
                 ait.putExtra(AlterInfoActivity.SERVICE_URL_KEY, braConfig.URL_SET_INFO);
-                ait.putExtra(AlterInfoActivity.PARAM_KEY, "修改昵称");
+                ait.putExtra(AlterInfoActivity.PARAM_KEY, "nick");
                 ait.putExtra(AlterInfoActivity.ORI_INFO, "CarrieYu");
                 this.startActivityForResult(ait,MyInfoActivity.MY_SETTING_CODE);
 
@@ -226,9 +226,9 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
                 break;
             case R.id.bind_phone:
                 ait = new Intent(this,AlterInfoActivity.class);
-                ait.putExtra(AlterInfoActivity.ALTER_ITEM, getString(R.string.real_name));
+                ait.putExtra(AlterInfoActivity.ALTER_ITEM, getString(R.string.bind_phone));
                 ait.putExtra(AlterInfoActivity.SERVICE_URL_KEY, braConfig.URL_SET_INFO);
-                ait.putExtra(AlterInfoActivity.PARAM_KEY, "绑定手机");
+                ait.putExtra(AlterInfoActivity.PARAM_KEY, "phone");
                 ait.putExtra(AlterInfoActivity.ORI_INFO, "请绑定手机，便于我们联系您");
                 this.startActivityForResult(ait,MyInfoActivity.MY_SETTING_CODE);
 
