@@ -14,7 +14,11 @@
         inmost:drawableLeft="@drawable/pink_icon_back"
         inmost:bgColor="@color/white"
         inmost:textColor="@color/global_pink"/>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/global_pink"
+        android:layout_below="@id/contact_nav"/>
 
     <RelativeLayout
         android:layout_alignParentBottom="true"
@@ -43,8 +47,14 @@
             android:text="@string/submit"/>
     </RelativeLayout>
 
-    <EditText
+    <LinearLayout
         android:layout_below="@id/contact_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <EditText
+        android:layout_marginTop="1px"
         android:drawableLeft="@drawable/icon_user"
         android:drawablePadding="6dp"
         android:layout_width="match_parent"
@@ -52,11 +62,16 @@
         android:singleLine="true"
         android:id="@+id/name"
         android:padding="10dp"
-        android:background="@drawable/input_bg_with_right"
+        android:background="@color/white"
         android:hint="@string/nick_name"
         android:textSize="@dimen/bar_font_30"
         android:textColor="@color/global_nav_text"
         android:textColorHint="@color/global_text_info_color"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/global_gray"
+        android:layout_below="@id/contact_nav"/>
     <EditText
         android:layout_below="@id/name"
         android:drawableLeft="@drawable/icon_phone"
@@ -67,12 +82,16 @@
         android:id="@+id/phone"
         android:padding="10dp"
         android:inputType="phone"
-        android:background="@drawable/input_bg_with_right"
+        android:background="@color/white"
         android:hint="@string/phone_num"
         android:textSize="@dimen/bar_font_30"
         android:textColor="@color/global_nav_text"
         android:textColorHint="@color/global_text_info_color"/>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/global_gray"
+        android:layout_below="@id/contact_nav"/>
 
     <EditText
         android:layout_below="@id/phone"
@@ -82,10 +101,15 @@
         android:padding="10dp"
         android:gravity="left|top"
         android:minLines="10"
-        android:background="@drawable/input_bg_with_right"
+        android:background="@color/white"
         android:hint="输入问题或反馈"
         android:textColor="@color/global_nav_text"
         android:textColorHint="@color/global_text_info_color"
         android:textSize="@dimen/bar_font_30"/>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/global_gray"
+        android:layout_below="@id/contact_nav"/>
+    </LinearLayout>
 </RelativeLayout>
