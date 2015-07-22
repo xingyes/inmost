@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">IMbra</string>
+    <string name="app_name_china">爱啵秀</string>
+
     <string name="call_help">客服</string>
     <string name="my_info">我的信息</string>
     <string name="about_imbra">关于我们</string>

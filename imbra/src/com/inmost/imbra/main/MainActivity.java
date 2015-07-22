@@ -117,6 +117,9 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
     //blog
     private BlogFragment         mBlogPg;
 
+    //blog
+    private CollectFragment      mCollectPg;
+
     //looklook
     private LookFragment         mLookPg;
 
@@ -194,6 +197,8 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
             transaction.hide(mHomePg);
         if(null!=mO2OPg && mO2OPg.isAdded())
             transaction.hide(mO2OPg);
+        if(null!=mCollectPg && mCollectPg.isAdded())
+            transaction.hide(mCollectPg);
 
 
         return transaction;
@@ -239,6 +244,20 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
             hideFragments().show(mBlogPg).commitAllowingStateLoss();
         navRightView.setVisibility(View.GONE);
     }
+
+    private void showCollectPg() {
+        if(null == mCollectPg)
+        {
+            mCollectPg   = new CollectFragment();
+            mCollectPg.setImgLoader(mImgLoader);
+            hideFragments().add(R.id.main_content,mCollectPg).show(mCollectPg).commitAllowingStateLoss();
+        }
+        else
+            hideFragments().show(mCollectPg).commitAllowingStateLoss();
+        navRightView.setVisibility(View.GONE);
+    }
+
+
 
     private void showO2OPg() {
         if(null == mO2OPg)
@@ -422,9 +441,11 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
     }
     public class MenuAdapter extends BaseAdapter{
         public   int iconRes[] = {R.drawable.icon_bramax_nor,
+                R.drawable.icon_bramax_nor,
                 R.drawable.icon_blog_nor,R.drawable.icon_look_nor,
                 R.drawable.icon_o2o_nor,R.drawable.icon_setting_nor};
-        public  int [] menuName = {R.string.menu_bra_max,R.string.menu_blog,
+        public  int [] menuName = {R.string.app_name_china,
+                R.string.menu_bra_max,R.string.menu_blog,
                 R.string.menu_look, R.string.menu_o2o,R.string.menu_setting};
         @Override
         public int getCount() {return 5;}
@@ -504,23 +525,26 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position)
                 {
-                    case 0: //look
+                    case 1: //look
                         hideLeftMenu();
                         showLookPg();
                         break;
-                    case 1: //blog
+                    case 2: //collect
+                        hideLeftMenu();
+                        showCollectPg();
+                        break;
+                    case 3: //blog
                         hideLeftMenu();
                         showBlogPg();
                         break;
-                    case 3: //o2o
+                    case 4: //o2o
                         hideLeftMenu();
                         showO2OPg();
                         break;
-                    case 4:
+                    case 5://setting
                         UiUtils.startActivity(MainActivity.this, VerifyLoginActivity.class,true);
-                        // setting
                         break;
-                    case 2:
+                    case 0:
                     default://home
                         hideLeftMenu();
                         showHomePg();
