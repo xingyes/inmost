@@ -55,7 +55,7 @@
                 android:id="@+id/request_verify_code"
                 android:textColor="@color/white"
                 android:text="@string/send_verify_code"
-                android:background="@drawable/long_pink_btn_selector"/>
+                android:background="@drawable/plant_pink_rond"/>
             <EditText
                 android:layout_toLeftOf="@id/request_verify_code"
                 android:layout_width="match_parent"
@@ -98,7 +98,6 @@
             android:background="@drawable/button_gray_frame_round">
 
         <TextView
-            android:drawableLeft="@drawable/login_icon_wx"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"

@@ -14,6 +14,7 @@ public class ProductModel implements Serializable {
     public String ori_price;
     public String front;
     public String brandname;
+    public boolean fav;
 
 	public void clear() {
         id = "";
@@ -22,6 +23,7 @@ public class ProductModel implements Serializable {
         ori_price = "";
         front = "";
         brandname = "";
+        fav = false;
     }
 
     public void parse(JSONObject jsonObject) {
@@ -32,6 +34,7 @@ public class ProductModel implements Serializable {
         ori_price = jsonObject.optString("ori_price");
         front = jsonObject.optString("front");
         brandname = jsonObject.optString("brandname");
+        fav = jsonObject.optBoolean("fav");
     }
 
 

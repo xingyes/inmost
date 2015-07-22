@@ -42,7 +42,7 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
 
 
     public static final String COLLECT_ID = "collect_id";
-
+    public static final int    CODE_GO_DETAIL = 1203;
     private String  mId;
     private ImageLoader mImgLoader;
     private NetworkImageView bgImgView;
@@ -52,7 +52,7 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
     private Ajax mAjax;
     // 定义ViewPager对象
     private ViewPager viewPager;
-
+    private int lastIdx = 0;
     // 定义ViewPager适配器
     private ViewPagerAdapter vpAdapter;
 
@@ -186,6 +186,8 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
         // 设置数据
         vpAdapter = new ViewPagerAdapter();
         viewPager.setAdapter(vpAdapter);
+
+        viewPager.setCurrentItem(lastIdx);
 
 
     }
@@ -349,9 +351,11 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
         @Override
         public void onClick(View v) {
             String proid = (String)v.getTag();
-            Bundle bundle = new Bundle();
-            bundle.putString(ProductDetailActivity.PRO_ID,proid);
-            UiUtils.startActivity(CollectPagerActivity.this,ProductDetailActivity.class,bundle,true);
+            Intent ait = new Intent(CollectPagerActivity.this,ProductDetailActivity.class);
+            ait.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            ait.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            ait.putExtra(ProductDetailActivity.PRO_ID,proid);
+            CollectPagerActivity.this.startActivityForResult(ait,CODE_GO_DETAIL);
         }
     };
 
@@ -362,11 +366,26 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
         mId = intent.getStringExtra(COLLECT_ID);
         Cards.clear();
         vpAdapter.notifyDataSetChanged();
-        viewPager.setCurrentItem(0);
+        viewPager.removeAllViews();
+        lastIdx = 0;
         bgImgView.setImageDrawable(null);
         requestData();
 
         super.onNewIntent(intent);
     }
-	
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, android.content.Intent data)
+    {
+        if(requestCode == CODE_GO_DETAIL && resultCode == RESULT_OK)
+        {
+            lastIdx = viewPager.getCurrentItem();
+            Cards.clear();
+            viewPager.removeAllViews();
+            vpAdapter.notifyDataSetChanged();
+            bgImgView.setImageDrawable(null);
+            requestData();
+        }
+    }
+
 }

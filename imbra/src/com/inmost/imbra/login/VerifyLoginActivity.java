@@ -71,7 +71,9 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 					mRequestVerifyBtn.setText(getString(R.string.send));
 					mCounting = COUTING_DOWN_SECOND;
 					mRequestVerifyBtn.setEnabled(true);
-					bSending = false;
+                    mRequestVerifyBtn.setBackgroundResource(R.drawable.plant_pink_rond);
+
+                    bSending = false;
 				}
 
 			}
@@ -122,6 +124,7 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 				}
 
 				mRequestVerifyBtn.setEnabled(false);
+                mRequestVerifyBtn.setBackgroundResource(R.drawable.plant_pink_dis_round);
 				mRequestVerifyBtn.setText(getString(R.string.left_second,mCounting));
 
 				bSending = true;

@@ -1,6 +1,7 @@
 package com.inmost.imbra.product;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -40,6 +41,10 @@ import java.util.HashMap;
 
 public class ProductDetailActivity extends BaseActivity implements OnSuccessListener<JSONObject> {
 
+    public static final int  AJX_ADD_FAV = 1123;
+    public static final int  AJX_REMOVE_FAV = 1124;
+    public static final int  AJX_PRO_DETAIL = 1125;
+
     public static final String PRO_ID = "pro_id";
     private ImageLoader mImgLoader;
     private String mProId;
@@ -49,6 +54,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
 
     public MyScrollView mScorllV;
     public LinearLayout contentLayout;
+
 
     private ArrayList<String> imgUrlArray;
     private HashMap<ImageView, Integer> imgvIdxMap;
@@ -99,6 +105,36 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         mAjax.setUrl(url);
 
         showLoadingLayer();
+        mAjax.setId(AJX_PRO_DETAIL);
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+    }
+
+    private void removeFav() {
+        mAjax = ServiceConfig.getAjax(braConfig.URL_PRODUCT_DETAIL);
+        if (null == mAjax)
+            return;
+        String url = mAjax.getUrl() + mProId;
+        mAjax.setUrl(url);
+
+        showLoadingLayer();
+        mAjax.setId(AJX_REMOVE_FAV);
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+    }
+
+    private void addFav() {
+        mAjax = ServiceConfig.getAjax(braConfig.URL_PRODUCT_DETAIL);
+        if (null == mAjax)
+            return;
+        String url = mAjax.getUrl() + mProId;
+        mAjax.setUrl(url);
+
+        showLoadingLayer();
+        mAjax.setId(AJX_ADD_FAV);
 
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);
@@ -110,19 +146,44 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
     public void onSuccess(JSONObject jsonObject, Response response) {
 
         closeLoadingLayer();
-        JSONObject projson = jsonObject.optJSONObject("product");
-        proModel = new ProductModel();
-        proModel.parse(projson);
+        if(response.getId() == AJX_PRO_DETAIL) {
+            JSONObject projson = jsonObject.optJSONObject("product");
+            proModel = new ProductModel();
+            proModel.parse(projson);
 
-        initProHead();
+            initProHead();
 
-        initContent(projson);
+            initContent(projson);
 
-        initBrand(projson.optJSONObject("brand"));
+            initBrand(projson.optJSONObject("brand"));
 
-        initShopping(projson.optJSONObject("stock"));
+            initShopping(projson.optJSONObject("stock"));
 
-        BlogVolleyActivity.addShoppingHint(contentLayout,ProductDetailActivity.this,mImgLoader, DPIUtil.dip2px(15));
+            BlogVolleyActivity.addShoppingHint(contentLayout, ProductDetailActivity.this, mImgLoader, DPIUtil.dip2px(15));
+        }
+        else if(response.getId()== AJX_ADD_FAV)
+        {
+            proModel.fav = true;
+            proHolder.favbtn.setCompoundDrawables(null,proHolder.favonDrawable,null,null);
+            favChanged = !favChanged;
+            if(favChanged)
+                setResult(RESULT_OK);
+            else
+                setResult(RESULT_CANCELED);
+        }
+        else if(response.getId()== AJX_REMOVE_FAV)
+        {
+            proModel.fav = false;
+            proHolder.favbtn.setCompoundDrawables(null,proHolder.favoffDrawable, null, null);
+            favChanged = !favChanged;
+            if(favChanged)
+                setResult(RESULT_OK);
+            else
+                setResult(RESULT_CANCELED);
+        }
+
+
+
     }
 
 
@@ -134,6 +195,10 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         AutoHeightImageView av;
         TextView titlev;
         TextView pricev;
+        TextView favbtn;
+
+        Drawable favonDrawable;
+        Drawable favoffDrawable;
 
         View     brandLayout;
         TextView brandv;
@@ -149,6 +214,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
     }
 
     ProViewHolder proHolder;
+    private boolean favChanged = false;
 
     private void initProHead() {
         if (null == proHolder)
@@ -161,6 +227,17 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         proHolder.titlev.setText(proModel.title);
         proHolder.pricev = (TextView) proHolder.productLayout.findViewById(R.id.main_pro_price);
         proHolder.pricev.setText(proModel.sale_price);
+
+        proHolder.favbtn = (TextView)proHolder.productLayout.findViewById(R.id.fav_btn);
+        proHolder.favonDrawable = getResources().getDrawable(R.drawable.fav_on);
+        proHolder.favonDrawable.setBounds(0, 0, proHolder.favonDrawable.getMinimumWidth(), proHolder.favonDrawable.getMinimumHeight());
+        proHolder.favoffDrawable = getResources().getDrawable(R.drawable.fav_off);
+        proHolder.favoffDrawable.setBounds(0, 0, proHolder.favoffDrawable.getMinimumWidth(), proHolder.favoffDrawable.getMinimumHeight());
+
+        if(proModel.fav)
+            proHolder.favbtn.setCompoundDrawables(null,proHolder.favonDrawable ,null,null);
+        else
+            proHolder.favbtn.setCompoundDrawables(null,proHolder.favoffDrawable, null, null);
 
         proHolder.productLayout.findViewById(R.id.share_btn).setOnClickListener(this);
         proHolder.productLayout.findViewById(R.id.fav_btn).setOnClickListener(this);
@@ -266,6 +343,10 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
                     UiUtils.makeToast(this, "go share");
                     break;
                 case R.id.fav_btn:
+                    if(proModel.fav)
+                        removeFav();
+                    else
+                        addFav();
                     UiUtils.makeToast(this, "go fav");
                     break;
                 case R.id.shopping_btn:
