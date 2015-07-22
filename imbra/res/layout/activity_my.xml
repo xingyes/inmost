@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         inmost:leftVisiable="true"
         inmost:text="@string/my"
+        inmost:actionBg="@color/transparent"
         inmost:drawableRight="@drawable/icon_setting"
         inmost:drawableLeft="@drawable/pink_icon_back"
         inmost:bgColor="@color/white"

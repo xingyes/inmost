@@ -188,20 +188,20 @@ public class NavigationBar extends RelativeLayout implements OnClickListener {
 		mText.setOnClickListener(this);
 		
 		mAction = (TextView)findViewById(R.id.navigationbar_right_text);
-		if(mActionBg<=0)
-			mAction.setBackgroundResource(R.drawable.global_transparent_shadow_click_state);
+		if(mActionBg == 0)
+			findViewById(R.id.right_layout).setBackgroundResource(R.drawable.global_transparent_shadow_click_state);
 		else
-			mAction.setBackgroundResource(mActionBg);
+            findViewById(R.id.right_layout).setBackgroundResource(mActionBg);
 		
 		mAction.setTextColor(mTextColor);
 		mIndicator = (ImageView)findViewById(R.id.navigationbar_right_icon);
-		if( mDrawableId > 0 ) {
+		if( mDrawableId != 0 ) {
 			mIndicator.setImageResource(mDrawableId);
 			mIndicator.setVisibility(View.VISIBLE);
 		}
 
 		mLeftBack = (ImageView) findViewById(R.id.navigationbar_drawable_left);
-		if( mLeftDrawableId > 0 ) {
+		if( mLeftDrawableId != 0 ) {
 			mLeftBack.setImageResource(mLeftDrawableId);
 		}
 		findViewById(R.id.navbar_back).setOnClickListener(this);
@@ -251,7 +251,7 @@ public class NavigationBar extends RelativeLayout implements OnClickListener {
 	private boolean        bLeftVisiable = false;
 	private String         tLeftText;
 	private TextView       mAction;
-	private int            mActionBg;
+	private int            mActionBg = 0;
 	private ImageView      mIndicator;
 	private ImageView      mLeftBack;
 	private OnLeftButtonClickListener mListener;	
