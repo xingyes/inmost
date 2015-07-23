@@ -37,6 +37,8 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 	public static final int   COUTING_DOWN_SECOND = 120;
 	public static final int   MSG_INTERVAL = 0x100;
 
+    public static final int FLAG_RESULT_LOGIN_SUCCESS = 2222;
+
 	private EditText    mPhonev;
 	private EditText    mInputVerifyCode;
 
@@ -257,6 +259,9 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
             WeixinUtil.createAndRegisterWX(this);
 
             mWXLoginResponseReceiver = new WXLoginResponseReceiver();
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(braConfig.BROADCAST_FROM_WXLOGIN);
+            registerReceiver(mWXLoginResponseReceiver, filter, Config.SLEF_BROADCAST_PERMISSION,null);
 
         }
         if(WeixinUtil.isWXInstalled(this)) {
@@ -317,5 +322,16 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 //        }
 
         super.onActivityResult(requestCode,resultCode,data);
+    }
+
+
+    @Override
+    protected void onDestroy()
+    {
+        if(null != mWXLoginResponseReceiver)
+        {
+            unregisterReceiver(mWXLoginResponseReceiver);
+        }
+        super.onDestroy();
     }
 }

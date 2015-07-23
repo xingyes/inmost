@@ -154,7 +154,7 @@ public class ImageLoader implements DestroyListener, OnSuccessListener<Bitmap>, 
 		return resize(pBitmap, nMaxSize);
 	}
 	
-	public Bitmap resize(Bitmap aBitmap, int nMaxSize) {
+	public static Bitmap resize(Bitmap aBitmap, int nMaxSize) {
 		if( (null != aBitmap) && (nMaxSize > 0) ){
 			final int nWidth = aBitmap.getWidth();
 			final int nHeight = aBitmap.getHeight();
@@ -171,7 +171,7 @@ public class ImageLoader implements DestroyListener, OnSuccessListener<Bitmap>, 
 				// scale the bitmap.
 				Bitmap pTarget = Bitmap.createScaledBitmap(aBitmap, nNewWidth, nNewHeight, true);
 				if( null != pTarget ) {
-					aBitmap.recycle();
+//					aBitmap.recycle();
 					aBitmap = pTarget;
 				}
 			}

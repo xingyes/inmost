@@ -119,7 +119,7 @@ public class BlogVolleyActivity extends BaseActivity implements
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        RequestQueue mQueue = Volley.newRequestQueue(this);
+        mQueue = Volley.newRequestQueue(this);
         mImgLoader = new ImageLoader(mQueue, IMbraApplication.globalMDCache);
 
         setContentView(R.layout.activity_scrollcontent);

@@ -47,7 +47,7 @@ private IWXAPI api;
     
 	@Override
 	public void onReq(BaseReq req) {
-		switch (req.getType()) {
+        switch (req.getType()) {
 		case ConstantsAPI.COMMAND_GETMESSAGE_FROM_WX:
 			Intent newHome =new Intent(this, SplashActivity.class);
 			newHome.setAction("WXEntry");
@@ -123,6 +123,7 @@ private IWXAPI api;
 	 * handle response result of wechat login
 	 */
 	private void handleWXLoginResp(BaseResp resp) {
+        UiUtils.makeToast(this,"loginResp");
 		Bundle pBundle = new Bundle();
 		pBundle.putInt("type", resp.getType());
 		pBundle.putString("code", ((SendAuth.Resp)resp).code);

@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.text.TextUtils;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.inmost.imbra.util.BMUtil;
 import com.inmost.imbra.util.ShareInfo;
 import com.inmost.imbra.util.ShareUtil;
@@ -21,6 +23,7 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.util.activity.BaseActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +38,7 @@ public class WeixinUtil {
 	/**
 	 * 唯一标识，应用的id，在微信开放平台注册时获得
 	 */
-	public static final String APP_ID = "wxe75a2e68877315fb";
+	public static final String APP_ID = "wx37345d2c77e1491c";
 
     public static final String BROADCAST_FROM_WXSHARE = "broadcast_wx_share";
     public static final String BROADCAST_FROM_WXLOGIN = "broadcast_wx_login";
@@ -171,14 +174,19 @@ public class WeixinUtil {
 	 * @param shareInfo
 	 * @param isScene, true:好友; false:朋友圈
 	 */
-	public static void doWXShare(final Context context,ShareInfo shareInfo, boolean isScene) {
+	public static void doWXShare(final BaseActivity activity,ShareInfo shareInfo, boolean isScene, ImageLoader imgloader) {
 		prepareForShareToWeixin(shareInfo);
 
 		WXWebpageObject webPageObj = new WXWebpageObject();
 		webPageObj.webpageUrl = shareInfo.url;
 
+        if(shareInfo.getShareLogo()==null && !TextUtils.isEmpty(shareInfo.iconUrl))
+        {
+            ShareUtil.fetchImageThenShare(activity,shareInfo,isScene,imgloader);
+            return;
+        }
 		// 已设置的分享图片为空或过大则使用默认图片
-		Bitmap shareBitmap = ShareUtil.checkShareBitmap(context, shareInfo.getShareLogo(),
+		Bitmap shareBitmap = ShareUtil.checkShareBitmap(activity, shareInfo.getShareLogo(),
                 WX_SHARE_IMG_LIMIT, shareInfo.eventFrom);
 
 		WXMediaMessage wxMsg = new WXMediaMessage();
@@ -196,7 +204,7 @@ public class WeixinUtil {
 		req.message = wxMsg;
 		req.scene = isScene ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
 
-		getWXApi(context).sendReq(req);
+		getWXApi(activity).sendReq(req);
 	}
 
 

@@ -6,11 +6,11 @@ public class braConfig extends Config {
 
     public static final String QQ_APP_ID = "100273020";
 
+    public static final String BROADCAST_FROM_WXLOGIN = "com.imbra.wxreceiver.login";
+    public static final String BROADCAST_FROM_WXSHARE = "com.imbra.wxreceiver.share";
 
-	public static final String CACHE_SEARCH_HISTORY_WORDS = "search_history_words";
-	public static final String SLEF_BROADCAST_PERMISSION = "com.icolor.permission.self_broadcast";
-	public static final String BROADCAST_FROM_WXSHARE = "com.icolor.wxreceiver.share";
-	
+    public static final String CACHE_SEARCH_HISTORY_WORDS = "search_history_words";
+
 
     public static final String CACHE_FULL_DISTRICT_MD5 = "CACHE_FULL_DISTRICT_MD5";
     public static final String CACHE_FULL_DISTRICT = "CACHE_FULL_DISTRICT";

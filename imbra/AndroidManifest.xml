@@ -72,6 +72,9 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".main.ContactUsActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".main.HTML5Activity"
+            android:screenOrientation="portrait"/>
+
 
         <activity android:name=".product.ProductDetailActivity"
             android:screenOrientation="portrait"/>

@@ -445,7 +445,11 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 
         HomeFloorModel item = mHomeFloors.get(position-1);
         if(item.type.equalsIgnoreCase(HomeFloorModel.TYPE_LOOKBOOK))
-            UiUtils.makeToast(mActivity,"look");
+        {
+            Bundle bundle = new Bundle();
+            bundle.putString(HTML5Activity.ORI_URL, "http://www.o2bra.com.cn/");
+            UiUtils.startActivity(mActivity,HTML5Activity.class,bundle,true);
+        }
         else if(item.type.equalsIgnoreCase(HomeFloorModel.TYPE_COLLECTION))
         {
             Bundle bund = new Bundle();

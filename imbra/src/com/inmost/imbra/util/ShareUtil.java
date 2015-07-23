@@ -2,23 +2,46 @@ package com.inmost.imbra.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.inmost.imbra.R;
 import com.inmost.imbra.thirdapi.WeiboShareResponseActivity;
 import com.inmost.imbra.thirdapi.WeixinUtil;
 import com.inmost.novoda.imageloader.core.bitmap.BitmapUtil;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.xingy.lib.ui.RadioDialog;
+import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.activity.BaseActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ShareUtil {
 
-	public  static final String F_QQ = "qq";
+    public static final String[] sharePackages = {
+            "com.tencent.mobileqq",
+            "com.tencent.WBlog",
+            "com.android.mms",
+            "com.sina.weibo"};
+    public static final String SHARE_WEIXNI = "com.tencent.mm";
+
+
+    public  static final String F_QQ = "qq";
 	public  static final String F_QZONE = "qzone";
 	public  static final String F_WEIBO = "weibo";
 	public  static final String F_WEIXIN = "weixin";
@@ -75,13 +98,14 @@ public class ShareUtil {
 	 * @param shareInfo
 	 * @param channel
 	 */
-	private static void shareByChannel(final BaseActivity myActivity, final ShareInfo shareInfo, final int channel) {
+	private static void shareByChannel(final BaseActivity myActivity, final ShareInfo shareInfo, final int channel,
+                                       ImageLoader imgloader) {
 		switch (channel) {
 			case 1:
-				WeixinUtil.doWXShare(myActivity, shareInfo, true);
+				WeixinUtil.doWXShare(myActivity, shareInfo, true,imgloader);
 				break;
 			case 2:
-				WeixinUtil.doWXShare(myActivity,shareInfo, false);
+				WeixinUtil.doWXShare(myActivity,shareInfo, false,imgloader);
 				break;
 			case 3:
 				shareToWeibo(myActivity, shareInfo);
@@ -123,15 +147,33 @@ public class ShareUtil {
 	 *
 	 * @param myActivity
 	 * @param shareInfo
-	 * @param channel
+     * @param imgLoader
 	 */
-	private static void fetchImageForShare(final BaseActivity myActivity, final ShareInfo shareInfo, final int channel) {
+	public static void fetchImageThenShare(final BaseActivity myActivity, final ShareInfo shareInfo,final boolean isScene,
+                                           final ImageLoader imgLoader) {
 
         Bitmap bitmap = null;
-//        shareInfo.shareLogo = bitmap;
+        final int nMaxSize = 80;
+        imgLoader.get(shareInfo.iconUrl,new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                Bitmap bm = response.getBitmap();
+                if(bm==null)
+                    return;
+                bm = com.xingy.util.ImageLoader.resize(bm, nMaxSize);
 
-//				shareByChannel(myActivity, shareInfo, channel);
+                myActivity.closeLoadingLayer();
 
+                shareInfo.setShareLogo(bm);
+                // 2. Send request.
+                WeixinUtil.doWXShare(myActivity, shareInfo, isScene,imgLoader);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
 	}
 
 	/**
@@ -167,6 +209,86 @@ public class ShareUtil {
 
 		context.startActivity(Intent.createChooser(intent, "分享到"));
 	}
+
+
+
+    public static void shareInfoOut(final BaseActivity activity, final ShareInfo shareInfo,final ImageLoader imgloader){
+        if( (null == activity) || (null == shareInfo) || null == imgloader ){
+            return ;
+        }
+//        Intent pIntent = new Intent(Intent.ACTION_SEND);
+//        pIntent.putExtra(Intent.EXTRA_TEXT, "");
+//        pIntent.setType("text/plain");
+//
+//        PackageManager pManager = aContext.getPackageManager();
+//        List<ResolveInfo> aResult = pManager.queryIntentActivities(pIntent, PackageManager.MATCH_DEFAULT_ONLY);
+//        final int nSize = (null != aResult ? aResult.size() : 0);
+//        if( 0 >= nSize )
+//            return ;
+//
+//        final List<Sharable> aSharables = new ArrayList<Sharable>(nSize);
+//        int mark[] = new int[sharePackages.length];
+//        for(int i=0;i<sharePackages.length;i++)
+//            mark[i]=0;
+//        for(ResolveInfo pInfo : aResult)
+//        {
+//            ApplicationInfo pAppInfo = pInfo.activityInfo.applicationInfo;
+//            Sharable pEntity = new Sharable();
+//            pEntity.mLabel = (String) pManager.getApplicationLabel(pAppInfo);
+//            pEntity.mIcon = pManager.getApplicationIcon(pAppInfo);
+//            pEntity.mPackageName = pInfo.activityInfo.packageName;
+//
+//            for(int i=0; i < sharePackages.length; i++)
+//            {
+//                if(pEntity.mPackageName.equalsIgnoreCase(sharePackages[i]) && mark[i]==0)
+//                {
+//                    mark[i]=1;
+//                    aSharables.add(pEntity);
+//                }
+//            }
+//        }
+
+        final List<Sharable> aSharables = new ArrayList<Sharable>();
+        IWXAPI pWechatApi = WXAPIFactory.createWXAPI(activity, WeixinUtil.APP_ID);
+        final int apiLevel =  pWechatApi.getWXAppSupportAPI();
+        if(apiLevel >0) //has weixin
+        {
+            Sharable pEntity = new Sharable();
+            pEntity.mPackageName = SHARE_WEIXNI;
+            pEntity.mLabel = activity.getString(R.string.weixin_someone);//(String) pManager.getApplicationLabel(pInfo.applicationInfo);
+            pEntity.mIcon = activity.getResources().getDrawable(R.drawable.share_to_weixin);
+            aSharables.add(0,pEntity);
+            if(apiLevel >=0x21020001)
+            {
+                pEntity = new Sharable();
+                pEntity.mPackageName = SHARE_WEIXNI;
+                pEntity.mLabel = activity.getString(R.string.weixin_circle);
+                pEntity.mIcon = activity.getResources().getDrawable(R.drawable.share_to_time_line_icon);
+                aSharables.add(0,pEntity);
+            }
+        }
+
+        SharableAdapter pAdapter = new SharableAdapter(activity, aSharables);
+        UiUtils.showListDialog(activity, activity.getString(R.string.share_title), pAdapter, new RadioDialog.OnRadioSelectListener() {
+            @Override
+            public void onRadioItemClick(int which) {
+                if (null != aSharables) {
+                    Sharable pSelected = aSharables.get(which);
+                    if (apiLevel >= 0x21020001 && which == 0)
+                        WeixinUtil.doWXShare(activity,shareInfo,false,imgloader);
+                    else if(which == 1)
+                        WeixinUtil.doWXShare(activity,shareInfo,true,imgloader);
+                    else {
+                            Intent pIntent = new Intent(Intent.ACTION_SEND);
+                            pIntent.setPackage(pSelected.mPackageName);
+                            pIntent.putExtra(Intent.EXTRA_TEXT, shareInfo.wxcontent);
+                            pIntent.setType("text/plain");
+                            activity.startActivity(pIntent);
+                        }
+                    }
+                }
+        });
+    }
 
 
 //	private static void alertDialog(final MyActivity context, final ShareInfo shareInfo) {
@@ -411,4 +533,88 @@ public class ShareUtil {
 		void onError(String msg);
 		void onCancel();
 	}
+
+
+    public static class Sharable
+    {
+        public String   mLabel;
+        public String   mPackageName;
+        public Drawable mIcon;
+    }
+
+    private static class SharableHolder
+    {
+        public ImageView mIcon;
+        public TextView mLabel;
+    }
+
+    public static class SharableAdapter extends RadioDialog.RadioAdapter
+    {
+        public SharableAdapter(Context aContext, List<Sharable> aSharables)
+        {
+            super(aContext);
+            mSharables = aSharables;
+        }
+
+        @Override
+        public int getCount()
+        {
+            return (null != mSharables ? mSharables.size() : 0);
+        }
+
+        @Override
+        public Object getItem(int position)
+        {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position)
+        {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
+            SharableHolder holder = null;
+            if (null == convertView)
+            {
+                convertView = View.inflate(mContext, R.layout.share_item, null);
+                holder = new SharableHolder();
+                holder.mIcon = (ImageView) convertView.findViewById(R.id.item_icon);
+                holder.mLabel = (TextView) convertView.findViewById(R.id.item_label);
+                convertView.setTag(holder);
+            }
+            else
+            {
+                holder = (SharableHolder) convertView.getTag();
+            }
+
+            // set data
+            if(null != mSharables)
+            {
+                Sharable pEntity = mSharables.get(position);
+                holder.mLabel.setText(pEntity.mLabel);
+                holder.mIcon.setImageDrawable(pEntity.mIcon);
+            }
+            return convertView;
+        }
+
+
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return false;
+        }
+
+
+        private List<Sharable>          mSharables;
+    }
+
+
 }

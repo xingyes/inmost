@@ -36,6 +36,8 @@ import com.xingy.R;
 import com.xingy.lib.ILogin;
 import com.xingy.lib.IVersion;
 import com.xingy.lib.model.Account;
+import com.xingy.lib.ui.AppDialog;
+import com.xingy.lib.ui.UiUtils;
 import com.xingy.preference.Preference;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Cookie;
@@ -1194,4 +1196,39 @@ public class ToolUtil {
     {
         return (null == manager ? 0 : manager.getMemoryClass());
     }
+
+
+
+    public static boolean checkAndCall(final Context aContext, final Intent intent) {
+		if(aContext == null || null == intent)
+			return false;
+
+		if(null != intent.resolveActivity(aContext.getPackageManager())) {
+
+			if(Preference.getInstance().needCallAccess())
+			{
+				UiUtils.showDialog(aContext,
+                        R.string.permission_title, R.string.permission_hint_call, R.string.permission_agree, R.string.permission_disagree,
+                        new AppDialog.OnClickListener() {
+                            @Override
+                            public void onDialogClick(int nButtonId) {
+                                if (nButtonId == AppDialog.BUTTON_POSITIVE) {
+                                    Preference.getInstance().setCallAccess(Preference.ACCESSED);
+                                    aContext.startActivity(intent);
+                                }
+                            }
+                        });
+			}
+			else
+			{
+				aContext.startActivity(intent);
+			}
+		}else
+		{
+			UiUtils.makeToast(aContext, R.string.phone_app_not_found);
+		}
+
+		return true;
+
+	}
 }
