@@ -324,7 +324,7 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
     {
         if(null != mWXLoginResponseReceiver)
         {
-            unregisterReceiver(mWXLoginResponseReceiver);
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(mWXLoginResponseReceiver);
             mWXLoginResponseReceiver = null;
         }
         super.onDestroy();
