@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -18,6 +19,7 @@ import com.inmost.imbra.thirdapi.WeixinUtil;
 import com.inmost.imbra.util.braConfig;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.Config;
 import com.xingy.util.ServiceConfig;
@@ -257,13 +259,11 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
         if(null == mWXLoginResponseReceiver) {
             mWXLoginResponseReceiver = new WXLoginResponseReceiver();
             IntentFilter filter = new IntentFilter();
-            filter.addAction(braConfig.BROADCAST_FROM_WXLOGIN);
-            registerReceiver(mWXLoginResponseReceiver, filter, Config.SLEF_BROADCAST_PERMISSION, null);
-
-            if (WeixinUtil.checkWX(this, 0))
-                WeixinUtil.doWXLogin(this);
+            filter.addAction(WeixinUtil.BROADCAST_FROM_WXLOGIN);
+            LocalBroadcastManager.getInstance(VerifyLoginActivity.this).registerReceiver(mWXLoginResponseReceiver, filter);
         }
-
+        if (WeixinUtil.checkWX(this, 0))
+            WeixinUtil.doWXLogin(this);
     }
 
 
@@ -275,13 +275,15 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
             String strCode = intent.getStringExtra("code");
             String strState = intent.getStringExtra("state");
             String strOpenId = intent.getStringExtra("openId");
+
+            UiUtils.makeToast(VerifyLoginActivity.this,
+                    "Weixin login errcode:" + nErrCode +",type:" + nType + ",state:" + strState + ",code:" + strCode +
+                            "openid:" + strOpenId);
+
             if(nType == ConstantsAPI.COMMAND_SENDAUTH)
             {
                 if(nErrCode == BaseResp.ErrCode.ERR_OK)
                 {
-                    UiUtils.makeToast(VerifyLoginActivity.this,
-                            "Weixin login state:" + strState + ",code:" + strCode +
-                    "openid:" + strOpenId);
 
                     wxLoginCallBack(strCode, strState);
                 }

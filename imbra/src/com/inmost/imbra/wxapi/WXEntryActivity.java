@@ -4,6 +4,7 @@ package com.inmost.imbra.wxapi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.widget.Toast;
 
 import com.inmost.imbra.splash.SplashActivity;
@@ -25,13 +26,10 @@ private IWXAPI api;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         api = WeixinUtil.getWXApi(this);
-
         Intent ait = getIntent();
         if(null == ait)
         {
         	finish();
-            Toast.makeText(this,"Intent null",Toast.LENGTH_SHORT).show();
-
             return;
         }
         api.handleIntent(ait, this);
@@ -96,7 +94,7 @@ private IWXAPI api;
         bundle.putString("errstr", resp.errStr);
         Intent aIt = new Intent(WeixinUtil.BROADCAST_FROM_WXPAY);
         aIt.putExtras(bundle);
-        sendBroadcast(aIt,Config.SLEF_BROADCAST_PERMISSION);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(aIt);
     }
 
 	/**  
@@ -109,13 +107,13 @@ private IWXAPI api;
 	*/
 	private void handleSend2WxResp(BaseResp resp) 
 	{
-			Bundle bundle = new Bundle();
-			bundle.putInt("type", resp.getType());
-	        bundle.putInt("errcode", resp.errCode);
-	        bundle.putString("errstr", resp.errStr);
-	        Intent aIt = new Intent(WeixinUtil.BROADCAST_FROM_WXSHARE);
-	        aIt.putExtras(bundle);
-	        sendBroadcast(aIt,Config.SLEF_BROADCAST_PERMISSION);
+		Bundle bundle = new Bundle();
+		bundle.putInt("type", resp.getType());
+	    bundle.putInt("errcode", resp.errCode);
+	    bundle.putString("errstr", resp.errStr);
+	    Intent aIt = new Intent(WeixinUtil.BROADCAST_FROM_WXSHARE);
+	    aIt.putExtras(bundle);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(aIt);
 	}
 	
 	
@@ -129,11 +127,11 @@ private IWXAPI api;
 		pBundle.putString("code", ((SendAuth.Resp)resp).code);
 		pBundle.putString("state", ((SendAuth.Resp)resp).state);
 		pBundle.putInt("errCode", resp.errCode);
-		
-		Intent pIntent = new Intent(WeixinUtil.BROADCAST_FROM_WXLOGIN);
+
+        Intent pIntent = new Intent(WeixinUtil.BROADCAST_FROM_WXLOGIN);
 		pIntent.putExtras(pBundle);
-		sendBroadcast(pIntent, Config.SLEF_BROADCAST_PERMISSION);
-	}
+        LocalBroadcastManager.getInstance(this).sendBroadcast(pIntent);
+    }
 }
 
 	

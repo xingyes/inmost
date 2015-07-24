@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -309,7 +310,7 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
         if(WeixinUtil.isWXInstalled(this)) {
             IntentFilter filter = new IntentFilter();
             filter.addAction(WeixinUtil.BROADCAST_FROM_WXLOGIN);
-            this.registerReceiver(mWXLoginResponseReceiver, filter, Config.SLEF_BROADCAST_PERMISSION, null);
+            LocalBroadcastManager.getInstance(this).registerReceiver(mWXLoginResponseReceiver, filter);
 
             WeixinUtil.doWXLogin(this);
 

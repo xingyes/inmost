@@ -6,9 +6,6 @@ public class braConfig extends Config {
 
     public static final String QQ_APP_ID = "100273020";
 
-    public static final String BROADCAST_FROM_WXLOGIN = "com.imbra.wxreceiver.login";
-    public static final String BROADCAST_FROM_WXSHARE = "com.imbra.wxreceiver.share";
-
     public static final String CACHE_SEARCH_HISTORY_WORDS = "search_history_words";
 
 

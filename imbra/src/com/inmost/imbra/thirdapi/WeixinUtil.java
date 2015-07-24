@@ -131,7 +131,7 @@ public class WeixinUtil {
 	public static void doWXLogin(Context context) {
 		SendAuth.Req req = new SendAuth.Req();
 		req.scope = "snsapi_userinfo";
-		req.state = "jdlogin";
+		req.state = "imbra";
 
 		getWXApi(context).sendReq(req);
 	}

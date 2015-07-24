@@ -16,8 +16,6 @@ public class Config {
 	//DEBUG_ID = "wxb2acd799238987b6";
 
 
-    public static final String SLEF_BROADCAST_PERMISSION = "com.xingy.permission.self_broadcast";
-
     public static final String NET_RROR = "悲剧出错了";
 
 	public static final int NOT_LOGIN = 500;
