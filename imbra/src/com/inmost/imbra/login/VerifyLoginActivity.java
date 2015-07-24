@@ -1,8 +1,17 @@
 package com.inmost.imbra.login;
 
-import java.util.Date;
-
-import org.json.JSONObject;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.Window;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.inmost.imbra.R;
 import com.inmost.imbra.thirdapi.WeixinUtil;
@@ -18,18 +27,9 @@ import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
 import com.xingy.util.ajax.Response;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.Window;
-import android.widget.EditText;
-import android.widget.TextView;
+import org.json.JSONObject;
+
+import java.util.Date;
 
 
 public class VerifyLoginActivity extends BaseActivity implements OnSuccessListener<JSONObject> {
@@ -254,26 +254,15 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 
     public void loginWX()
     {
-        if(null == mWXLoginResponseReceiver)
-        {
-            WeixinUtil.createAndRegisterWX(this);
-
+        if(null == mWXLoginResponseReceiver) {
             mWXLoginResponseReceiver = new WXLoginResponseReceiver();
             IntentFilter filter = new IntentFilter();
             filter.addAction(braConfig.BROADCAST_FROM_WXLOGIN);
-            registerReceiver(mWXLoginResponseReceiver, filter, Config.SLEF_BROADCAST_PERMISSION,null);
+            registerReceiver(mWXLoginResponseReceiver, filter, Config.SLEF_BROADCAST_PERMISSION, null);
 
+            if (WeixinUtil.checkWX(this, 0))
+                WeixinUtil.doWXLogin(this);
         }
-        if(WeixinUtil.isWXInstalled(this)) {
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(WeixinUtil.BROADCAST_FROM_WXLOGIN);
-            this.registerReceiver(mWXLoginResponseReceiver, filter, Config.SLEF_BROADCAST_PERMISSION, null);
-
-            WeixinUtil.doWXLogin(this);
-
-        }
-        else
-            UiUtils.makeToast(this,"no weixin");
 
     }
 
@@ -285,11 +274,15 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
             int nType = intent.getIntExtra("type", -1);
             String strCode = intent.getStringExtra("code");
             String strState = intent.getStringExtra("state");
-
+            String strOpenId = intent.getStringExtra("openId");
             if(nType == ConstantsAPI.COMMAND_SENDAUTH)
             {
                 if(nErrCode == BaseResp.ErrCode.ERR_OK)
                 {
+                    UiUtils.makeToast(VerifyLoginActivity.this,
+                            "Weixin login state:" + strState + ",code:" + strCode +
+                    "openid:" + strOpenId);
+
                     wxLoginCallBack(strCode, strState);
                 }
                 else
@@ -301,7 +294,6 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
     }
 
     private void wxLoginCallBack(String code, String state){
-        UiUtils.makeToast(this,"Weixin login state :" + state + ", code" + code);
         /**
          * weixinlogin ajax -- lkey
          */
@@ -331,6 +323,7 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
         if(null != mWXLoginResponseReceiver)
         {
             unregisterReceiver(mWXLoginResponseReceiver);
+            mWXLoginResponseReceiver = null;
         }
         super.onDestroy();
     }

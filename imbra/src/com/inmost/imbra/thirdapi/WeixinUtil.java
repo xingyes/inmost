@@ -1,13 +1,16 @@
 package com.inmost.imbra.thirdapi;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.TextUtils;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.inmost.imbra.R;
 import com.inmost.imbra.util.BMUtil;
 import com.inmost.imbra.util.ShareInfo;
 import com.inmost.imbra.util.ShareUtil;
@@ -312,5 +315,36 @@ public class WeixinUtil {
 		UiUtils.makeToast(aParent, strInfo);
 	}
 
+
+    public static boolean checkWX(final Activity aParent, int baseApiLevel)
+    {
+        IWXAPI pWechatApi = WXAPIFactory.createWXAPI(aParent, APP_ID);
+        int apiLevel =  pWechatApi.getWXAppSupportAPI();
+        if(apiLevel <= baseApiLevel)
+        {
+            UiUtils.showDialog(aParent,
+                    aParent.getString(R.string.no_support_weixin),
+                    aParent.getString(R.string.install_newest_weixin),
+                    aParent.getString(R.string.install_weixin_yes),
+                    aParent.getString(R.string.btn_cancel),
+                    new AppDialog.OnClickListener() {
+
+                        @Override
+                        public void onDialogClick(int nButtonId) {
+                            if(nButtonId == DialogInterface.BUTTON_POSITIVE)
+                            {
+                                Intent intent = new Intent(Intent. ACTION_VIEW);
+                                intent.setData(Uri.parse("http://weixin.qq.com/"));
+                                aParent.startActivity(intent);
+                            }
+
+                        }}
+            );
+
+            return false;
+        }
+
+        return true;
+    }
 
 }

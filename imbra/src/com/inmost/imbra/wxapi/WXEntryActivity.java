@@ -1,10 +1,10 @@
-package com.inmost.wxapi;
+package com.inmost.imbra.wxapi;
 
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.inmost.imbra.splash.SplashActivity;
 import com.inmost.imbra.thirdapi.WeixinUtil;
@@ -14,8 +14,6 @@ import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
-import com.xingy.R;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.Config;
 
@@ -26,15 +24,17 @@ private IWXAPI api;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_transparent);
-        api = WXAPIFactory.createWXAPI(this, WeixinUtil.APP_ID, false);
+        api = WeixinUtil.getWXApi(this);
+
         Intent ait = getIntent();
         if(null == ait)
         {
         	finish();
-        	return;
+            Toast.makeText(this,"Intent null",Toast.LENGTH_SHORT).show();
+
+            return;
         }
-        api.handleIntent(getIntent(), this);
+        api.handleIntent(ait, this);
     }
 
     @Override
@@ -62,7 +62,7 @@ private IWXAPI api;
 
 	@Override
 	public void onResp(BaseResp resp) {
-		switch (resp.getType())
+        switch (resp.getType())
 		{
 		case ConstantsAPI.COMMAND_PAY_BY_WX:
 			handlePayResp(resp);
@@ -123,9 +123,9 @@ private IWXAPI api;
 	 * handle response result of wechat login
 	 */
 	private void handleWXLoginResp(BaseResp resp) {
-        UiUtils.makeToast(this,"loginResp");
-		Bundle pBundle = new Bundle();
-		pBundle.putInt("type", resp.getType());
+        Bundle pBundle = new Bundle();
+        pBundle.putString("openId", resp.openId);
+        pBundle.putInt("type", resp.getType());
 		pBundle.putString("code", ((SendAuth.Resp)resp).code);
 		pBundle.putString("state", ((SendAuth.Resp)resp).state);
 		pBundle.putInt("errCode", resp.errCode);
