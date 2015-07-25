@@ -99,7 +99,8 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
         findViewById(R.id.address).setOnClickListener(this);
         findViewById(R.id.bind_phone).setOnClickListener(this);
 
-        usrImgv = (NetworkImageView)imgSetting.findViewById(R.id.left_net_drawable);
+        usrImgv = imgSetting.getPreNetView();
+        usrImgv.setVisibility(View.VISIBLE);
 
         usrImgv.setImageUrl("http://img2.imgtn.bdimg.com/it/u=921607941,1665261509&fm=21&gp=0.jpg",mImgLoader);
     }

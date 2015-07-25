@@ -20,9 +20,9 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.xingy.R;
 
 public class TextField extends UiBase {
@@ -35,77 +35,52 @@ public class TextField extends UiBase {
 		super(context, attrs, R.layout.textfield_layout);
 	}
 
+
+	public void setContent(Spanned content) {
+		mContent.setText(content);
+	}
+	
+	
 	/**
 	 * @param content
 	 */
 	public void setContent(String content) {
-		setContent(content, null);
-	}
-	
-	public void setContent(Spanned content) {
-		if( null != mContent ) {
-			mContent.setText(content);
-		}
-	}
-	
-	
-	/**
-	 * @param content
-	 * @param info
-	 */
-	public void setContent(String content, String info) {
-		if( null != mContent && !TextUtils.isEmpty(content) ) {
-			mContentString = content;
-			mContent.setText(content);
-		}
-		
-		if( null != mInfo ) {
-			mInfoString = info;
-			if( TextUtils.isEmpty(info) ) {
-				mInfo.setVisibility(View.GONE);
-			} else {
-				mInfo.setText(info);
-				mInfo.setVisibility(View.VISIBLE);
-			}
-		}
+		if(!TextUtils.isEmpty(content) ) {
+            mContentString = content;
+            mContent.setText(content);
+            mContent.setVisibility(View.VISIBLE);
+        }
+        else
+            mContent.setVisibility(View.GONE);
 	}
 
-	public void setSubCaption(String aSubCap)
-	{
-		if(null!=mSubCaption)
-		{
-			if( TextUtils.isEmpty(aSubCap) ) {
-				mSubCaption.setVisibility(View.GONE);
-			} else {
-				mSubCaption.setText(aSubCap);
-				mSubCaption.setVisibility(View.VISIBLE);
-//				mContentLL.setVisibility(View.GONE);
-			}
-		}
-	}
-	
+
 	@Override
 	protected void onInit(Context context) {
 		// Get children components.
 //		mContentLL = (LinearLayout) findViewById(R.id.textfield_content_layout);
         mPreIcon = (ImageView)findViewById(R.id.left_drawable);
-        if(mPreDrawableRid!=0)
+        if(mPreDrawableRid!=0) {
+            mPreIcon.setVisibility(View.VISIBLE);
             mPreIcon.setImageResource(mPreDrawableRid);
+        }
         else
             mPreIcon.setVisibility(View.GONE);
-		mCaption = (TextView)findViewById(R.id.textfield_caption);
-		mCaption.setText(mCaptionString);
-		mSubCaption = (TextView)findViewById(R.id.textfield_sub_caption);
-		mContent = (TextView)findViewById(R.id.textfiled_content);
-		mInfo = (TextView)findViewById(R.id.textfield_info);
-		setContent(mContentString, mInfoString);
+
+        mPreNetIcon = (NetworkImageView)findViewById(R.id.left_net_drawable);
+
+        mCaption = (TextView)findViewById(R.id.textfield_caption);
+		if(TextUtils.isEmpty(mCaptionString))
+            mCaption.setVisibility(View.GONE);
+        else {
+            mCaption.setVisibility(View.VISIBLE);
+            mCaption.setText(mCaptionString);
+        }
+
+        mContent = (TextView)findViewById(R.id.textfiled_content);
+        setContent(mContentString);
 		
-		// Set gravity.
-		if( mGravity > 0 ) {
-			mContent.setGravity(mGravity);
-			mInfo.setGravity(mGravity);
-		}
-		
+
 		if( mColor != 0 ) {
 			mContent.setTextColor(mColor);
 		}
@@ -118,12 +93,12 @@ public class TextField extends UiBase {
 			mContent.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContentSize);
 		}
 		
-		mIconRight = (ImageView)findViewById(R.id.textfield_drawable_right);
-		if( mDrawableId > 0 ) {
-			mIconRight.setImageResource(mDrawableId);
-			mIconRight.setVisibility(View.VISIBLE);
+		mRightIcon = (ImageView)findViewById(R.id.textfield_drawable_right);
+		if( mRightDrawableId > 0 ) {
+			mRightIcon.setImageResource(mRightDrawableId);
+			mRightIcon.setVisibility(View.VISIBLE);
 		} else {
-			mIconRight.setVisibility(View.GONE);
+			mRightIcon.setVisibility(View.GONE);
 		}
 	}
 	
@@ -132,10 +107,8 @@ public class TextField extends UiBase {
 		// Parse attributes.
 		mCaptionString = UiUtils.getString(aContext, aArray, R.styleable.xingy_attrs_caption);
 		mContentString = UiUtils.getString(aContext, aArray, R.styleable.xingy_attrs_text);
-		mInfoString = UiUtils.getString(aContext, aArray, R.styleable.xingy_attrs_info);
-		mDrawableId = UiUtils.getResId(aContext, aArray, R.styleable.xingy_attrs_drawableRight);
+        mRightDrawableId = UiUtils.getResId(aContext, aArray, R.styleable.xingy_attrs_drawableRight);
 		mColor = UiUtils.getColor(aContext, aArray, R.styleable.xingy_attrs_contentColor);
-		mGravity = UiUtils.getInteger(aContext, aArray, R.styleable.xingy_attrs_contentGravity);
 		mContentSize = UiUtils.getDimension(aContext, aArray, R.styleable.xingy_attrs_contentSize);
 		mCaptionSize = UiUtils.getDimension(aContext, aArray, R.styleable.xingy_attrs_captionSize);
         mPreDrawableRid = UiUtils.getResId(aContext, aArray, R.styleable.xingy_attrs_drawableLeft);
@@ -150,20 +123,22 @@ public class TextField extends UiBase {
 			mCaption.invalidate();
 		}
 	}
+
+    public NetworkImageView getPreNetView()
+    {
+        return mPreNetIcon;
+    }
 	
 //	private LinearLayout mContentLL;
 	private String       mCaptionString;
 	private TextView     mCaption;
     private ImageView    mPreIcon;
+    private NetworkImageView mPreNetIcon;
     private int          mPreDrawableRid;
-	private TextView     mSubCaption;
 	private String       mContentString;
 	private TextView     mContent;
-	private String       mInfoString;
-	private TextView     mInfo;
-	private int          mDrawableId;
-	private ImageView    mIconRight;
-	private int          mGravity;
+	private int          mRightDrawableId;
+	private ImageView    mRightIcon;
 	private int          mColor;
 	private float        mContentSize;
 	private float        mCaptionSize;

@@ -1,1 +1,9 @@
-*.iml
+imbra/build
+library/build
+WeiboSDK/build
+xingy_libutil/build
+xingy_libutil.iml
+imbra/imbra.iml
+library/library.iml
+WeiboSDK/WeiboSDK.iml
+inmost.iml

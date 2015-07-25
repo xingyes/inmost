@@ -153,15 +153,10 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
 			@Override
 			public void onClick() {
-				if(menuViews.menu_layout.getVisibility() != View.VISIBLE)
-				{
-					menuViews.left_layout.startAnimation(menuViews.menuInAnim);
-					menuViews.menu_layout.setVisibility(View.VISIBLE);
-				}
-				else
-				{
+				if(menuViews.menuLayout.getVisibility() != View.VISIBLE)
+				    showLeftMenu();
+                else
 					hideLeftMenu();
-				}
 			}});
 
         mNavBar.setRightInfo(R.string.filter,this);
@@ -351,7 +346,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
 	public void onBackPressed()
 	{
-		if(menuViews.menu_layout.getVisibility() == View.VISIBLE)
+		if(menuViews.menuLayout.getVisibility() == View.VISIBLE)
 		{
 			this.hideLeftMenu();
 		}
@@ -408,8 +403,9 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
      */
     public class menuViewHolder
     {
-        public RelativeLayout menu_layout;
-        public View left_layout;
+        public RelativeLayout menuLayout;
+        public View menuContent;
+        public View menuBlank;
 
         public ImageView userImg;
         public TextView  userNameTv;
@@ -477,43 +473,102 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
     };
 
     protected void hideLeftMenu() {
-        menuViews.left_layout.startAnimation(menuViews.menuOutAnim);
+        if(menuViews.menuOutAnim == null)
+        {
+            menuViews.menuOutAnim = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0,Animation.RELATIVE_TO_SELF,-1,
+                    Animation.RELATIVE_TO_SELF, 0,Animation.RELATIVE_TO_SELF,0);
+            menuViews.menuOutAnim.setFillAfter(true);
+            menuViews.menuOutAnim.setDuration(menuViews.menuOutInterval);
+            menuViews.menuOutAnim.setAnimationListener(new AnimationListener(){
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    menuViews.menuLayout.setVisibility(View.GONE);
+                    menuViews.menuBlank.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+            });
+        }
+        menuViews.menuContent.startAnimation(menuViews.menuOutAnim);
+    }
+
+
+    private void showLeftMenu() {
+        menuViews.menuLayout.setVisibility(View.VISIBLE);
+
+        if(menuViews.menuInAnim == null)
+        {
+            menuViews.menuInAnim = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1,Animation.RELATIVE_TO_SELF,0,
+                    Animation.RELATIVE_TO_SELF, 0,Animation.RELATIVE_TO_SELF,0);
+            menuViews.menuInAnim.setFillAfter(true);
+            menuViews.menuInAnim.setDuration(menuViews.menuInInterval);
+        }
+        menuViews.menuContent.startAnimation(menuViews.menuInAnim);
+        menuViews.menuContent.setVisibility(View.VISIBLE);
+        menuViews.menuBlank.setVisibility(View.VISIBLE);
+
     }
 
     private void initLeftMenu() {
-        menuViews = new menuViewHolder();
-        menuViews.menu_layout = (RelativeLayout) this.findViewById(R.id.menu_layout);
-        menuViews.menu_layout.setVisibility(View.GONE);
+        if(null!=menuViews)
+            return;
 
-        findViewById(R.id.right_layout).setOnTouchListener(new OnTouchListener() {
+        menuViews = new menuViewHolder();
+        menuViews.menuLayout = (RelativeLayout) this.findViewById(R.id.menu_layout);
+//        findViewById(R.id.right_layout).setOnTouchListener(new OnTouchListener() {
+//
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if (menuViews.menuLayout.getVisibility() == View.GONE)
+//                    return false;
+//                //else visiable
+//                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//                    hideLeftMenu();
+//                }
+//                return true;
+//            }
+//        });
+
+
+
+        menuViews.userImg = (ImageView)this.findViewById(R.id.user_img);
+        menuViews.userNameTv = (TextView)this.findViewById(R.id.user_name);
+        findViewById(R.id.user_layout).setOnClickListener(this);
+
+        menuViews.menuContent = this.findViewById(R.id.menu_content);
+        menuViews.menuBlank = this.findViewById(R.id.menu_blank);
+        menuViews.menuLayout.setVisibility(View.GONE);
+        menuViews.menuBlank.setVisibility(View.GONE);
+
+        menuViews.menuBlank.setOnTouchListener(new OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (menuViews.menu_layout.getVisibility() == View.GONE)
+                if (menuViews.menuLayout.getVisibility() == View.GONE)
                     return false;
                 //else visiable
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     hideLeftMenu();
                 }
                 return true;
-            }
-        });
+            }});
 
-        menuViews.userImg = (ImageView)this.findViewById(R.id.user_img);
-        menuViews.userNameTv = (TextView)this.findViewById(R.id.user_name);
-        findViewById(R.id.user_layout).setOnClickListener(this);
-
-        menuViews.left_layout = this.findViewById(R.id.left_layout);
-        menuViews.left_layout.setOnTouchListener(new OnTouchListener() {
+        menuViews.menuContent.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (menuViews.menu_layout.getVisibility() == View.GONE)
+                if (menuViews.menuLayout.getVisibility() == View.GONE)
                     return false;
                 else
                     return true;
             }
         });
-
         findViewById(R.id.call_help_tv).setOnClickListener(this);
         menuViews.menuListView = (ListView) this.findViewById(R.id.menu_list_view);
         menuViews.tagAdapter =  new MenuAdapter();
@@ -540,7 +595,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
                         showO2OPg();
                         break;
                     case 5://setting
-                        UiUtils.startActivity(MainActivity.this, VerifyLoginActivity.class,true);
+                        UiUtils.startActivity(MainActivity.this, AppSettingActivity.class,true);
                         break;
                     case 0:
                     default://home
@@ -548,32 +603,6 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
                         showHomePg();
                         break;
                 }
-            }
-        });
-
-
-        menuViews.menuInAnim = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1,Animation.RELATIVE_TO_SELF,0,
-                Animation.RELATIVE_TO_SELF, 0,Animation.RELATIVE_TO_SELF,0);
-        menuViews.menuInAnim.setFillAfter(true);
-        menuViews.menuInAnim.setDuration(menuViews.menuInInterval);
-
-        menuViews.menuOutAnim = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0,Animation.RELATIVE_TO_SELF,-1,
-                Animation.RELATIVE_TO_SELF, 0,Animation.RELATIVE_TO_SELF,0);
-        menuViews.menuOutAnim.setFillAfter(true);
-        menuViews.menuOutAnim.setDuration(menuViews.menuOutInterval);
-        menuViews.menuOutAnim.setAnimationListener(new AnimationListener(){
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                menuViews.menu_layout.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationStart(Animation animation) {
             }
         });
     }

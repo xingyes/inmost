@@ -36,14 +36,14 @@
         android:text="@string/no_content"/>
     
     <!-- menu layout -->
-    <RelativeLayout 
+    <RelativeLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:id="@+id/menu_layout"
         android:background="#73000000"
         android:visibility="gone">
         <RelativeLayout
-            android:id="@+id/left_layout"
+            android:id="@+id/menu_content"
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:paddingTop="20dp"
@@ -127,8 +127,8 @@
         <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@id/left_layout"
-        android:id="@+id/right_layout"/>
+        android:layout_toRightOf="@id/menu_content"
+        android:id="@+id/menu_blank"/>
     </RelativeLayout>
     <!-- end of menu layout -->
 

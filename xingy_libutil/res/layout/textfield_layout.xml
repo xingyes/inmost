@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content">
 
+    <!-- pre img-->
     <ImageView
         android:layout_alignParentLeft="true"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:id="@+id/left_drawable"
         android:layout_gravity="center_vertical"
-        android:layout_marginRight="5dp"/>
+        android:layout_marginRight="5dp"
+        android:visibility="gone"/>
     <com.android.volley.toolbox.NetworkImageView
         android:layout_alignParentLeft="true"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:id="@+id/left_net_drawable"
         android:layout_gravity="center_vertical"
-        android:layout_marginRight="5dp"/>
+        android:layout_marginRight="5dp"
+        android:visibility="gone"/>
 
     <ImageView android:id="@+id/textfield_drawable_right"
         android:layout_width="wrap_content"
@@ -36,44 +39,15 @@
         android:textSize="@dimen/font_size_28xp"
         android:textColor="@color/global_text_gray"
         android:singleLine="true"/>
-    
-    <RelativeLayout android:id="@+id/textfield_right_layout"
+
+    <TextView
+        android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:visibility="gone">
+        android:id="@+id/textfiled_content"
+        android:layout_toLeftOf="@id/textfield_drawable_right"
+        android:textSize="@dimen/font_size_24xp"
+        android:textColor="@color/global_text_info_color"
+        />
 
-        
-        <TextView android:id="@+id/textfield_sub_caption"
-            android:layout_alignParentLeft="true"
-        	android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-			android:lineSpacingExtra="@dimen/margin_size_10xp"
-			android:textSize="@dimen/font_size_24xp"
-        	android:textColor="@color/global_text_info_color"
-            android:text="sub captio"
-            android:visibility="gone"/>
-        
-
-            <TextView android:id="@+id/textfiled_content"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="3"
-                android:ellipsize="end"
-                android:textColor="@color/black"
-                android:text="content content\n1111\n1111\n"
-                android:textSize="@dimen/font_size_26xp" />
-            
-            <TextView android:id="@+id/textfield_info"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_size_10xp"
-                android:lineSpacingExtra="@dimen/margin_size_10xp"
-                android:textSize="@dimen/font_size_26xp"
-                android:maxLines="3"
-                android:ellipsize="end"
-                android:textColor="@color/black"
-                android:text="info nfo"/>
-
-    </RelativeLayout>
 </RelativeLayout>

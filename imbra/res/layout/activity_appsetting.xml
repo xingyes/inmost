@@ -1,0 +1,82 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/global_gray_light">
+
+    <com.xingy.lib.ui.NavigationBar
+        android:layout_alignParentTop="true"
+        android:id="@+id/appsetting_nav"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        inmost:leftVisiable="true"
+        inmost:text="@string/setting"
+        inmost:drawableLeft="@drawable/pink_icon_back"
+        inmost:bgColor="@color/white"
+        inmost:textColor="@color/global_pink"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/global_pink"
+        android:layout_below="@id/appsetting_nav"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appsetting_nav"
+        android:background="#fff"
+        android:layout_marginTop="1px"
+        android:orientation="vertical">
+        <com.xingy.lib.ui.TextField
+            android:id="@+id/clear_cache"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/global_white_shadow_click_state"
+            android:paddingBottom="@dimen/margin_size_25xp"
+            android:paddingLeft="@dimen/margin_size_30xp"
+            android:paddingRight="@dimen/margin_size_30xp"
+            android:paddingTop="@dimen/margin_size_25xp"
+            inmost:caption="@string/clear_cache"
+            inmost:drawableLeft="@drawable/icon_clear"
+            inmost:contentColor="@color/black"
+            inmost:contentGravity="left"
+            inmost:contentSize="@dimen/font_size_30xp"
+            inmost:drawableRight="@drawable/right_arrow" />
+        <View  style="@style/global_line2"/>
+        <com.xingy.lib.ui.TextField
+            android:id="@+id/contact_us"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/global_white_shadow_click_state"
+            android:paddingBottom="@dimen/margin_size_25xp"
+            android:paddingLeft="@dimen/margin_size_30xp"
+            android:paddingRight="@dimen/margin_size_30xp"
+            android:paddingTop="@dimen/margin_size_25xp"
+            inmost:caption="@string/contact_us"
+            inmost:contentColor="@color/black"
+            inmost:drawableLeft="@drawable/icon_contact"
+            inmost:contentGravity="left"
+            inmost:contentSize="@dimen/font_size_30xp"
+            inmost:drawableRight="@drawable/right_arrow" />
+        <View  style="@style/global_line2"/>
+        <com.xingy.lib.ui.TextField
+            android:id="@+id/about_us"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/global_white_shadow_click_state"
+            android:paddingBottom="@dimen/margin_size_25xp"
+            android:paddingLeft="@dimen/margin_size_30xp"
+            android:paddingRight="@dimen/margin_size_30xp"
+            android:paddingTop="@dimen/margin_size_25xp"
+            inmost:caption="@string/about_us"
+            inmost:contentColor="@color/black"
+            inmost:drawableLeft="@drawable/fav_off"
+            inmost:contentGravity="left"
+            inmost:contentSize="@dimen/font_size_30xp"
+            inmost:drawableRight="@drawable/right_arrow" />
+
+        <View  style="@style/global_line2"/>
+    </LinearLayout>
+
+
+</RelativeLayout>
+ 

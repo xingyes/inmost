@@ -95,4 +95,20 @@ public class MemDiskImageCache implements ImageLoader.ImageCache{
             }
         });
     }
+
+    public void clearDiskCache()
+    {
+        if(null!=fileUtils)
+        {
+            fileUtils.clearDiskCache();
+        }
+    }
+
+    public String getImgCacheSize(Context context)
+    {
+        if(null!=fileUtils)
+            return fileUtils.getTotalCacheSize(context);
+        else
+            return "";
+    }
 }

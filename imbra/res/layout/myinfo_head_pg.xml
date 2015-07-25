@@ -53,7 +53,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="我的收藏"
-            android:drawableTop="@drawable/fav_icon"
+            android:drawableTop="@drawable/fav_off"
             android:textColor="@color/txt_pink_gray_selector"
             android:textSize="@dimen/bar_font_30"
             android:gravity="center"

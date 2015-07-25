@@ -75,6 +75,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".main.HTML5Activity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".main.AppSettingActivity"
+            android:screenOrientation="portrait"/>
 
 
         <activity android:name=".product.ProductDetailActivity"
