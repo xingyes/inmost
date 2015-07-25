@@ -51,7 +51,7 @@
             android:paddingLeft="@dimen/margin_size_30xp"
             android:paddingRight="@dimen/margin_size_30xp"
             android:paddingTop="@dimen/margin_size_25xp"
-            inmost:caption="@string/contact_us"
+            inmost:caption="@string/feed_back"
             inmost:contentColor="@color/black"
             inmost:drawableLeft="@drawable/icon_contact"
             inmost:contentGravity="left"

@@ -89,7 +89,9 @@ public class AppSettingActivity extends BaseActivity{
                 UiUtils.startActivity(AppSettingActivity.this,ContactUsActivity.class,true);
                 break;
             case R.id.about_us:
-                UiUtils.startActivity(AppSettingActivity.this, AddressListActivity.class, true);
+                Bundle bundle = new Bundle();
+                bundle.putString(HTML5Activity.ORI_URL, "http://www.o2bra.com.cn/");
+                UiUtils.startActivity(AppSettingActivity.this,HTML5Activity.class,bundle,true);
                 break;
             default:
                 super.onClick(v);

@@ -87,7 +87,7 @@
     <string name="bind_phone">绑定手机</string>
     <string name="clear_cache">清除缓存</string>
     <string name="contact_us">联系我们</string>
-    <string name="about_us">联系我们</string>
+    <string name="about_us"> 关于IMBra</string>
 
     <string name="input_coupon">请输入优惠码</string>
     <string name="no_coupon_hint">Opps，您还没有优惠券呢～</string>
