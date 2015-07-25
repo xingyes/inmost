@@ -8,12 +8,13 @@ import java.io.Serializable;
 
 public class ProductModel implements Serializable {
 
-    public String id;
-    public String title;
+    public String id;    //skuid
+    public String title;  //pn
     public String sale_price;
     public String ori_price;
-    public String front;
-    public String brandname;
+    public String front;   //pic
+    public String brandname; //bdesc
+    public String brandid;
     public boolean fav;
 
 	public void clear() {
@@ -24,6 +25,20 @@ public class ProductModel implements Serializable {
         front = "";
         brandname = "";
         fav = false;
+        brandid = "";
+    }
+
+    public void parseBra(JSONObject jsonObject) {
+        clear();
+        id = jsonObject.optString("skuid");
+        title = jsonObject.optString("pn");
+        front = jsonObject.optString("pic");
+        brandname = jsonObject.optString("bdesc");
+        brandid = jsonObject.optString("bid");
+
+        sale_price = jsonObject.optString("sale_price");
+        ori_price = jsonObject.optString("ori_price");
+        fav = jsonObject.optBoolean("fav");
     }
 
     public void parse(JSONObject jsonObject) {

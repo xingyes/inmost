@@ -27,6 +27,7 @@ import com.xingy.lib.ui.MyScrollView;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.DPIUtil;
 import com.xingy.util.ServiceConfig;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
@@ -48,7 +49,6 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
     public static final String PRO_ID = "pro_id";
     private ImageLoader mImgLoader;
     private String mProId;
-    private String mBrandId;
     private Ajax mAjax;
     private ProductModel proModel;
 
@@ -82,18 +82,6 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         contentLayout = (LinearLayout) this.findViewById(R.id.scroll_content);
 
         requestData();
-//
-//        initProDetail();
-//
-//        initRecommend();
-//
-//        initBrand();
-//
-//        initShopping();
-//
-//        initShoppingHint();
-
-
     }
 
 
@@ -101,8 +89,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         mAjax = ServiceConfig.getAjax(braConfig.URL_PRODUCT_DETAIL);
         if (null == mAjax)
             return;
-        String url = mAjax.getUrl() + mProId;
-        mAjax.setUrl(url);
+        mAjax.setData("pid",1);
 
         showLoadingLayer();
         mAjax.setId(AJX_PRO_DETAIL);
@@ -146,18 +133,25 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
     public void onSuccess(JSONObject jsonObject, Response response) {
 
         closeLoadingLayer();
+        int err = jsonObject.optInt("err");
+        if(err!=0)
+        {
+            String msg =  jsonObject.optString("msg");
+            UiUtils.makeToast(this, ToolUtil.isEmpty(msg) ? getString(R.string.parser_error_msg): msg);
+            return;
+        }
         if(response.getId() == AJX_PRO_DETAIL) {
-            JSONObject projson = jsonObject.optJSONObject("product");
+            JSONObject projson = jsonObject.optJSONObject("dt");
             proModel = new ProductModel();
-            proModel.parse(projson);
+            proModel.parseBra(projson);
 
             initProHead();
 
             initContent(projson);
 
-            initBrand(projson.optJSONObject("brand"));
+            initBrand();
 
-            initShopping(projson.optJSONObject("stock"));
+            initShopping(projson);
 
             BlogVolleyActivity.addShoppingHint(contentLayout, ProductDetailActivity.this, mImgLoader, DPIUtil.dip2px(15));
         }
@@ -222,7 +216,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
 
         proHolder.productLayout = getLayoutInflater().inflate(R.layout.product_brief, null);
         proHolder.av = (AutoHeightImageView) proHolder.productLayout.findViewById(R.id.main_pro_img);
-        proHolder.av.setImageUrl(HomeFloorModel.formBraUrl(proModel.front), mImgLoader);
+        proHolder.av.setImageUrl(proModel.front, mImgLoader);
         proHolder.titlev = (TextView) proHolder.productLayout.findViewById(R.id.main_pro_title);
         proHolder.titlev.setText(proModel.title);
         proHolder.pricev = (TextView) proHolder.productLayout.findViewById(R.id.main_pro_price);
@@ -252,35 +246,31 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
      * content part
      */
     private void initContent(JSONObject json) {
-        BlogVolleyActivity.addArticleContent(contentLayout, this, json.optString("description"),DPIUtil.dip2px(15));
         if(null == imgUrlArray) {
             imgvIdxMap = new HashMap<ImageView, Integer>();
             imgUrlArray = new ArrayList<String>();
         }
-        JSONArray ary = json.optJSONArray("pictures");
+        JSONArray ary = json.optJSONArray("content");
         for (int i = 0; null != ary && i < ary.length(); i++) {
-            JSONObject pi = ary.optJSONObject(i);
-            //img
-            String imgurl = HomeFloorModel.formBraUrl(pi.optString("original"));
-            int w = pi.optInt("width");
-            int h = pi.optInt("height");
+            String info = ary.optString(i);
+            if(info.startsWith("http://")) {
+//                int w = pi.optInt("width");
+//                int h = pi.optInt("height");
 
-            String txt = pi.optString("description");
-
-            NetworkImageView v = BlogVolleyActivity.addArticleImg(contentLayout, this, w, h);
-            v.setImageUrl(imgurl, mImgLoader);
-            imgvIdxMap.put(v, imgUrlArray.size());
-            imgUrlArray.add(imgurl);
-            v.setOnClickListener(this);
-
-            BlogVolleyActivity.addArticleContent(contentLayout, this, txt,DPIUtil.dip2px(15));
+                NetworkImageView v = BlogVolleyActivity.addArticleImg(contentLayout, this, 640, 640);
+                v.setImageUrl(info, mImgLoader);
+                imgvIdxMap.put(v, imgUrlArray.size());
+                imgUrlArray.add(info);
+                v.setOnClickListener(this);
+            }
+            else
+                BlogVolleyActivity.addArticleContent(contentLayout, this, info,DPIUtil.dip2px(15));
         }
     }
 
-    private void initBrand(JSONObject json)
+    private void initBrand()
     {
-        mBrandId = json.optString("id");
-        if(TextUtils.isEmpty(mBrandId))
+        if(TextUtils.isEmpty(proModel.brandid))
             return;
 
         if (null == proHolder)
@@ -288,7 +278,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
 
         proHolder.brandLayout = getLayoutInflater().inflate(R.layout.brand_brief, null);
         proHolder.brandv = (TextView) proHolder.brandLayout.findViewById(R.id.brand_info);
-        proHolder.brandv.setText(json.optString("description"));
+        proHolder.brandv.setText(proModel.brandname);
 
         proHolder.brandLayout.findViewById(R.id.brand_go_btn).setOnClickListener(this);
         contentLayout.addView(proHolder.brandLayout);
@@ -305,17 +295,8 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         proHolder.shopping_status_infov = (TextView) proHolder.shoppingLayout.findViewById(R.id.status_info);
         proHolder.shopping_sizev = (TextView) proHolder.shoppingLayout.findViewById(R.id.shopping_sizes_tv);
 
-        proHolder.shopping_status_infov.setText("商品状态：" + json.optString("desc"));
-        JSONArray sizeArray = json.optJSONArray("stocks");
-        String sizeStr = "";
-        String space = "   ";
-        for(int i = 0; i< sizeArray.length();i++)
-        {
-            sizeStr += sizeArray.optJSONObject(i).optString("size");
-            if(i+1<sizeArray.length())
-                sizeStr += space;
-        }
-        proHolder.shopping_sizev.setText(sizeStr);
+        proHolder.shopping_status_infov.setText("商品状态：" + json.optString("stat"));
+        proHolder.shopping_sizev.setText(json.optString("size"));
         proHolder.shoppingLayout.findViewById(R.id.shopping_go_btn).setOnClickListener(this);
         contentLayout.addView(proHolder.shoppingLayout);
     }
@@ -336,7 +317,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
             switch (v.getId()) {
                 case R.id.brand_go_btn:
                     bundle = new Bundle();
-                    bundle.putString(BrandInfoActivity.BRAND_ID,mBrandId);
+                    bundle.putString(BrandInfoActivity.BRAND_ID,proModel.brandid);
                     UiUtils.startActivity(ProductDetailActivity.this,BrandInfoActivity.class,bundle,true);
                     break;
                 case R.id.share_btn:
