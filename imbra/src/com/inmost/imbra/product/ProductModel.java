@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 
 public class ProductModel implements Serializable {
 
@@ -15,8 +17,12 @@ public class ProductModel implements Serializable {
     public String front;   //pic
     public String brandname; //bdesc
     public String brandid;
+    public String state;
+    public ArrayList<String> choose;
+    public String  chooseStr;
     public boolean fav;
 
+    public ProductModel(){clear();}
 	public void clear() {
         id = "";
         title = "";
@@ -26,6 +32,11 @@ public class ProductModel implements Serializable {
         brandname = "";
         fav = false;
         brandid = "";
+        chooseStr = "";
+        if(null==choose)
+            choose = new ArrayList<String>();
+        else
+            choose.clear();
     }
 
     public void parseBra(JSONObject jsonObject) {
@@ -36,8 +47,21 @@ public class ProductModel implements Serializable {
         brandname = jsonObject.optString("bdesc");
         brandid = jsonObject.optString("bid");
 
-        sale_price = jsonObject.optString("sale_price");
-        ori_price = jsonObject.optString("ori_price");
+        state = jsonObject.optString("stat");
+        chooseStr = jsonObject.optString("size");
+        if(!TextUtils.isEmpty(chooseStr))
+        {
+            String items[] = chooseStr.split(",",-1);
+            for(String item : items )
+                choose.add(item);
+        }
+        BigDecimal hun = new BigDecimal(100);
+        BigDecimal it = new BigDecimal(jsonObject.optLong("price"));
+        it = it.divide(hun ,2);
+        sale_price =  it.toPlainString();
+        it = new BigDecimal(jsonObject.optLong("dprice"));
+        it = it.divide(hun ,2);
+        ori_price = it.toPlainString();
         fav = jsonObject.optBoolean("fav");
     }
 

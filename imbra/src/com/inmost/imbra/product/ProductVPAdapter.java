@@ -22,7 +22,7 @@ public class ProductVPAdapter extends PagerAdapter {
     private ArrayList<ProductModel> mProArray;
     private LayoutInflater mInflater;
     private ImageLoader mImgLoader;
-
+    private Context   mContext;
 
     public interface OnVPItemClickListener
     {
@@ -31,6 +31,7 @@ public class ProductVPAdapter extends PagerAdapter {
     private OnVPItemClickListener listener;
     public ProductVPAdapter(Context context, ImageLoader loader,ArrayList<ProductModel> array,
                             OnVPItemClickListener alistener) {
+        mContext = context;
         mInflater = LayoutInflater.from(context);
         mImgLoader = loader;
         mProArray = array;
@@ -70,7 +71,7 @@ public class ProductVPAdapter extends PagerAdapter {
         oldpriceTv.setText(item.ori_price);
 
         TextView priceTv = (TextView)page.findViewById(R.id.pro_price);
-        priceTv.setText(item.sale_price);
+        priceTv.setText(mContext.getString(R.string.rmb_price,item.sale_price));
 
 
         ((ViewPager) view).addView(page);

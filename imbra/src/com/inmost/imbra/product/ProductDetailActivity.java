@@ -47,6 +47,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
     public static final int  AJX_PRO_DETAIL = 1125;
 
     public static final String PRO_ID = "pro_id";
+    public static final String PRO_MODEL = "pro_model";
     private ImageLoader mImgLoader;
     private String mProId;
     private Ajax mAjax;
@@ -151,7 +152,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
 
             initBrand();
 
-            initShopping(projson);
+            initShopping();
 
             BlogVolleyActivity.addShoppingHint(contentLayout, ProductDetailActivity.this, mImgLoader, DPIUtil.dip2px(15));
         }
@@ -220,7 +221,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         proHolder.titlev = (TextView) proHolder.productLayout.findViewById(R.id.main_pro_title);
         proHolder.titlev.setText(proModel.title);
         proHolder.pricev = (TextView) proHolder.productLayout.findViewById(R.id.main_pro_price);
-        proHolder.pricev.setText(proModel.sale_price);
+        proHolder.pricev.setText(getString(R.string.rmb_price,proModel.sale_price));
 
         proHolder.favbtn = (TextView)proHolder.productLayout.findViewById(R.id.fav_btn);
         proHolder.favonDrawable = getResources().getDrawable(R.drawable.fav_on);
@@ -285,7 +286,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
     }
 
 
-    private void initShopping(JSONObject json)
+    private void initShopping()
     {
         if (null == proHolder)
             proHolder = new ProViewHolder();
@@ -295,8 +296,8 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         proHolder.shopping_status_infov = (TextView) proHolder.shoppingLayout.findViewById(R.id.status_info);
         proHolder.shopping_sizev = (TextView) proHolder.shoppingLayout.findViewById(R.id.shopping_sizes_tv);
 
-        proHolder.shopping_status_infov.setText("商品状态：" + json.optString("stat"));
-        proHolder.shopping_sizev.setText(json.optString("size"));
+        proHolder.shopping_status_infov.setText("商品状态：" + proModel.state);
+        proHolder.shopping_sizev.setText(proModel.chooseStr);
         proHolder.shoppingLayout.findViewById(R.id.shopping_go_btn).setOnClickListener(this);
         contentLayout.addView(proHolder.shoppingLayout);
     }
@@ -333,7 +334,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
                 case R.id.shopping_btn:
                 case R.id.shopping_go_btn:
                     bundle = new Bundle();
-                    bundle.putString(PRO_ID, mProId);
+                    bundle.putSerializable(PRO_MODEL,proModel);
                     UiUtils.startActivity(ProductDetailActivity.this, ShoppingActivity.class, bundle, true);
                     break;
                 default:

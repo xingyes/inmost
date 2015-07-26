@@ -10,7 +10,13 @@ public class AddressModel implements Serializable{
     public String user;
     public String address;
     public String phone;
+
+    public long   provinceId;
+    public String provinceStr;
+    public long   cityId;
     public String  cityStr;
+    public long  townId;
+    public String townStr;
 
     public AddressModel()
     {
@@ -23,7 +29,13 @@ public class AddressModel implements Serializable{
         user = "";
         address="";
         phone="";
+        provinceId = 0;
+        cityId = 0;
+        townId = 0;
+        provinceStr = "";
         cityStr = "";
+        townStr = "";
+
     }
 
 	public void parse(JSONObject json){

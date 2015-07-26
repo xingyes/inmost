@@ -33,7 +33,6 @@
         android:gravity="left|center_vertical"
         android:layout_marginTop="10dp"
         android:singleLine="true"
-        android:text="11.1"
         android:textColor="@color/global_nav_text"
         android:textSize="@dimen/bar_font_24"/>
     <TextView

@@ -95,5 +95,8 @@
     <string name="no_fav_hint">Opps，您还没有收藏商品呢～</string>
 
 
+    <string name="pls_set_receiver">请设置收货人信息</string>
+
+
 
 </resources>

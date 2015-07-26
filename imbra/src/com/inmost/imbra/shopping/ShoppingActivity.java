@@ -2,15 +2,12 @@ package com.inmost.imbra.shopping;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -18,32 +15,27 @@ import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.inmost.imbra.R;
-import com.inmost.imbra.blog.BlogVolleyActivity;
-import com.inmost.imbra.brand.BrandInfoActivity;
-import com.inmost.imbra.imgallery.ImageCheckActivity;
-import com.inmost.imbra.main.HomeFloorModel;
 import com.inmost.imbra.main.IMbraApplication;
 import com.inmost.imbra.product.ProductDetailActivity;
 import com.inmost.imbra.product.ProductModel;
 import com.inmost.imbra.util.braConfig;
+import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.AutoHeightImageView;
 import com.xingy.lib.ui.MyScrollView;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.DPIUtil;
 import com.xingy.util.ServiceConfig;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
 import com.xingy.util.ajax.Response;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class ShoppingActivity extends BaseActivity implements OnSuccessListener<JSONObject> {
@@ -51,7 +43,6 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
     public static final int  CODE_SELECT_ADDRESS = 101;
 
     private ImageLoader mImgLoader;
-    private String mProId;
     private Ajax mAjax;
     private ProductModel proModel;
 
@@ -60,7 +51,7 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
 
 
     private boolean      bToSelf;
-    private int          sizeIdx = 0;
+    private int          chooseIdx = 0;
     private int          buyNum = 1;
     private static final int MAX_BUY_NUM = 999;
 
@@ -70,7 +61,6 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
     private RadioGroup          shoppingRg;
 
     private RadioGroup          sizeRg;
-    private ArrayList<String>   sizeArray;
 
     private EditText            numEditv;
 
@@ -97,7 +87,12 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
             return;
         }
 
-        mProId = mIntent.getStringExtra(ProductDetailActivity.PRO_ID);
+        proModel = (ProductModel) mIntent.getSerializableExtra(ProductDetailActivity.PRO_MODEL);
+        if(null == proModel)
+        {
+            finish();
+            return;
+        }
 
         RequestQueue mQueue = Volley.newRequestQueue(this);
         mImgLoader = new ImageLoader(mQueue, IMbraApplication.globalMDCache);
@@ -114,9 +109,13 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
     private void initViews()
     {
         proIv = (AutoHeightImageView)this.findViewById(R.id.main_pro_img);
+        proIv.setImageUrl(proModel.front,mImgLoader);
+
         proTitlev = (TextView)this.findViewById(R.id.main_pro_title);
+        proTitlev.setText(proModel.title);
         proPricev = (TextView)this.findViewById(R.id.main_pro_price);
-        this.findViewById(R.id.main_opt_layout).setVisibility(View.GONE);
+        proPricev.setText(getString(R.string.rmb_price,proModel.sale_price));
+        findViewById(R.id.main_opt_layout).setVisibility(View.GONE);
 
         shoppingRg = (RadioGroup)this.findViewById(R.id.shopping_opt_rg);
         shoppingRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -134,14 +133,10 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
 
         sizeRg = (RadioGroup)this.findViewById(R.id.size_rg);
 
-        sizeArray = new ArrayList<String>();
-        sizeArray.add("S");
-        sizeArray.add("M");
-        sizeArray.add("L");
         RadioGroup.LayoutParams rl = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT,RadioGroup.LayoutParams.WRAP_CONTENT);
         rl.leftMargin = DPIUtil.dip2px(10);
         rl.rightMargin = DPIUtil.dip2px(10);
-        for(int i = 0 ; i < sizeArray.size();i++) {
+        for(int i = 0 ; null!=proModel.choose && i < proModel.choose.size();i++) {
             RadioButton rb = new RadioButton(this);
             rb.setBackgroundResource(R.drawable.button_pink_frame_round);
             rb.setTextColor(getResources().getColorStateList(R.color.txt_pink_white_selector));
@@ -150,17 +145,18 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
             rb.setButtonDrawable(R.drawable.none);
             rb.setSingleLine(true);
             rb.setGravity(Gravity.CENTER);
-            rb.setText(sizeArray.get(i));
-
+            rb.setText(proModel.choose.get(i));
+            rb.setId(i);
             sizeRg.addView(rb, rl);
         }
         sizeRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                UiUtils.makeToast(ShoppingActivity.this,""+checkedId);
+                chooseIdx = checkedId;
+                UiUtils.makeToast(ShoppingActivity.this,proModel.choose.get(chooseIdx));
             }
         });
-
+        sizeRg.check(chooseIdx);
 
         numEditv = (EditText)this.findViewById(R.id.buy_count);
         numEditv.setText("" + buyNum);
@@ -229,26 +225,108 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
 
     }
 
-    private void requestData() {
-        mAjax = ServiceConfig.getAjax(braConfig.URL_PRODUCT_DETAIL);
+    private void debugCreateOrder()
+    {
+        if(null == addressModel)
+        {
+            UiUtils.makeToast(this,R.string.pls_set_receiver);
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("pid:" + proModel.id);
+        sb.append(",ty:" + (bToSelf ? 1 : 2));
+        sb.append(",qty:" + buyNum);
+        sb.append(",size:" + proModel.choose.get(chooseIdx));
+        sb.append(",province_id:" + addressModel.provinceId);
+        sb.append(",city_id" + addressModel.cityId);
+        sb.append(",town_id:" + addressModel.townId);
+        sb.append(",addr:" + addressModel.address);
+        sb.append(",consignee:" + addressModel.user);
+        sb.append(",mob:" + addressModel.phone);
+        sb.append(",pty:" + 2);
+        sb.append(",remark:");
+        sb.append(",cpon:DFGASW");
+        sb.append(",token:122334566");
+        AppDialog bd = UiUtils.showDialog(this,"Buy",sb.toString(),R.string.btn_ok,
+                new AppDialog.OnClickListener() {
+                    @Override
+                    public void onDialogClick(int nButtonId) {
+                        createOrder();
+                    }
+                });
+    }
+
+    private void createOrder()
+    {
+
+        mAjax = ServiceConfig.getAjax(braConfig.URL_CREATE_ORDER);
         if (null == mAjax)
             return;
-        String url = mAjax.getUrl() + mProId;
-        mAjax.setUrl(url);
+
+        mAjax.setData("pid",proModel.id);
+        mAjax.setData("ty",bToSelf ? 1 : 2);
+        mAjax.setData("qty",buyNum);
+        mAjax.setData("size",proModel.choose.get(chooseIdx));
+
+        //area
+        mAjax.setData("province_id",addressModel.provinceId);
+        mAjax.setData("city_id",addressModel.cityId);
+        mAjax.setData("town_id",addressModel.townId);
+        mAjax.setData("addr",addressModel.address);
+        mAjax.setData("consignee",addressModel.user);
+        mAjax.setData("mob",addressModel.phone);
+        mAjax.setData("pty",2); //1-货到付款，2-微信支付，3-支付宝
+        if(!bToSelf)
+            mAjax.setData("remark","");
+
+        //coupon
+        mAjax.setData("cpon","DFGASW");
+
+        mAjax.setData("token","122334566");
 
         showLoadingLayer();
 
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);
         mAjax.send();
+
     }
+//    private void requestData() {
+//        mAjax = ServiceConfig.getAjax(braConfig.URL_PRODUCT_DETAIL);
+//        if (null == mAjax)
+//            return;
+//        String url = mAjax.getUrl() + mProId;
+//        mAjax.setUrl(url);
+//
+//        showLoadingLayer();
+//
+//        mAjax.setOnSuccessListener(this);
+//        mAjax.setOnErrorListener(this);
+//        mAjax.send();
+//    }
 
 
     @Override
     public void onSuccess(JSONObject jsonObject, Response response) {
+
+        closeLoadingLayer();
+        int err = jsonObject.optInt("err");
+        if(err!=0)
+        {
+            String msg =  jsonObject.optString("msg");
+            UiUtils.makeToast(this, ToolUtil.isEmpty(msg) ? getString(R.string.parser_error_msg): msg);
+            return;
+        }
+
         JSONObject projson = jsonObject.optJSONObject("product");
         proModel = new ProductModel();
         proModel.parse(projson);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(OrderActivity.ORDER_ID,"11121234");
+        bundle.putInt(OrderActivity.ORDER_STATUS,OrderActivity.STATUS_CREATE);
+        UiUtils.startActivity(ShoppingActivity.this,OrderActivity.class,bundle,true);
 
     }
 
@@ -281,9 +359,7 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
                 startActivityForResult(ait,CODE_SELECT_ADDRESS);
                 break;
             case  R.id.submit_order:
-                bundle.putString(OrderActivity.ORDER_ID,"11121234");
-                bundle.putInt(OrderActivity.ORDER_STATUS,OrderActivity.STATUS_CREATE);
-                UiUtils.startActivity(ShoppingActivity.this,OrderActivity.class,bundle,true);
+                debugCreateOrder();//createOrder();
                 break;
             default:
                 super.onClick(v);

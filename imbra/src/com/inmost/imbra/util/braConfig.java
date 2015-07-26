@@ -20,6 +20,7 @@ public class braConfig extends Config {
     public static final String URL_GET_LOOK = "URL_GET_LOOK";
 
     public static final String URL_PRODUCT_DETAIL = "URL_PRODUCT_DETAIL";
+    public static final String URL_CREATE_ORDER = "URL_CREATE_ORDER";
 
     public static final String URL_BRAND_INFO = "URL_BRAND_INFO";
 
@@ -36,7 +37,7 @@ public class braConfig extends Config {
 
     //address
     public static final String URL_GET_ADDRESSLIST = "URL_GET_ADDRESSLIST";
-    public static final String URL_ADD_ADDRESS = "URL_ADD_ADDRESS";
+    public static final String URL_EDIT_ADDRESS = "URL_EDIT_ADDRESS";
 
     //login
     public static final String URL_LOGIN = "URL_LOGIN";

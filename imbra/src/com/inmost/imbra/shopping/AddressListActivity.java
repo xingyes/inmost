@@ -80,6 +80,9 @@ public class AddressListActivity extends BaseActivity implements OnSuccessListen
         for(int i = 0 ; i< 4 ; i++)
         {
             AddressModel item = new AddressModel();
+            item.provinceId = 10 + i;
+            item.cityId = 50 + i*2;
+            item.townId = 23 + i;
             item.address = "淞虹路1111号" + i + "楼";
             item.user = "张三" + i;
             item.phone = "1394040123" + i;

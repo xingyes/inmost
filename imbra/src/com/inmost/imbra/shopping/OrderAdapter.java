@@ -115,7 +115,7 @@ public class OrderAdapter extends BaseAdapter {
 
         holder.aimgv.setImageUrl(HomeFloorModel.formBraUrl(orderItem.promodel.front),mImgLoader);
         holder.namev.setText(orderItem.promodel.title);
-        holder.pricev.setText(orderItem.promodel.sale_price);
+        holder.pricev.setText(mActivity.getString(R.string.rmb_price,orderItem.promodel.sale_price));
 
         holder.ordertimev.setText(ToolUtil.formatSuitableDate(orderItem.ordertime));
 

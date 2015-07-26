@@ -96,7 +96,7 @@ public class Product2RowAdapter extends BaseAdapter {
         holder.aimgV1.setImageUrl(HomeFloorModel.formBraUrl(pro.front),mImgLoader);
 
         holder.name1.setText(pro.title);
-        holder.price1.setText(pro.sale_price);
+        holder.price1.setText(mActivity.getString(R.string.rmb_price,pro.sale_price));
 
         if(mProArray.size() <= position*2+1)
             holder.twoLayout.setVisibility(View.INVISIBLE);
@@ -106,7 +106,7 @@ public class Product2RowAdapter extends BaseAdapter {
             holder.twoLayout.setTag(position*2+1);
             holder.aimgV2.setImageUrl(HomeFloorModel.formBraUrl(pro2.front),mImgLoader);
             holder.name2.setText(pro2.title);
-            holder.price2.setText(pro2.sale_price);
+            holder.price2.setText(mActivity.getString(R.string.rmb_price,pro2.sale_price));
         }
 
 

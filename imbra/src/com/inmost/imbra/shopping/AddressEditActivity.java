@@ -26,7 +26,7 @@ import org.json.JSONObject;
 /**
  * Created by xingyao on 15-7-10.
  */
-public class AddressEditActivity extends BaseActivity {
+public class AddressEditActivity extends BaseActivity implements OnSuccessListener<JSONObject> {
 
     private Ajax mAjax;
     public static final String ADDRESS_MODEL = "address_model";
@@ -76,6 +76,8 @@ public class AddressEditActivity extends BaseActivity {
             addressEt.setText(addressModel.address);
             areaEt.setText(addressModel.cityStr);
         }
+        else
+            addressModel = new AddressModel();
 
         setResult(RESULT_CANCELED,null);
 
@@ -115,6 +117,26 @@ public class AddressEditActivity extends BaseActivity {
 //        mAjax.send();
 //    }
 
+    public void submitEditAddress()
+    {
+        if(!TextUtils.isEmpty(addressModel.addid ))
+            mAjax.setData("addid",addressModel.addid);
+        addressModel.user = nameEt.getText().toString();
+        addressModel.phone = phoneEt.getText().toString();
+        addressModel.address = addressEt.getText().toString();
+
+        setResult(RESULT_OK,null);
+        finish();
+
+        mAjax = ServiceConfig.getAjax(braConfig.URL_EDIT_ADDRESS);
+        if (null == mAjax)
+            return;
+
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+    }
 
     @Override
     public void onClick(View v)
@@ -128,19 +150,22 @@ public class AddressEditActivity extends BaseActivity {
 
                         @Override
                         public void onSubmit() {
-                            String province_name = mAreaPicker.getProvince().getProvinceName();
-                            String city_name = mAreaPicker.getCity().getCityName();
-                            String district_name = (null == mAreaPicker.getZone()  ? "" : mAreaPicker.getZone().getZoneName());
+                            addressModel.provinceId = mAreaPicker.getProvince().getSortId();
 
-                            areaEt.setText(province_name + " " + city_name + " " + district_name);
+//                            addressModel.cityId = mAreaPicker.getCity();
+//                            addressModel.townId = mAreaPicker.getZone();
+                            addressModel.provinceStr = mAreaPicker.getProvince().getProvinceName();
+                            addressModel.cityStr = mAreaPicker.getCity().getCityName();
+                            addressModel.townStr = (null == mAreaPicker.getZone()  ? "" : mAreaPicker.getZone().getZoneName());
+
+                            areaEt.setText(addressModel.provinceStr + " " + addressModel.cityStr + " " + addressModel.townStr);
                             mAreaPicker.setVisibility(View.INVISIBLE);
                         }};
                 }
                 mAreaPicker.setListener(mAreaPickerListener);
                 break;
             case R.id.submit_address:
-                setResult(RESULT_OK,null);
-                finish();
+                submitEditAddress();
                 break;
             default:
                 super.onClick(v);
@@ -149,5 +174,9 @@ public class AddressEditActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void onSuccess(JSONObject v, Response response) {
 
+
+    }
 }

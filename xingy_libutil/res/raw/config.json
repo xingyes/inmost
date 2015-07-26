@@ -7,7 +7,8 @@
 "URL_BASIC_PARAMS":{"url":"http:\/\/api.imbraa.com\/basic\/data.json","method":"GET"},
 "URL_SEARCH_PARAMS":{"url":"http:\/\/www.o2bra.com.cn\/api\/products\/searchCondition","method":"GET"},
 "URL_PRODUCT_DETAIL":{"url":"http:\/\/api.imbraa.com\/product\/detail.json","method":"GET"},
-"URL_BRAND_INFO":{"url":"http:\/\/www.o2bra.com.cn\/api\/brands\/","method":"GET"}
+"URL_BRAND_INFO":{"url":"http:\/\/www.o2bra.com.cn\/api\/brands\/","method":"GET"},
+"URL_CREATE_ORDER":{"url":"http:\/\/api.imbraa.com\/order\/act.json","method":"POST"}
 
 },"enable":true,"message":"","version":"1","autoResume":1}
 

@@ -216,6 +216,12 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
 
         usrNamev = (TextView)headV.findViewById(R.id.user_name);
         usrNamev.setText("King");
+        usrNamev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UiUtils.startActivity(MyInfoActivity.this,VerifyLoginActivity.class,true);
+            }
+        });
 
         tabGroup = (RadioGroup)headV.findViewById(R.id.my_tab_rg);
         tabGroup.setOnCheckedChangeListener(this);
