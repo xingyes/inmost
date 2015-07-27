@@ -2,6 +2,8 @@ package com.inmost.imbra.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
@@ -56,11 +58,18 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         RadioGroup.OnCheckedChangeListener{
 
 	public static final String REQUEST_SEARCH_MODEL = "search_model";
-
-//	private Handler  mHandler = new Handler(){
-//		@Override
-//		public void handleMessage(Message msg)
-//		{
+    public static int  MSG_REFRESH_BACKTIME = 982;
+    public long   backtime = 0;
+	private Handler mHandler = new Handler()
+    {
+		@Override
+		public void handleMessage(Message msg) {
+            if(msg.what == MSG_REFRESH_BACKTIME)
+                backtime = 0;
+            else
+                super.handleMessage(msg);
+        }
+    };
 //			Animation itemPopOutAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.pop_oversize);
 //			switch(msg.what)
 //			{
@@ -352,8 +361,15 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 		}
         else if(null!=mOptPanelHolder && mOptPanelHolder.optLayout.getVisibility()==View.VISIBLE)
             hideOptLayout();
-        else
-			super.onBackPressed();
+        else {
+            if (backtime <= 0) {
+                backtime = System.currentTimeMillis();
+                UiUtils.makeToast(this, R.string.press_again_to_exit);
+                mHandler.sendEmptyMessageDelayed(MSG_REFRESH_BACKTIME, 1000);
+            } else {
+                super.onBackPressed();
+            }
+        }
 	}
 	
 	@Override
@@ -890,7 +906,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
         IPageCache cache = new IPageCache();
         String content = cache.get(BasicParamModel.CACHE_KEY);
-        if(!TextUtils.isEmpty(content) && !cache.isExpire(BasicParamModel.CACHE_KEY))
+        if(!TextUtils.isEmpty(content))
         {
             try {
                 JSONObject json = new JSONObject(content);
@@ -902,7 +918,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
                 e.printStackTrace();
             }
         }
-        else
+//        if(cache.isExpire(BasicParamModel.CACHE_KEY))
         {
             mAjax = ServiceConfig.getAjax(braConfig.URL_BASIC_PARAMS);
             if (null == mAjax)
@@ -935,6 +951,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
     @Override
     public void onSuccess(JSONObject jsonObject, Response response) {
+        mSearchParams.clear();
         mSearchParams.parse(jsonObject);
 
         IPageCache cache = new IPageCache();

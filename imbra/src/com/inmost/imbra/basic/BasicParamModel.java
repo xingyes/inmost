@@ -27,19 +27,32 @@ public class BasicParamModel {
     public void clear() {
         if (null == brandModel)
             brandModel = new BasicParamItemModel();
+        else
+            brandModel.clear();
         if (null == funcModel)
             funcModel = new BasicParamItemModel();
+        else
+            funcModel.clear();
         if (null == pricerangeModel)
             pricerangeModel = new BasicParamItemModel();
+        else
+            pricerangeModel.clear();
         if (null == guideModel)
             guideModel = new BasicParamItemModel();
+        else
+            guideModel.clear();
         if (null == optiontypeModel)
             optiontypeModel = new BasicParamItemModel();
-
+        else
+            optiontypeModel.clear();
         if(null == sizeModel)
             sizeModel = new BasicParamItemModel();
+        else
+            sizeModel.clear();
         if(null == cupModel)
             cupModel = new BasicParamItemModel();
+        else
+            cupModel.clear();
 
     }
 
