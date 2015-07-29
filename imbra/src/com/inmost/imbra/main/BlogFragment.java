@@ -184,17 +184,17 @@ public class BlogFragment extends Fragment implements OnSuccessListener<JSONObje
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         HomeFloorModel item = mHomeFloors.get(position - 1);
-        if (item.type.equalsIgnoreCase(HomeFloorModel.TYPE_LOOKBOOK))
+        if (item.type == HomeFloorModel.TYPE_LOOKBOOK)
         {
             Bundle bundle = new Bundle();
             bundle.putString(HTML5Activity.ORI_URL, "http://www.o2bra.com.cn/");
             UiUtils.startActivity(mActivity,HTML5Activity.class,bundle,true);
         }
-        else if (item.type.equalsIgnoreCase(HomeFloorModel.TYPE_COLLECTION)) {
+        else if (item.type == HomeFloorModel.TYPE_COLLECTION) {
             Bundle bund = new Bundle();
             bund.putString(CollectPagerActivity.COLLECT_ID, item.type_id);
             UiUtils.startActivity(mActivity, CollectPagerActivity.class, bund, true);
-        } else if (item.type.equalsIgnoreCase(HomeFloorModel.TYPE_BLOG)) {
+        } else if (item.type == HomeFloorModel.TYPE_BLOG) {
             Bundle bund = new Bundle();
             bund.putString(BlogVolleyActivity.BLOG_ID, item.type_id);
             UiUtils.startActivity(mActivity, BlogVolleyActivity.class, bund, true);

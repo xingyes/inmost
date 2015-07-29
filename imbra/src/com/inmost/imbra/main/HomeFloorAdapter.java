@@ -81,26 +81,26 @@ public class HomeFloorAdapter extends BaseAdapter {
         final HomeFloorModel model = mHomeFloors.get(position);
 
 
-        if (model.type.equalsIgnoreCase(HomeFloorModel.TYPE_COLLECTION)) {
+        if (model.type == HomeFloorModel.TYPE_COLLECTION) {
             holder.collectLayout.setVisibility(View.VISIBLE);
             holder.blogLayout.setVisibility(View.GONE);
             holder.lookLayout.setVisibility(View.GONE);
-            holder.rootBgView.setImageUrl(HomeFloorModel.formBraUrl(model.coverUrl),mImgLoader);
+            holder.rootBgView.setImageUrl(model.coverUrl,mImgLoader);
             holder.collectTitle.setText(model.title);
 
-        } else if (model.type.equalsIgnoreCase(HomeFloorModel.TYPE_BLOG)) {
+        } else if (model.type == HomeFloorModel.TYPE_BLOG) {
             holder.collectLayout.setVisibility(View.GONE);
             holder.blogLayout.setVisibility(View.VISIBLE);
             holder.lookLayout.setVisibility(View.GONE);
-            holder.blogCover.setImageUrl(HomeFloorModel.formBraUrl(model.coverUrl),mImgLoader);
+            holder.blogCover.setImageUrl(model.coverUrl,mImgLoader);
             holder.blogAuthor.setText(model.author);
             holder.blogTitle.setText(model.title);
             holder.blogDate.setText(model.textual_date);
-        } else if (model.type.equalsIgnoreCase(HomeFloorModel.TYPE_LOOKBOOK)) {
+        } else if (model.type == HomeFloorModel.TYPE_LOOKBOOK) {
             holder.collectLayout.setVisibility(View.GONE);
             holder.blogLayout.setVisibility(View.GONE);
             holder.lookLayout.setVisibility(View.VISIBLE);
-            holder.rootBgView.setImageUrl(HomeFloorModel.formBraUrl(model.coverUrl),mImgLoader);
+            holder.rootBgView.setImageUrl(model.coverUrl,mImgLoader);
             holder.lookTitle.setText(model.title);
 
         }

@@ -14,6 +14,7 @@ public class braConfig extends Config {
 
 	//////////Server api configuration.
 	public static final String URL_HOME_FLOOR = "URL_HOME_FLOOR";
+    public static final String URL_HOME_FLOOR_O2O = "URL_HOME_FLOOR_O2O";
 
     public static final String URL_GET_COLLECT = "URL_GET_COLLECT";
     public static final String URL_GET_BLOG = "URL_GET_BLOG";

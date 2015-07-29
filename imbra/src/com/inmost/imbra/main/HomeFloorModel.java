@@ -6,11 +6,15 @@ import org.json.JSONObject;
 
 public class HomeFloorModel {
 
-    public static final String TYPE_BLOG = "BLOG";
-    public static final String TYPE_COLLECTION = "COLLECTION";
-    public static final String TYPE_LOOKBOOK = "LOOKBOOK";
+//    public static final String TYPE_BLOG = "BLOG";
+//    public static final String TYPE_COLLECTION = "COLLECTION";
+//    public static final String TYPE_LOOKBOOK = "LOOKBOOK";
+    public static final int TYPE_BLOG = 2;
+    public static final int TYPE_COLLECTION = 1;
+    public static final int TYPE_LOOKBOOK = 3;
+
     public String id;
-    public String type;
+    public int type;
     public String type_id;
 	public String title;
     public String oriCoverurl;
@@ -26,7 +30,7 @@ public class HomeFloorModel {
     public void clear()
     {
         id = "";
-        type = "";
+        type = 0;
         type_id = "";
         title = "";
         oriCoverurl = "";
@@ -43,27 +47,47 @@ public class HomeFloorModel {
 
     public void parse(JSONObject jsonObject) {
         clear();
-        type = jsonObject.optString("type");
+        type = jsonObject.optInt("ty");
+        if(type<=0 || type>3)
+            return;
+
+        id = jsonObject.optString("id");
+        type_id = id;
+        coverUrl = jsonObject.optString("pic");
+        if(!coverUrl.startsWith("http://"))
+            coverUrl = formBraUrl(coverUrl);
+        title = jsonObject.optString("tit");
+        author = jsonObject.optString("usr");
+        textual_date = jsonObject.optString("adt");
+    }
+
+
+    public void parseCollect(JSONObject jsonObject) {
+        clear();
+        String strtype = jsonObject.optString("type");
+        if(strtype.equalsIgnoreCase("BLOG"))
+            type = TYPE_BLOG;
+        else if(strtype.equalsIgnoreCase("COLLECTION"))
+            type = TYPE_COLLECTION;
+        else if(strtype.equalsIgnoreCase("LOOKBOOK"))
+            type = TYPE_LOOKBOOK;
         id = jsonObject.optString("id");
         type_id = jsonObject.optString("type_id");
         coverUrl = jsonObject.optString("cover");
+        if(!coverUrl.startsWith("http://"))
+            coverUrl = formBraUrl(coverUrl);
+
         title = jsonObject.optString("title");
 
-        if(TextUtils.isEmpty(type))
+        if(type<=0 || type>3)
             return;
-        if(type.equalsIgnoreCase(TYPE_BLOG))
-        {
-            author = jsonObject.optString("author_name");
-            textual_date = jsonObject.optString("textual_date");
-        }
-        else
-            author = jsonObject.optString("author");
+        author = jsonObject.optString("author");
         oriCoverurl = jsonObject.optString("cover_original");
+
         bgurl = jsonObject.optString("background");
         intro = jsonObject.optString("intro");
         view_count = jsonObject.optString("view_count");
     }
-
 
     public void parseLook(JSONObject jsonObject) {
         clear();
@@ -71,16 +95,22 @@ public class HomeFloorModel {
         id = jsonObject.optString("id");
         type_id = jsonObject.optString("id");
         coverUrl = jsonObject.optString("cover");
+        if(!coverUrl.startsWith("http://"))
+            coverUrl = formBraUrl(coverUrl);
+
         title = jsonObject.optString("title");
 
     }
 
     public void parseBlog(JSONObject jsonObject) {
         clear();
-        type = jsonObject.optString("type");
+        type = TYPE_BLOG;
         id = jsonObject.optString("id");
         type_id = jsonObject.optString("id");
         coverUrl = jsonObject.optString("cover_url");
+        if(!coverUrl.startsWith("http://"))
+            coverUrl = formBraUrl(coverUrl);
+
         title = jsonObject.optString("title");
 
         JSONObject au = jsonObject.optJSONObject("author");
@@ -92,13 +122,23 @@ public class HomeFloorModel {
 
     public void parseBrandFloor(JSONObject jsonObject) {
         clear();
-        type = jsonObject.optString("type");
+        String strtype = jsonObject.optString("type");
+        if(strtype.equalsIgnoreCase("BLOG"))
+            type = TYPE_BLOG;
+        else if(strtype.equalsIgnoreCase("COLLECTION"))
+            type = TYPE_COLLECTION;
+        else if(strtype.equalsIgnoreCase("LOOKBOOK"))
+            type = TYPE_LOOKBOOK;
+
         id = jsonObject.optString("id");
         type_id = jsonObject.optString("type_id");
         JSONObject job = jsonObject.optJSONObject("object");
 
 
         coverUrl = job.optString("cover");
+        if(!coverUrl.startsWith("http://"))
+            coverUrl = formBraUrl(coverUrl);
+
         title = job.optString("title");
 
         JSONObject au = job.optJSONObject("editor");

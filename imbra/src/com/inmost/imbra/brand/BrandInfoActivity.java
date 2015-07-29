@@ -219,15 +219,15 @@ public class BrandInfoActivity extends BaseActivity implements OnSuccessListener
         if(parent == mFloorListV )
         {
             HomeFloorModel item = mHomeFloors.get(position-1);
-            if(item.type.equalsIgnoreCase(HomeFloorModel.TYPE_LOOKBOOK))
+            if(item.type == HomeFloorModel.TYPE_LOOKBOOK)
                 UiUtils.makeToast(this,"look");
-            else if(item.type.equalsIgnoreCase(HomeFloorModel.TYPE_COLLECTION))
+            else if(item.type == HomeFloorModel.TYPE_COLLECTION)
             {
                 Bundle bund = new Bundle();
                 bund.putString(CollectPagerActivity.COLLECT_ID,item.type_id);
                 UiUtils.startActivity(this, CollectPagerActivity.class, bund, true);
             }
-            else if(item.type.equalsIgnoreCase(HomeFloorModel.TYPE_BLOG))
+            else if(item.type == HomeFloorModel.TYPE_BLOG)
             {
                 Bundle bund = new Bundle();
                 bund.putString(BlogVolleyActivity.BLOG_ID,item.type_id);

@@ -34,6 +34,7 @@ import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.DPIUtil;
 import com.xingy.util.ServiceConfig;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
 import com.xingy.util.ajax.Response;
@@ -100,7 +101,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
     //end of tab 2
 
     private RadioGroup        mTabRg;
-    private int               mTabIdx = TAB_HOME;
+    private int               mTabIdx = -1;
     public static int        TAB_HOME = 0;
     public static int        TAB_PRO = 1;
 
@@ -155,7 +156,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 	}
 	
 	private void requestPage(int page) {
-        mAjax = ServiceConfig.getAjax(mTabIdx == TAB_HOME ? braConfig.URL_HOME_FLOOR : braConfig.URL_SEARCH);
+        mAjax = ServiceConfig.getAjax(braConfig.URL_SEARCH);
 		if (null == mAjax) {
             mActivity.closeLoadingLayer();
             return;
@@ -167,6 +168,21 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 		mAjax.setOnErrorListener(mActivity);
 		mAjax.send();
 	}
+
+
+    private void requestTopic(int page) {
+        mAjax = ServiceConfig.getAjax(braConfig.URL_HOME_FLOOR);
+        if (null == mAjax) {
+            mActivity.closeLoadingLayer();
+            return;
+        }
+
+        mAjax.setData("pn", page);
+        mAjax.setId(mTabIdx);
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(mActivity);
+        mAjax.send();
+    }
 
 	@Override
 	public void onDestroy()
@@ -188,6 +204,8 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if(checkedId == R.id.pro_list_rb)
                 {
+                    if(mTabIdx==TAB_PRO)
+                        return;
                     mTabIdx = TAB_PRO;
                     if(mProAdapter == null) {
                         mProAdapter = new Product2RowAdapter(mActivity, mImgLoader);
@@ -204,6 +222,9 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
                 }
                 else
                 {
+                    if(mTabIdx==TAB_HOME)
+                        return;
+
                     mTabIdx = TAB_HOME;
                     if(mFloorAdapter == null)
                         mFloorAdapter = new HomeFloorAdapter(mActivity,mImgLoader);
@@ -212,7 +233,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
                     pullList.setAdapter(mFloorAdapter);
                     if(mFloorAdapter.getCount()<=0) {
                         mActivity.showLoadingLayer();
-                        requestPage(mFloorNextPageNum);
+                        requestTopic(mFloorNextPageNum);
                     }
                     if(null!=mSearchListener)
                         mSearchListener.onTabChecked(TAB_HOME);
@@ -232,7 +253,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
                     if (firstVisibleItem + visibleItemCount >= totalItemCount && mFloorNextPageNum>1) {
                         UiUtils.makeToast(mActivity, "first:" + firstVisibleItem + ",vis:" +
                             visibleItemCount + ",totalItemCount" + totalItemCount);
-                    requestPage(mFloorNextPageNum);
+                    requestTopic(mFloorNextPageNum);
                     }
                 }
                 else {
@@ -258,7 +279,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
                 if(mTabIdx == TAB_HOME) {
                     mHomeFloors.clear();
                     mFloorNextPageNum = 1;
-                    requestPage(mFloorNextPageNum);
+                    requestTopic(mFloorNextPageNum);
                 }
                 else {
                     mProArray.clear();
@@ -383,11 +404,20 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 	@Override
 	public void onSuccess(JSONObject v, Response response) {
 
+        mActivity.closeLoadingLayer();
         pullList.onRefreshComplete();
-		mActivity.closeLoadingLayer();
-        if(response.getId() == AJAX_HOMEFLOOR) {
+
+//        int err = v.optInt("err");
+//        if(err!=0)
+//        {
+//            String msg =  v.optString("msg");
+//            UiUtils.makeToast(mActivity, ToolUtil.isEmpty(msg) ? getString(R.string.parser_error_msg): msg);
+//            return;
+//        }
+		if(response.getId() == AJAX_HOMEFLOOR) {
+
             mFloorNextPageNum++;
-            JSONArray feeds = v.optJSONArray("feeds");
+            JSONArray feeds = v.optJSONArray("dt");
             if (null != feeds) {
                 for (int i = 0; i < feeds.length(); i++) {
                     HomeFloorModel model = new HomeFloorModel();
@@ -444,19 +474,19 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         HomeFloorModel item = mHomeFloors.get(position-1);
-        if(item.type.equalsIgnoreCase(HomeFloorModel.TYPE_LOOKBOOK))
+        if(item.type == HomeFloorModel.TYPE_LOOKBOOK)
         {
             Bundle bundle = new Bundle();
             bundle.putString(HTML5Activity.ORI_URL, "http://www.o2bra.com.cn/");
             UiUtils.startActivity(mActivity,HTML5Activity.class,bundle,true);
         }
-        else if(item.type.equalsIgnoreCase(HomeFloorModel.TYPE_COLLECTION))
+        else if(item.type == HomeFloorModel.TYPE_COLLECTION)
         {
             Bundle bund = new Bundle();
             bund.putString(CollectPagerActivity.COLLECT_ID,item.type_id);
             UiUtils.startActivity(mActivity, CollectPagerActivity.class, bund, true);
         }
-        else if(item.type.equalsIgnoreCase(HomeFloorModel.TYPE_BLOG))
+        else if(item.type == HomeFloorModel.TYPE_BLOG)
         {
             Bundle bund = new Bundle();
             bund.putString(BlogVolleyActivity.BLOG_ID,item.type_id);
@@ -609,7 +639,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
             paramHolder.extraLayout.setVisibility(View.VISIBLE);
 
         mProNextPageNum = 1;
-        requestPage(mFloorNextPageNum);
+        requestPage(mProNextPageNum);
 
     }
 }

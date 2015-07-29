@@ -76,7 +76,7 @@ public class CollectFragment extends Fragment implements OnSuccessListener<JSONO
     }
 
     private void requestPage(int page) {
-        mAjax = ServiceConfig.getAjax(braConfig.URL_HOME_FLOOR);
+        mAjax = ServiceConfig.getAjax(braConfig.URL_HOME_FLOOR_O2O);
         if (null == mAjax)
             return;
 
@@ -165,8 +165,8 @@ public class CollectFragment extends Fragment implements OnSuccessListener<JSONO
         if (null != feeds) {
             for (int i = 0; i < feeds.length(); i++) {
                 HomeFloorModel model = new HomeFloorModel();
-                model.parse(feeds.optJSONObject(i));
-                if(model.type.equals(HomeFloorModel.TYPE_COLLECTION))
+                model.parseCollect(feeds.optJSONObject(i));
+                if(model.type == HomeFloorModel.TYPE_COLLECTION)
                     mHomeFloors.add(model);
             }
         }
@@ -186,17 +186,17 @@ public class CollectFragment extends Fragment implements OnSuccessListener<JSONO
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         HomeFloorModel item = mHomeFloors.get(position - 1);
-        if (item.type.equalsIgnoreCase(HomeFloorModel.TYPE_LOOKBOOK))
+        if (item.type == HomeFloorModel.TYPE_LOOKBOOK)
         {
             Bundle bundle = new Bundle();
             bundle.putString(HTML5Activity.ORI_URL, "http://www.o2bra.com.cn/");
             UiUtils.startActivity(mActivity,HTML5Activity.class,bundle,true);
         }
-        else if (item.type.equalsIgnoreCase(HomeFloorModel.TYPE_COLLECTION)) {
+        else if (item.type == HomeFloorModel.TYPE_COLLECTION) {
             Bundle bund = new Bundle();
             bund.putString(CollectPagerActivity.COLLECT_ID, item.type_id);
             UiUtils.startActivity(mActivity, CollectPagerActivity.class, bund, true);
-        } else if (item.type.equalsIgnoreCase(HomeFloorModel.TYPE_BLOG)) {
+        } else if (item.type == HomeFloorModel.TYPE_BLOG) {
             Bundle bund = new Bundle();
             bund.putString(BlogVolleyActivity.BLOG_ID, item.type_id);
             UiUtils.startActivity(mActivity, BlogVolleyActivity.class, bund, true);
