@@ -34,18 +34,13 @@ import org.json.JSONObject;
 public class OrderActivity extends BaseActivity implements OnSuccessListener<JSONObject> {
 
     public static final String    ORDER_ID = "order_id";
+
     public static final String    ORDER_MODEL = "order_model";
 
+    public static int             AJAX_FETCH_ORDERINFO = 1232;
     public static int             AJAX_CANCEL_ORDER = 1233;
     public static int             AJAX_SUBMIT_ORDER = 1234;
 
-    public static final String    ORDER_STATUS = "ORDER_STATUS";
-    public static final int       STATUS_CREATE = 1;
-    public static final int       STATUS_PAYED  = 2;
-    public static final int       STATUS_PAYFAIL  = 3;
-
-    public static final int       STATUS_CANCELED = 4;
-    public int                    orderStatus;
 
     private Dialog    cancelDialog;
 
@@ -87,7 +82,7 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
 
         mOrderId = mIntent.getStringExtra(ORDER_ID);
         Object obj  = mIntent.getSerializableExtra(ORDER_MODEL);
-        if(TextUtils.isEmpty(mOrderId) && null == obj)
+        if(null == obj || TextUtils.isEmpty(mOrderId))
         {
             finish();
             return;
@@ -97,10 +92,14 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
             orderModel = (OrderModel) obj;
             mOrderId = orderModel.orderid;
         }
+        else
+        {
+            requestOrderInfo();
+        }
+
         /**
          * this will not get this way.WIll FROM WEB
          */
-        orderStatus = mIntent.getIntExtra(ORDER_STATUS,STATUS_CREATE);
         RequestQueue mQueue = Volley.newRequestQueue(this);
         mImgLoader = new ImageLoader(mQueue, IMbraApplication.globalMDCache);
 
@@ -113,7 +112,37 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
 
     private void initViews() {
         loadNavBar(R.id.order_nav);
-        if(orderStatus == STATUS_CREATE) {
+
+        proIv = (NetworkImageView) this.findViewById(R.id.pro_img);
+        proIv.setOnClickListener(this);
+        orderStatusv = (TextView) findViewById(R.id.order_status);
+        orderIdv = (TextView) findViewById(R.id.order_id);
+
+        orderInfov = (TextView) findViewById(R.id.order_info);
+
+        toWhomv = (TextView) findViewById(R.id.to_whom);
+        sizeV = (TextView) findViewById(R.id.size_x);
+        numV = (TextView) findViewById(R.id.num_x);
+
+        recevierHolder.receiverLayout = findViewById(R.id.order_address);
+        recevierHolder.receiver = (TextView) recevierHolder.receiverLayout.findViewById(R.id.receiver);
+        recevierHolder.phone = (TextView) recevierHolder.receiverLayout.findViewById(R.id.phone);
+        recevierHolder.address = (TextView) recevierHolder.receiverLayout.findViewById(R.id.address);
+
+        payMethodv = (TextView) findViewById(R.id.pay_method);
+
+        payHintIv = (ImageView) findViewById(R.id.pay_hint_img);
+        payHintTv = (TextView) findViewById(R.id.pay_hint_txt);
+
+        refreshOrderView();
+    }
+
+    private void refreshOrderView()
+    {
+        if(orderModel==null)
+            return;
+
+        if(orderModel.status == OrderModel.STATE_WAITTING_PAY) {
             mNavBar.setRightInfo(R.string.cancel_order, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -137,34 +166,15 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
             navRightView.setTextColor(getResources().getColor(R.color.global_pink));
         }
 
-        proIv = (NetworkImageView) this.findViewById(R.id.pro_img);
-        proIv.setOnClickListener(this);
-        orderStatusv = (TextView) findViewById(R.id.order_status);
-        orderIdv = (TextView) findViewById(R.id.order_id);
-        orderIdv.setText(mOrderId);
-        orderInfov = (TextView) findViewById(R.id.order_info);
-
-        toWhomv = (TextView) findViewById(R.id.to_whom);
-        sizeV = (TextView) findViewById(R.id.size_x);
-        numV = (TextView) findViewById(R.id.num_x);
-
-        recevierHolder.receiverLayout = findViewById(R.id.order_address);
-        recevierHolder.receiver = (TextView) recevierHolder.receiverLayout.findViewById(R.id.receiver);
-        recevierHolder.phone = (TextView) recevierHolder.receiverLayout.findViewById(R.id.phone);
-        recevierHolder.address = (TextView) recevierHolder.receiverLayout.findViewById(R.id.address);
-
-        payMethodv = (TextView) findViewById(R.id.pay_method);
-
-        payHintIv = (ImageView) findViewById(R.id.pay_hint_img);
-        payHintTv = (TextView) findViewById(R.id.pay_hint_txt);
-
+        orderIdv.setText(orderModel.orderid);
         String hintQStr = getResources().getString(R.string.pay_hint_quick);
         SpannableStringBuilder style=new SpannableStringBuilder(hintQStr);
 
         style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.global_pink)),2,4, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         payHintTv.setText(style);
 
-        if(orderStatus == STATUS_CREATE || orderStatus == STATUS_PAYFAIL) {
+        if(orderModel.status == OrderModel.STATE_WAITTING_PAY ||
+                orderModel.status == OrderModel.STATUS_PAYFAIL) {
             findViewById(R.id.submit_pay).setVisibility(View.VISIBLE);
             findViewById(R.id.submit_pay).setOnClickListener(this);
         }
@@ -176,6 +186,18 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
             proIv.setImageUrl(HomeFloorModel.formBraUrl(orderModel.promodel.front),mImgLoader);
     }
 
+    private void requestOrderInfo()
+    {
+        mAjax = ServiceConfig.getAjax(braConfig.URL_HOME_FLOOR);
+        if (null == mAjax)
+            return;
+        showLoadingLayer();
+
+        mAjax.setId(AJAX_FETCH_ORDERINFO);
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+    }
     private void submitOrder() {
         mAjax = ServiceConfig.getAjax(braConfig.URL_HOME_FLOOR);
         if (null == mAjax)
@@ -203,6 +225,12 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
     @Override
     public void onSuccess(JSONObject jsonObject, Response response) {
         closeLoadingLayer();
+        if(AJAX_FETCH_ORDERINFO == response.getId())
+        {
+            orderModel = new OrderModel();
+            orderModel.parse(jsonObject);
+            refreshOrderView();
+        }
         if(AJAX_CANCEL_ORDER == response.getId())
         {
             finish();

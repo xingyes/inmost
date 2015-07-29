@@ -78,6 +78,8 @@
         <activity android:name=".main.AppSettingActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".coupon.CouponListActivity"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".product.ProductDetailActivity"
             android:screenOrientation="portrait"/>

@@ -106,7 +106,6 @@ public class BrandInfoActivity extends BaseActivity implements OnSuccessListener
 
         JSONObject brandjson = jsonObject.optJSONObject("brand");
         mNavBar.setText(brandjson.optString("name"));
-        mNavBar.setTextColor(this.getResources().getColor(R.color.global_pink));
 
         LinearLayout ll = new LinearLayout(this);
         BlogVolleyActivity.addArticleContent(ll, this, brandjson.optString("description"), DPIUtil.dip2px(15));

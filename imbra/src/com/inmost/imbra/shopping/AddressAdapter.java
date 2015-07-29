@@ -77,6 +77,7 @@ public class AddressAdapter extends BaseAdapter {
 
 
             holder.root = convertView.findViewById(R.id.address_root_layout);
+            holder.picked = convertView.findViewById(R.id.picked_logo);
             holder.receiver = (TextView)convertView.findViewById(R.id.receiver);
             holder.phone = (TextView)convertView.findViewById(R.id.phone);
             holder.address = (TextView)convertView.findViewById(R.id.address);
@@ -112,13 +113,15 @@ public class AddressAdapter extends BaseAdapter {
 
         holder.delv.setTag(position);
         holder.editv.setTag(position);
-        holder.root.setBackgroundResource(pickIdx != position ? R.color.transparent : R.color.global_pink);
+
+        holder.picked.setVisibility(pickIdx == position ? View.VISIBLE:View.INVISIBLE);
 
 
         return convertView;
     }
 
     public static class ItemHolder {
+        View     picked;
         View     root;
         TextView receiver;
         TextView address;

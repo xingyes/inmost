@@ -31,12 +31,24 @@
             android:src="@drawable/edit_btn_selector"
             android:id="@+id/edit_btn"/>
      </LinearLayout>
+    <ImageView
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:id="@+id/picked_logo"
+        android:layout_below="@id/right_opt_layout"
+        android:src="@drawable/icon_succ"
+        />
 
-    <include layout = "@layout/address_layout"
+    <include
+        android:id="@+id/left_address_layout"
+        layout = "@layout/address_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@id/right_opt_layout"/>
+
 </RelativeLayout>
 
 

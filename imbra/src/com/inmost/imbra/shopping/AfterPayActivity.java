@@ -66,7 +66,6 @@ public class AfterPayActivity extends BaseActivity{
         else if(v.getId() ==R.id.go_orderdetail)
         {
             bundle.putString(OrderActivity.ORDER_ID,mOrderId);
-            bundle.putInt(OrderActivity.ORDER_STATUS,OrderActivity.STATUS_PAYED);
             UiUtils.startActivity(AfterPayActivity.this, OrderActivity.class,bundle,true);
             finish();
         }

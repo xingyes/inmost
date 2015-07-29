@@ -82,7 +82,7 @@
             android:gravity="center"
             android:button="@drawable/none"
             android:drawablePadding="6dp"
-            android:drawableTop="@drawable/fav_btn_selector"
+            android:drawableTop="@drawable/to_self_check_state"
             android:background="@color/transparent"
             android:checked="false" />
         <RadioButton
@@ -98,9 +98,27 @@
             android:button="@drawable/none"
             android:background="@color/transparent"
             android:drawablePadding="6dp"
-            android:drawableTop="@drawable/fav_btn_selector"
+            android:drawableTop="@drawable/to_firend_check_state"
             android:checked="false"/>
         </RadioGroup>
+
+        <EditText
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/msg_to_friend"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="15dp"
+            android:gravity="left|top"
+            android:minLines="6"
+            android:background="@drawable/input_bg_with_point"
+            android:hint="想对Ta说..."
+            android:textColor="@color/global_nav_text"
+            android:textColorHint="@color/global_text_info_color"
+            android:textSize="@dimen/bar_font_30"/>
+
         <View
             android:layout_width="150dp"
             android:layout_height="1px"
@@ -116,13 +134,20 @@
             android:text="可选尺码"
             android:textColor="@color/global_nav_text"
             android:textSize="@dimen/bar_font_24"/>
-        <RadioGroup
-            android:id="@+id/size_rg"
+
+        <GridView
             android:layout_marginTop="13dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal"/>
+            android:numColumns="6"
+            android:gravity="center"
+            android:listSelector="@color/transparent"
+            android:cacheColorHint="@color/transparent"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/size_grid"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
         <View
             android:layout_width="150dp"
             android:layout_height="1px"
@@ -203,6 +228,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/receiver_hint_tv"
                     android:text="@string/add_receiver"
+                    android:textSize="@dimen/bar_font_24"
                     android:layout_centerVertical="true"
                     android:textColor="@color/global_text_info_color"/>
                 <include layout="@layout/address_layout"
@@ -230,6 +256,7 @@
                 android:textColor="@color/global_nav_text"
                 android:textSize="@dimen/bar_font_24"/>
             <RelativeLayout
+                android:id="@+id/coupon_layout"
                 android:layout_marginTop="5dp"
                 android:padding="15dp"
                 android:layout_width="match_parent"
@@ -241,20 +268,17 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:src="@drawable/arrow_right_gray"/>
-                <TextView
+                <EditText
+                    android:editable="false"
+                    android:background="@drawable/none"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/coupon_hint_tv"
-                    android:text="@string/no_coupon"
+                    android:hint="@string/no_coupon"
                     android:layout_centerVertical="true"
-                    android:textColor="@color/global_text_info_color"/>
-                <include layout="@layout/coupon_layout"
-                    android:id="@+id/address_info_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginRight="40dp"
-                    android:visibility="gone"/>
+                    android:textSize="@dimen/bar_font_24"
+                    android:textColorHint="@color/global_text_info_color"
+                    />
             </RelativeLayout>
         </LinearLayout>
         <View

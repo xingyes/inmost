@@ -14,7 +14,7 @@
         inmost:text="@string/app_name"
         inmost:drawableLeft="@drawable/pink_icon_back"
         inmost:bgColor="@color/white"
-        inmost:textColor="@color/black"/>
+        inmost:textColor="@color/global_pink"/>
 
     <ListView
         android:layout_below="@id/list_nav"

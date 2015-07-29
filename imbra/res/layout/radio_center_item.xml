@@ -13,4 +13,4 @@
         android:singleLine="true"
         android:text="111"
         android:textColor="@color/txt_pink_gray_selector"/>
-    </RelativeLayout>
+</RelativeLayout>

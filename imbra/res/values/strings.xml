@@ -51,6 +51,8 @@
     <string name="receiver_info_must">收货人信息（必填）</string>
     <string name="add_receiver">添加收货人信息</string>
     <string name="coupon">优惠券</string>
+    <string name="coupon_x">%s元 代金券</string>
+
     <string name="no_coupon">暂无优惠券</string>
 
     <string name="list_no_address">您还没有填写收货地址</string>

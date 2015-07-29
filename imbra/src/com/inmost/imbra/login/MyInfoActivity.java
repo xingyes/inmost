@@ -290,6 +290,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
                 UiUtils.makeToast(this,"Submit coupon code");
                 break;
             default:
+                super.onClick(v);
                 break;
         }
 	}
@@ -405,7 +406,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         {
             if(null == couponAdapter)
             {
-                couponAdapter = new CouponAdapter(this);
+                couponAdapter = new CouponAdapter(this,-1);
                 requestCoupon();
 
             }
@@ -446,7 +447,6 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
             OrderModel order = mOrderArray.get(position - 2);
             Bundle bundle = new Bundle();
             bundle.putSerializable(OrderActivity.ORDER_MODEL,order);
-            bundle.putInt(OrderActivity.ORDER_STATUS,order.status);
             UiUtils.startActivity(MyInfoActivity.this, OrderActivity.class, bundle, true);
         }
     }

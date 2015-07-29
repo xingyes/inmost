@@ -21,12 +21,18 @@ public class CouponAdapter extends BaseAdapter {
     private ArrayList<CouponModel> mCouponArray;
     private BaseActivity mActivity;
     private LayoutInflater mInflater;
+    private int pickIdx;
 
-    public CouponAdapter(BaseActivity activity) {
+    public CouponAdapter(BaseActivity activity, int idx) {
         mActivity = activity;
         mInflater = LayoutInflater.from(mActivity);
+        pickIdx = idx;
     }
 
+    public void setPick(int idx)
+    {
+        pickIdx = idx;
+    }
     public void setData(ArrayList<CouponModel> set) {
         mCouponArray = set;
     }
@@ -57,6 +63,7 @@ public class CouponAdapter extends BaseAdapter {
             holder = new ItemHolder();
 
             holder.root = convertView.findViewById(R.id.coupon_root);
+            holder.picked = convertView.findViewById(R.id.picked_logo);
             holder.titlev = (TextView)convertView.findViewById(R.id.title);
             holder.discountv = (TextView)convertView.findViewById(R.id.discount);
             holder.expirev = (TextView)convertView.findViewById(R.id.expire_time);
@@ -89,11 +96,14 @@ public class CouponAdapter extends BaseAdapter {
             holder.titlev.setTextColor(mActivity.getResources().getColor(R.color.global_text_info_color));
             holder.expirev.setTextColor(mActivity.getResources().getColor(R.color.global_text_info_color));
         }
+
+        holder.picked.setVisibility(pickIdx == position ? View.VISIBLE:View.INVISIBLE);
         return convertView;
     }
 
     public static class ItemHolder {
         View     root;
+        View     picked;
         TextView rmb;
         TextView titlev;
         TextView discountv;
