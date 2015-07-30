@@ -38,6 +38,7 @@ import com.inmost.imbra.login.MyInfoActivity;
 import com.inmost.imbra.login.VerifyLoginActivity;
 import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.IPageCache;
+import com.xingy.lib.ui.CircleImageView;
 import com.xingy.lib.ui.NavigationBar.OnLeftButtonClickListener;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.lib.ui.VerticalRangeSeekBar;
@@ -423,7 +424,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         public View menuContent;
         public View menuBlank;
 
-        public ImageView userImg;
+        public CircleImageView userImg;
         public TextView  userNameTv;
         public ListView menuListView;
         public MenuAdapter tagAdapter;
@@ -554,7 +555,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
 
 
-        menuViews.userImg = (ImageView)this.findViewById(R.id.user_img);
+        menuViews.userImg = (CircleImageView)this.findViewById(R.id.user_img);
         menuViews.userNameTv = (TextView)this.findViewById(R.id.user_name);
         findViewById(R.id.user_layout).setOnClickListener(this);
 

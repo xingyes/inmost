@@ -36,6 +36,7 @@ import com.inmost.imbra.shopping.OrderActivity;
 import com.inmost.imbra.shopping.OrderAdapter;
 import com.inmost.imbra.shopping.OrderModel;
 import com.inmost.imbra.util.braConfig;
+import com.xingy.lib.ui.CircleImageView;
 import com.xingy.lib.ui.TextField;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
@@ -66,7 +67,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
 
     private RadioGroup  tabGroup;
     private TextView   noHintView;
-    private NetworkImageView usrImgv;
+    private CircleImageView usrImgv;
     private TextView         usrNamev;
     private ImageLoader      mImgLoader;
 //    private TextField        hintField;
@@ -210,7 +211,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         mListV = pullList.getRefreshableView();
         headV = getLayoutInflater().inflate(R.layout.myinfo_head_pg, null);
         mListV.setOnItemClickListener(this);
-        usrImgv = (NetworkImageView)headV.findViewById(R.id.user_img);
+        usrImgv = (CircleImageView)headV.findViewById(R.id.user_img);
         usrImgv.setImageUrl("http://img2.imgtn.bdimg.com/it/u=921607941,1665261509&fm=21&gp=0.jpg",mImgLoader);
         usrImgv.setOnClickListener(this);
 
