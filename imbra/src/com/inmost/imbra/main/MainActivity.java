@@ -58,6 +58,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         AdapterView.OnItemClickListener,HomeFragment.SearchCheckListener,
         RadioGroup.OnCheckedChangeListener{
 
+    private Account  account;
 	public static final String REQUEST_SEARCH_MODEL = "search_model";
     public static int  MSG_REFRESH_BACKTIME = 982;
     public long   backtime = 0;
@@ -172,6 +173,9 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         mNavBar.setRightInfo(R.string.filter,this);
         navRightView = (TextView) mNavBar.findViewById(R.id.navigationbar_right_text);
         navRightView.setTextColor(getResources().getColor(R.color.global_pink));
+
+        account = ILogin.getActiveAccount();
+
         initLeftMenu();
 
 
@@ -340,9 +344,9 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
                 hideLeftMenu();
                 break;
             case R.id.user_layout:
-                Account act = ILogin.getActiveAccount();
-//                if(null==act)
-//                    UiUtils.startActivity(this,LoginActivity.class,true);
+                if(null==account)
+                    UiUtils.makeToast(this,"not logined");
+//                    UiUtils.startActivity(this,VerifyLoginActivity.class,true);
 //                else
                     UiUtils.startActivity(this,MyInfoActivity.class,true);
                 hideLeftMenu();
@@ -556,6 +560,12 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
 
         menuViews.userImg = (CircleImageView)this.findViewById(R.id.user_img);
+        if(account!=null)
+        {
+            menuViews.userImg.setUseShader(true);
+            menuViews.userImg.setImageUrl(account.iconUrl, mImgLoader);
+        }
+
         menuViews.userNameTv = (TextView)this.findViewById(R.id.user_name);
         findViewById(R.id.user_layout).setOnClickListener(this);
 

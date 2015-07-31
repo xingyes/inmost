@@ -224,9 +224,10 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 				return;
 			}
 			Account account = new Account();
-			account.setUid(data.optString("uid"));
-			account.setSkey(data.optString("jl_skey"));
-			account.setRowCreateTime(new Date().getTime());
+			account.uid = data.optString("uid");
+			account.skey = data.optString("jl_skey");
+            account.iconUrl = data.optString("icon");
+            account.rowCreateTime = new Date().getTime();
 			ILogin.setActiveAccount(account);
 			ILogin.saveIdentity(account);
 

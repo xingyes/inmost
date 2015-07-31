@@ -31,6 +31,7 @@ import com.inmost.imbra.shopping.OrderActivity;
 import com.inmost.imbra.shopping.OrderAdapter;
 import com.inmost.imbra.shopping.OrderModel;
 import com.inmost.imbra.util.braConfig;
+import com.xingy.lib.ui.CircleImageView;
 import com.xingy.lib.ui.TextField;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
@@ -52,7 +53,6 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
 
 	private Intent  mIntent = null;
 
-    private NetworkImageView usrImgv;
     private ImageLoader      mImgLoader;
 
     private TextField        imgSetting;
@@ -99,10 +99,7 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
         findViewById(R.id.address).setOnClickListener(this);
         findViewById(R.id.bind_phone).setOnClickListener(this);
 
-        usrImgv = imgSetting.getPreNetView();
-        usrImgv.setVisibility(View.VISIBLE);
-
-        usrImgv.setImageUrl("http://img2.imgtn.bdimg.com/it/u=921607941,1665261509&fm=21&gp=0.jpg",mImgLoader);
+        imgSetting.setPreNetIconUrl("http://img2.imgtn.bdimg.com/it/u=921607941,1665261509&fm=21&gp=0.jpg",mImgLoader);
     }
 
 
@@ -165,7 +162,7 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
             //String localPath = curImg.mCustomInfo.get("localPath");
 
             final Bitmap bitmap =  (null == data) ? null : (Bitmap)data.getParcelableExtra("data");
-            usrImgv.setImageBitmap(bitmap);
+            imgSetting.setPreIconBitmap(bitmap);
             if (null != bitmap) {
                 ByteArrayOutputStream  stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);

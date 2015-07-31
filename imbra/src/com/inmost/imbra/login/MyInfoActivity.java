@@ -212,6 +212,8 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         headV = getLayoutInflater().inflate(R.layout.myinfo_head_pg, null);
         mListV.setOnItemClickListener(this);
         usrImgv = (CircleImageView)headV.findViewById(R.id.user_img);
+
+        usrImgv.setUseShader(true);
         usrImgv.setImageUrl("http://img2.imgtn.bdimg.com/it/u=921607941,1665261509&fm=21&gp=0.jpg",mImgLoader);
         usrImgv.setOnClickListener(this);
 

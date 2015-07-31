@@ -14,6 +14,7 @@ package com.xingy.lib.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.xingy.R;
 
@@ -60,14 +62,17 @@ public class TextField extends UiBase {
 		// Get children components.
 //		mContentLL = (LinearLayout) findViewById(R.id.textfield_content_layout);
         mPreIcon = (ImageView)findViewById(R.id.left_drawable);
+        mPreIconLayout = findViewById(R.id.pre_icon_layout);
+        mPreNetIcon = (CircleImageView)findViewById(R.id.left_net_drawable);
+
         if(mPreDrawableRid!=0) {
-            mPreIcon.setVisibility(View.VISIBLE);
+            mPreIconLayout.setVisibility(VISIBLE);
             mPreIcon.setImageResource(mPreDrawableRid);
         }
-        else
-            mPreIcon.setVisibility(View.GONE);
+        else {
+            mPreIconLayout.setVisibility(View.GONE);
+        }
 
-        mPreNetIcon = (NetworkImageView)findViewById(R.id.left_net_drawable);
 
         mCaption = (TextView)findViewById(R.id.textfield_caption);
 		if(TextUtils.isEmpty(mCaptionString))
@@ -124,16 +129,29 @@ public class TextField extends UiBase {
 		}
 	}
 
-    public NetworkImageView getPreNetView()
+    public void setPreNetIconUrl(String url,ImageLoader imgloader)
     {
-        return mPreNetIcon;
+        mPreIconLayout.setVisibility(View.VISIBLE);
+        mPreNetIcon.setUseShader(true);
+        mPreNetIcon.setImageUrl(url, imgloader);
+        mPreNetIcon.requestLayout();
     }
+
+
+    public void setPreIconBitmap(Bitmap bm)
+    {
+        mPreIconLayout.setVisibility(View.VISIBLE);
+        mPreNetIcon.setImageBitmap(bm);
+    }
+
 	
 //	private LinearLayout mContentLL;
 	private String       mCaptionString;
 	private TextView     mCaption;
+
+    private View         mPreIconLayout;
     private ImageView    mPreIcon;
-    private NetworkImageView mPreNetIcon;
+    private CircleImageView mPreNetIcon;
     private int          mPreDrawableRid;
 	private String       mContentString;
 	private TextView     mContent;
