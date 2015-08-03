@@ -20,6 +20,7 @@ import com.inmost.imbra.util.braConfig;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
+import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.Config;
 import com.xingy.util.ServiceConfig;
@@ -36,6 +37,7 @@ import java.util.Date;
 
 public class VerifyLoginActivity extends BaseActivity implements OnSuccessListener<JSONObject> {
 
+    public static final int   ACTIVITY_CODE_LOGIN = 5555;
 	public static final int   COUTING_DOWN_SECOND = 120;
 	public static final int   MSG_INTERVAL = 0x100;
 
@@ -50,6 +52,8 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 
 	public static final int   REQ_REGISTER = 1;
 	public static final int   REQ_SMS = 2;
+
+    private Ajax  mAjax;
 
     /**
      * weixin
@@ -94,7 +98,7 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 
         // 初始化布局元素
         initViews();
-
+        setResult(RESULT_CANCELED);
         bSending = false;
     }
 
@@ -164,34 +168,39 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 			return;
 		}
 
-		Ajax ajax = ServiceConfig.getAjax(braConfig.URL_VERIFY_LOGIN);
-		if (null == ajax)
+        if(null!=mAjax)
+            mAjax.abort();
+        mAjax = ServiceConfig.getAjax(braConfig.URL_VERIFY_LOGIN);
+		if (null == mAjax)
 			return;
-		ajax.setId(REQ_REGISTER);
-		ajax.setData("phone_number", phoneNum);
-		ajax.setData("vcode", verifycode);
+        showLoadingLayer();
+        mAjax.setId(REQ_REGISTER);
+        mAjax.setData("type",3);
+        mAjax.setData("mobile", phoneNum);
+        mAjax.setData("vcode", verifycode);
 
-		ajax.setOnSuccessListener(this);
-		ajax.setOnErrorListener(this);
-		ajax.send();
-		addAjax(ajax);
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
 	}
 
 	private boolean requestVerifyCode() {
 		String phoneNum = mPhonev.getText().toString();
 		if(ToolUtil.isPhoneNum(phoneNum))
 		{
-			Ajax ajax = ServiceConfig.getAjax(braConfig.URL_HOME_FLOOR);
-            if (null == ajax)
+            if(mAjax!=null)
+                mAjax.abort();
+            mAjax = ServiceConfig.getAjax(braConfig.URL_HOME_FLOOR);//URL_VERIFYCODE_SMS
+            if (null == mAjax)
 				return false;
 
-			ajax.setId(REQ_SMS);
-			ajax.setData("phone_number", phoneNum);
+            showLoadingLayer();
+            mAjax.setId(REQ_SMS);
+            mAjax.setData("phone_number", phoneNum);
 
-			ajax.setOnSuccessListener(this);
-			ajax.setOnErrorListener(this);
-			ajax.send();
-			addAjax(ajax);
+            mAjax.setOnSuccessListener(this);
+            mAjax.setOnErrorListener(this);
+            mAjax.send();
 			return true;
 		}
 		else
@@ -203,7 +212,9 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 
 	@Override
 	public void onSuccess(JSONObject v, Response response) {
-		final int ret = v.optInt("error");
+        closeLoadingLayer();
+        UiUtils.makeToast(this,v.toString(),true);
+        final int ret = v.optInt("err");
 		if(ret != 0 )
 		{
 			String msg =  v.optString("data");
@@ -213,11 +224,7 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 
 		if(response.getId() == REQ_REGISTER)
 		{
-			/**{"error":0,
-			 * "data":{"uid":"MQ==","jl_skey":"248971"}}
-			 *
-			 */
-			JSONObject data = v.optJSONObject("data");
+            JSONObject data = v.optJSONObject("dt");
 			if(null == data)
 			{
 				UiUtils.makeToast(this, this.getString(R.string.parser_error_msg));
@@ -225,14 +232,16 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 			}
 			Account account = new Account();
 			account.uid = data.optString("uid");
-			account.skey = data.optString("jl_skey");
-            account.iconUrl = data.optString("icon");
+            account.nickName = data.optString("nickname");
+            account.token = data.optString("token");
+            account.iconUrl = data.optString("himg");
             account.rowCreateTime = new Date().getTime();
-			ILogin.setActiveAccount(account);
-			ILogin.saveIdentity(account);
+            android.util.Log.e("login",v.toString());
 
-			Intent intent = new Intent();
-			setResult(RESULT_OK, intent);
+            ILogin.setActiveAccount(account);
+			ILogin.saveIdentity(account);
+            android.util.Log.e("login","savefinished");
+			setResult(RESULT_OK);
 			finish();
 
 		}
@@ -263,40 +272,65 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
             filter.addAction(WeixinUtil.BROADCAST_FROM_WXLOGIN);
             LocalBroadcastManager.getInstance(VerifyLoginActivity.this).registerReceiver(mWXLoginResponseReceiver, filter);
         }
-        if (WeixinUtil.checkWX(this, 0))
+        if (WeixinUtil.checkWX(this, 0)) {
+            showLoadingLayer();
             WeixinUtil.doWXLogin(this);
+        }
     }
 
 
     public class WXLoginResponseReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            closeLoadingLayer();
             int nErrCode = intent.getIntExtra("errCode", ConstantsAPI.COMMAND_UNKNOWN);
             int nType = intent.getIntExtra("type", -1);
-            String strCode = intent.getStringExtra("code");
-            String strState = intent.getStringExtra("state");
+            final String strCode = intent.getStringExtra("code");
+            final String strState = intent.getStringExtra("state");
             String strOpenId = intent.getStringExtra("openId");
 
-            UiUtils.makeToast(VerifyLoginActivity.this,
-                    "Weixin login errcode:" + nErrCode +",type:" + nType + ",state:" + strState + ",code:" + strCode +
-                            "openid:" + strOpenId);
+            AppDialog ad = UiUtils.showDialog(VerifyLoginActivity.this, "Login",
+                    "Weixin login errcode:" + nErrCode + ",type:" + nType + ",state:" + strState + ",code:" + strCode +
+                            "openid:" + strOpenId,
+                    R.string.btn_ok, new AppDialog.OnClickListener() {
+                        @Override
+                        public void onDialogClick(int nButtonId) {
+                            wxLoginCallBack(strCode, strState);
+                        }
+                    });
 
-            if(nType == ConstantsAPI.COMMAND_SENDAUTH)
-            {
-                if(nErrCode == BaseResp.ErrCode.ERR_OK)
-                {
 
-                    wxLoginCallBack(strCode, strState);
-                }
-                else
-                {
-                    WeixinUtil.informWXLoginResult(VerifyLoginActivity.this,nErrCode);
-                }
-            }
+//            if(nType == ConstantsAPI.COMMAND_SENDAUTH)
+//            {
+//                if(nErrCode == BaseResp.ErrCode.ERR_OK)
+//                {
+//
+//                    wxLoginCallBack(strCode, strState);
+//                }
+//                else
+//                {
+//                    WeixinUtil.informWXLoginResult(VerifyLoginActivity.this,nErrCode);
+//                }
+//            }
         }
     }
 
     private void wxLoginCallBack(String code, String state){
+
+        if(mAjax!=null)
+            mAjax.abort();
+
+        UiUtils.makeToast(this,"code:"+code);
+        mAjax = ServiceConfig.getAjax(braConfig.URL_VERIFY_LOGIN);
+        if (null == mAjax)
+            return;
+        mAjax.setId(REQ_REGISTER);
+        mAjax.setData("type",4);
+        mAjax.setData("code", code);
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+
         /**
          * weixinlogin ajax -- lkey
          */
@@ -323,6 +357,12 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
     @Override
     protected void onDestroy()
     {
+        if(null!=mAjax)
+        {
+            mAjax.abort();
+            mAjax = null;
+        }
+
         if(null != mWXLoginResponseReceiver)
         {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mWXLoginResponseReceiver);

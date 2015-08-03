@@ -43,8 +43,8 @@ public class DbInner extends Database {
 			}
 
 			try {
-				db.execSQL("create table if not exists t_login(uid varchar(16) primary key, skey varchar(32), " +
-						"row_create_time INTEGER)");
+				db.execSQL("create table if not exists t_login(uid varchar(16) primary key, token varchar(128)," +
+                        "row_create_time INTEGER)");
 			} catch (Exception ex) {
 				Log.e(LOG_TAG, "onCreate|t_login|" + ToolUtil.getStackTraceString(ex));
 				;

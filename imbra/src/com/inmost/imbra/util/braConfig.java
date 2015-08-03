@@ -20,8 +20,13 @@ public class braConfig extends Config {
     public static final String URL_GET_BLOG = "URL_GET_BLOG";
     public static final String URL_GET_LOOK = "URL_GET_LOOK";
 
+    //shopping
     public static final String URL_PRODUCT_DETAIL = "URL_PRODUCT_DETAIL";
     public static final String URL_CREATE_ORDER = "URL_CREATE_ORDER";
+    //order
+    public static final String URL_ORDER_DETAIL = "URL_ORDER_DETAIL";
+    public static final String URL_PAY_ORDER = "URL_PAY_ORDER";
+
 
     public static final String URL_BRAND_INFO = "URL_BRAND_INFO";
 
@@ -43,6 +48,7 @@ public class braConfig extends Config {
     //login
     public static final String URL_LOGIN = "URL_LOGIN";
     public static final String URL_REGISTER = "URL_REGISTER";
+    public static final String URL_CHECK_TOKEN = "URL_CHECK_TOKEN";
 
     public static final String URL_VERIFYCODE_SMS = "URL_VERIFYCODE_SMS";
 	public static final String URL_VERIFY_LOGIN = "URL_VERIFY_LOGIN";

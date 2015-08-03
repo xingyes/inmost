@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -58,10 +59,11 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
     private TextField        imgSetting;
     private Ajax             mAjax;
     private boolean          bChanged = false;
+    private Account          account;
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_mysetting);
 
         setResult(RESULT_CANCELED);
@@ -75,31 +77,36 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
         RequestQueue mQueue = Volley.newRequestQueue(this);
         mImgLoader = new ImageLoader(mQueue, IMbraApplication.globalMDCache);
 
+        account = ILogin.getActiveAccount();
+
+        if(null==account)
+        {
+            UiUtils.startActivity(this,VerifyLoginActivity.class,true);
+            finish();
+            return;
+        }
+
         // 初始化布局元素
         initViews();
 
-        Account act = ILogin.getActiveAccount();
-
-//        UiUtils.hideSoftInput(this, mPhone);
-
-		if(null!=act)
-		{
-//			mHandler.sendEmptyMessageDelayed(FINISH_LOGIN, 1500);
-		}
-	}
+    }
 
 	private void initViews() {
         loadNavBar(R.id.mysetting_nav);
 
-        imgSetting = (TextField)findViewById(R.id.head);
+        imgSetting = (TextField) findViewById(R.id.head);
         imgSetting.setOnClickListener(this);
 
 
         findViewById(R.id.nickname).setOnClickListener(this);
         findViewById(R.id.address).setOnClickListener(this);
         findViewById(R.id.bind_phone).setOnClickListener(this);
+        findViewById(R.id.logout_btn).setOnClickListener(this);
 
-        imgSetting.setPreNetIconUrl("http://img2.imgtn.bdimg.com/it/u=921607941,1665261509&fm=21&gp=0.jpg",mImgLoader);
+
+        if (null != account && !TextUtils.isEmpty(account.iconUrl))
+            imgSetting.setPreNetIconUrl(account.iconUrl, mImgLoader);
+
     }
 
 
@@ -207,6 +214,11 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
     {
         Intent ait = null;
         switch (v.getId()) {
+            case R.id.logout_btn:
+                ILogin.clearAccount();
+                setResult(RESULT_OK);
+                finish();
+                break;
             case R.id.head:
                 UploadPhotoUtil.createUploadPhotoDlg(MySettingActivity.this).show();
                 break;
@@ -215,9 +227,8 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
                 ait.putExtra(AlterInfoActivity.ALTER_ITEM, getString(R.string.real_name));
                 ait.putExtra(AlterInfoActivity.SERVICE_URL_KEY, braConfig.URL_SET_INFO);
                 ait.putExtra(AlterInfoActivity.PARAM_KEY, "nick");
-                ait.putExtra(AlterInfoActivity.ORI_INFO, "CarrieYu");
+                ait.putExtra(AlterInfoActivity.ORI_INFO, account.nickName);
                 this.startActivityForResult(ait,MyInfoActivity.MY_SETTING_CODE);
-
                 break;
             case R.id.address:
                 UiUtils.startActivity(MySettingActivity.this, AddressListActivity.class, true);
@@ -227,12 +238,23 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
                 ait.putExtra(AlterInfoActivity.ALTER_ITEM, getString(R.string.bind_phone));
                 ait.putExtra(AlterInfoActivity.SERVICE_URL_KEY, braConfig.URL_SET_INFO);
                 ait.putExtra(AlterInfoActivity.PARAM_KEY, "phone");
-                ait.putExtra(AlterInfoActivity.ORI_INFO, "请绑定手机，便于我们联系您");
+                if(!TextUtils.isEmpty(account.phone))
+                    ait.putExtra(AlterInfoActivity.ORI_INFO, account.phone);
+                else
+                    ait.putExtra(AlterInfoActivity.ORI_INFO, "请绑定手机，便于我们联系您");
                 this.startActivityForResult(ait,MyInfoActivity.MY_SETTING_CODE);
 
 
             default:
                 super.onClick(v);
         }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        android.util.Log.e("mysetting","-------------------onDestroy");
+
+        super.onDestroy();
     }
 }

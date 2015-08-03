@@ -176,6 +176,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
         account = ILogin.getActiveAccount();
 
+
         initLeftMenu();
 
 
@@ -282,7 +283,22 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 	@Override
 	public void onResume()
 	{
-		super.onResume();
+        account = ILogin.getActiveAccount();
+
+        if(account!=null && !TextUtils.isEmpty(account.iconUrl))
+        {
+            menuViews.userImg.setVisibility(View.VISIBLE);
+            menuViews.userImg.setImageUrl(account.iconUrl, mImgLoader);
+        }
+        else
+            menuViews.userImg.setVisibility(View.INVISIBLE);
+
+        if(null!=account)
+            menuViews.userNameTv.setText(account.nickName);
+        else
+            menuViews.userNameTv.setText("");
+
+        super.onResume();
 	}
 	
 	@Override
@@ -297,12 +313,6 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 	{
 		super.onDestroy();
     }
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) 
-	{
-		super.onActivityResult(requestCode, resultCode, data);
-	}
 	
 
 
@@ -344,10 +354,10 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
                 hideLeftMenu();
                 break;
             case R.id.user_layout:
-                if(null==account)
-                    UiUtils.makeToast(this,"not logined");
-//                    UiUtils.startActivity(this,VerifyLoginActivity.class,true);
-//                else
+                if(null==account) {
+                    UiUtils.startActivity(this, VerifyLoginActivity.class, true);
+                }
+                else
                     UiUtils.startActivity(this,MyInfoActivity.class,true);
                 hideLeftMenu();
                 break;
@@ -560,13 +570,21 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
 
         menuViews.userImg = (CircleImageView)this.findViewById(R.id.user_img);
-        if(account!=null)
+        menuViews.userImg.setUseShader(true);
+        if(account!=null && !TextUtils.isEmpty(account.iconUrl))
         {
-            menuViews.userImg.setUseShader(true);
+            menuViews.userImg.setVisibility(View.VISIBLE);
             menuViews.userImg.setImageUrl(account.iconUrl, mImgLoader);
         }
+        else
+            menuViews.userImg.setVisibility(View.INVISIBLE);
 
         menuViews.userNameTv = (TextView)this.findViewById(R.id.user_name);
+        if(null!=account)
+            menuViews.userNameTv.setText(account.nickName);
+        else
+            menuViews.userNameTv.setText("");
+
         findViewById(R.id.user_layout).setOnClickListener(this);
 
         menuViews.menuContent = this.findViewById(R.id.menu_content);

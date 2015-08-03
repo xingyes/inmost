@@ -14,12 +14,22 @@ public class Account
 	// Private part.
 	public  String uid="";
 
-    public String skey="";
+    public String token="";
 
     public String nickName="";
 
     public String iconUrl = "";
     public long rowCreateTime;
-	
-	//private int  type = TYPE_PHONE;
+    public String phone="";
+
+    public Account()
+    {
+        uid = "";
+        token="";
+        nickName = "";
+        iconUrl = "";
+        rowCreateTime = 0;
+        phone = "";
+    }
+    //private int  type = TYPE_PHONE;
 }

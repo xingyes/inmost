@@ -18,6 +18,9 @@ import com.android.volley.toolbox.Volley;
 import com.inmost.imbra.R;
 import com.inmost.imbra.coupon.CouponListActivity;
 import com.inmost.imbra.coupon.CouponModel;
+import com.inmost.imbra.login.Account;
+import com.inmost.imbra.login.ILogin;
+import com.inmost.imbra.login.VerifyLoginActivity;
 import com.inmost.imbra.main.IMbraApplication;
 import com.inmost.imbra.main.RadioGridAdapter;
 import com.inmost.imbra.product.ProductDetailActivity;
@@ -44,7 +47,7 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
     private ImageLoader mImgLoader;
     private Ajax mAjax;
     private ProductModel proModel;
-
+    private Account account;
 //    public MyScrollView mScorllV;
 //    public LinearLayout contentLayout;
 
@@ -85,6 +88,13 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        account = ILogin.getActiveAccount();
+        if(account == null)
+        {
+            UiUtils.startActivity(this, VerifyLoginActivity.class,true);
+            finish();
+            return;
+        }
         Intent mIntent = getIntent();
         if (mIntent == null) {
             finish();
@@ -254,7 +264,7 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
             sb.append(",remark:" + msg2FriendEdit.getText().toString());
         if(couponModel!=null)
             sb.append("cpon:" + couponModel.id);
-        sb.append(",token:122334566");
+        sb.append(",token:"+account.token);
         AppDialog bd = UiUtils.showDialog(this,"Buy",sb.toString(),R.string.btn_ok,
                 new AppDialog.OnClickListener() {
                     @Override
@@ -289,7 +299,7 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
         if(couponModel!=null)
             mAjax.setData("cpon",couponModel.id);
 
-        mAjax.setData("token","122334566");
+        mAjax.setData("token",account.token);
 
         showLoadingLayer();
 
@@ -329,17 +339,14 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
         JSONObject info = jsonObject.optJSONObject("dt");
 
         Bundle bundle = new Bundle();
-        OrderModel curOrder = new OrderModel();
-        curOrder.status = OrderModel.STATE_WAITTING_PAY;
-        curOrder.orderid = info.optString("orderid");
-        curOrder.promodel = proModel;
-        curOrder.ordertime = System.currentTimeMillis();
-        curOrder.payexpire = info.optLong("expire");
-        curOrder.ccode = info.optString("ccode");
+//        curOrder.orderid = info.optString("orderid");
+//        curOrder.promodel = proModel;
+//        curOrder.payexpire = info.optLong("expire");
+//        curOrder.ccode = info.optString("ccode");
 
-        bundle.putSerializable(OrderActivity.ORDER_MODEL,curOrder);
+        bundle.putString(OrderActivity.ORDER_ID,info.optString("orderid"));
+        bundle.putString(OrderActivity.ORDER_PAY_CODE, info.optString("ccode"));
         UiUtils.startActivity(ShoppingActivity.this,OrderActivity.class,bundle,true);
-
     }
 
 

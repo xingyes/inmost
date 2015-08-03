@@ -131,5 +131,6 @@
         <!--</LinearLayout>-->
 
     </LinearLayout>
+    <include layout="@layout/global_loading"/>
 
 </RelativeLayout>

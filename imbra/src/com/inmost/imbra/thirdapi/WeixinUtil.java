@@ -151,6 +151,12 @@ public class WeixinUtil {
 		req.packageValue = json.optString("package");//商家根据财付通文档填写的数据和签名
 		req.sign = json.optString("sign");//商家根据微信开放平台文档对数据做的签名
 
+        UiUtils.makeToast(context,
+                "appId:" + req.appId +",partnerId:" + req.partnerId + ",prepayId:" + req.prepayId +
+                        ",nonceStr:" + req.nonceStr +",timeStamp:" + req.timeStamp +
+                        ",packageValue:" + req.packageValue +
+                        ",sign:" + req.sign
+                        ,true);
         getWXApi(context).sendReq(req);
 	}
 

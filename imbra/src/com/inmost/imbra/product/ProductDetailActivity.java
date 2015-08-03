@@ -18,6 +18,8 @@ import com.inmost.imbra.R;
 import com.inmost.imbra.blog.BlogVolleyActivity;
 import com.inmost.imbra.brand.BrandInfoActivity;
 import com.inmost.imbra.imgallery.ImageCheckActivity;
+import com.inmost.imbra.login.ILogin;
+import com.inmost.imbra.login.VerifyLoginActivity;
 import com.inmost.imbra.main.HomeFloorModel;
 import com.inmost.imbra.main.IMbraApplication;
 import com.inmost.imbra.shopping.ShoppingActivity;
@@ -38,6 +40,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 
 public class ProductDetailActivity extends BaseActivity implements OnSuccessListener<JSONObject> {
@@ -253,19 +256,32 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         }
         JSONArray ary = json.optJSONArray("content");
         for (int i = 0; null != ary && i < ary.length(); i++) {
-            String info = ary.optString(i);
-            if(info.startsWith("http://")) {
-//                int w = pi.optInt("width");
-//                int h = pi.optInt("height");
-
-                NetworkImageView v = BlogVolleyActivity.addArticleImg(contentLayout, this, 640, 640);
-                v.setImageUrl(info, mImgLoader);
-                imgvIdxMap.put(v, imgUrlArray.size());
-                imgUrlArray.add(info);
-                v.setOnClickListener(this);
+            JSONObject contentJson = ary.optJSONObject(i);
+            Iterator<String> keyIter = contentJson.keys();
+            while (keyIter.hasNext()) {
+                String keystr = keyIter.next();
+                if (keystr.equals("txt")) {
+                    BlogVolleyActivity.addArticleContent(contentLayout, this, contentJson.optString("txt"), DPIUtil.dip2px(15));
+                } else if (keystr.equals("img")) {
+                    JSONObject imgjson = contentJson.optJSONObject("img");
+                    int w = imgjson.optInt("w");
+                    int h = imgjson.optInt("h");
+                    String imgurl = imgjson.optString("url");
+                    if (TextUtils.isEmpty(imgurl))
+                        continue;
+                    else {
+                        NetworkImageView v;
+                        if (h == 0 || w == 0)
+                            v = BlogVolleyActivity.addArticleImg(contentLayout, this, 640, 640);
+                        else
+                            v = BlogVolleyActivity.addArticleImg(contentLayout, this, w, h);
+                        v.setImageUrl(imgurl, mImgLoader);
+                        imgvIdxMap.put(v, imgUrlArray.size());
+                        imgUrlArray.add(imgurl);
+                        v.setOnClickListener(this);
+                    }
+                }
             }
-            else
-                BlogVolleyActivity.addArticleContent(contentLayout, this, info,DPIUtil.dip2px(15));
         }
     }
 
@@ -333,6 +349,10 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
                     break;
                 case R.id.shopping_btn:
                 case R.id.shopping_go_btn:
+                    if(ILogin.getActiveAccount()==null) {
+                        UiUtils.startActivity(ProductDetailActivity.this, VerifyLoginActivity.class, true);
+                        break;
+                    }
                     bundle = new Bundle();
                     bundle.putSerializable(PRO_MODEL,proModel);
                     UiUtils.startActivity(ProductDetailActivity.this, ShoppingActivity.class, bundle, true);

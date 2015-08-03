@@ -22,6 +22,10 @@ public class ProductModel implements Serializable {
     public String  chooseStr;
     public boolean fav;
 
+    public String orderid;
+    public long   buy_qty;
+    public String buy_size;
+
     public ProductModel(){clear();}
 	public void clear() {
         id = "";
@@ -65,6 +69,7 @@ public class ProductModel implements Serializable {
         fav = jsonObject.optBoolean("fav");
     }
 
+
     public void parse(JSONObject jsonObject) {
         clear();
         id = jsonObject.optString("id");
@@ -74,6 +79,27 @@ public class ProductModel implements Serializable {
         front = jsonObject.optString("front");
         brandname = jsonObject.optString("brandname");
         fav = jsonObject.optBoolean("fav");
+    }
+
+
+    /**
+     * {"opid":"41",
+     "oid":"143858464979086",
+     "pid":"1",
+     "pname":"Lascivious奶油色胸衣和情趣内裤套装","buy_qty":"1","size":"70B","price":"89900",
+     "credit":"0","credit_type":"0","discount_amt":"0","return_qty":"0","credit_cost":"0","last_update":null}]
+     * @param jsonObject
+     */
+    public void parseFromOrder(JSONObject jsonObject) {
+        clear();
+        id = jsonObject.optString("pid");
+        title = jsonObject.optString("pname");
+        buy_qty = jsonObject.optInt("buy_qty");
+        buy_size = jsonObject.optString("size");
+        BigDecimal hun = new BigDecimal(100);
+        BigDecimal it = new BigDecimal(jsonObject.optLong("price"));
+        it = it.divide(hun ,2);
+        sale_price =  it.toPlainString();
     }
 
 

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.AbsListView;
@@ -90,7 +91,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
     }
     private CouponBottom  couponHolder;
     private ArrayList<CouponModel> mCouponArray;
-
+    private Account   account;
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -108,21 +109,22 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         RequestQueue mQueue = Volley.newRequestQueue(this);
         mImgLoader = new ImageLoader(mQueue, IMbraApplication.globalMDCache);
 
-        // 初始化布局元素
-        initViews();
 
-        Account act = ILogin.getActiveAccount();
+        account = ILogin.getActiveAccount();
 
-//        UiUtils.hideSoftInput(this, mPhone);
-
-		if(null!=act)
+		if(null==account)
 		{
-//			mHandler.sendEmptyMessageDelayed(FINISH_LOGIN, 1500);
-		}
+            UiUtils.startActivity(this,VerifyLoginActivity.class,true);
+            finish();
+            return;
+        }
 
         mOrderArray = new ArrayList<OrderModel>();
         mCouponArray =  new ArrayList<CouponModel>();
         mFavArray = new ArrayList<ProductModel>();
+
+        // 初始化布局元素
+        initViews();
 
         mTabRid = -1;
         tabGroup.check(R.id.tab_favor);
@@ -214,11 +216,15 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         usrImgv = (CircleImageView)headV.findViewById(R.id.user_img);
 
         usrImgv.setUseShader(true);
-        usrImgv.setImageUrl("http://img2.imgtn.bdimg.com/it/u=921607941,1665261509&fm=21&gp=0.jpg",mImgLoader);
+        if(TextUtils.isEmpty(account.iconUrl)) {
+            usrImgv.setImageResource(R.drawable.no_head);
+        }else {
+            usrImgv.setImageUrl(account.iconUrl,mImgLoader);
+        }
         usrImgv.setOnClickListener(this);
 
         usrNamev = (TextView)headV.findViewById(R.id.user_name);
-        usrNamev.setText("King");
+        usrNamev.setText(account.nickName);
         usrNamev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -425,7 +431,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
                     public void onProClick(int pos) {
                         OrderModel order =  mOrderArray.get(pos);
                         Bundle bundle = new Bundle();
-                        bundle.putString(ProductDetailActivity.PRO_ID, order.promodel.id);
+                        bundle.putString(ProductDetailActivity.PRO_ID, order.proList.get(0).id);
                         UiUtils.startActivity(MyInfoActivity.this, ProductDetailActivity.class, bundle, true);
                     }
 
@@ -449,7 +455,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         if(mTabRid == R.id.tab_orderlist) {
             OrderModel order = mOrderArray.get(position - 2);
             Bundle bundle = new Bundle();
-            bundle.putSerializable(OrderActivity.ORDER_MODEL,order);
+            bundle.putSerializable(OrderActivity.ORDER_ID,order.orderid);
             UiUtils.startActivity(MyInfoActivity.this, OrderActivity.class, bundle, true);
         }
     }
@@ -464,7 +470,13 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
 
         if(requestCode == MY_SETTING_CODE)
         {
-            UiUtils.makeToast(this,"will refresh myinfo");
+            account = ILogin.getActiveAccount();
+            if(null==account) {
+                setResult(RESULT_OK);
+                finish();
+            }
+            else
+                UiUtils.makeToast(this,"will refresh myinfo");
         }
         else if (requestCode == UploadPhotoUtil.PHOTO_PICKED_WITH_DATA && null != data)
         {

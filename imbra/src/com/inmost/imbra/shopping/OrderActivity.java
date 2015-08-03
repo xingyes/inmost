@@ -16,13 +16,17 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.inmost.imbra.R;
+import com.inmost.imbra.login.Account;
+import com.inmost.imbra.login.ILogin;
 import com.inmost.imbra.main.HomeFloorModel;
 import com.inmost.imbra.main.IMbraApplication;
 import com.inmost.imbra.product.ProductDetailActivity;
+import com.inmost.imbra.thirdapi.WeixinUtil;
 import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
@@ -34,18 +38,18 @@ import org.json.JSONObject;
 public class OrderActivity extends BaseActivity implements OnSuccessListener<JSONObject> {
 
     public static final String    ORDER_ID = "order_id";
-
-    public static final String    ORDER_MODEL = "order_model";
+    public static final String    ORDER_PAY_CODE = "ORDER_PAY_CODE";
 
     public static int             AJAX_FETCH_ORDERINFO = 1232;
     public static int             AJAX_CANCEL_ORDER = 1233;
-    public static int             AJAX_SUBMIT_ORDER = 1234;
+    public static int             AJAX_PREPAY_ORDER = 1234;
 
 
     private Dialog    cancelDialog;
 
     private ImageLoader mImgLoader;
     private String     mOrderId;
+    private String     mCcode;
     private Ajax mAjax;
     private OrderModel orderModel;
 
@@ -70,6 +74,7 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
     private ImageView    payHintIv;
     private TextView     payHintTv;
 
+    private Account account;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,22 +85,17 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
             return;
         }
 
+        account = ILogin.getActiveAccount();
         mOrderId = mIntent.getStringExtra(ORDER_ID);
-        Object obj  = mIntent.getSerializableExtra(ORDER_MODEL);
-        if(null == obj || TextUtils.isEmpty(mOrderId))
+        mCcode = mIntent.getStringExtra(ORDER_PAY_CODE);
+        if(TextUtils.isEmpty(mOrderId) || account==null)
         {
             finish();
             return;
         }
 
-        if(obj!=null) {
-            orderModel = (OrderModel) obj;
-            mOrderId = orderModel.orderid;
-        }
-        else
-        {
-            requestOrderInfo();
-        }
+        requestOrderInfo();
+
 
         /**
          * this will not get this way.WIll FROM WEB
@@ -142,7 +142,7 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
         if(orderModel==null)
             return;
 
-        if(orderModel.status == OrderModel.STATE_WAITTING_PAY) {
+        if(orderModel.order_stat < OrderModel.ORDER_STAT_DELIVER) {
             mNavBar.setRightInfo(R.string.cancel_order, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -166,15 +166,25 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
             navRightView.setTextColor(getResources().getColor(R.color.global_pink));
         }
 
-        orderIdv.setText(orderModel.orderid);
+        orderIdv.setText(getString(R.string.order_x,orderModel.orderid));
+        orderInfov.setText(getString(R.string.fee_x,orderModel.total_price));
+        toWhomv.setText(orderModel.toSelf ? R.string.buy_self : R.string.buy_friend);
+        sizeV.setText(getString(R.string.size_x,orderModel.proList.get(0).buy_size));
+        numV.setText(getString(R.string.num_x,orderModel.proList.get(0).buy_qty));
+
+
+        recevierHolder.receiver.setText(orderModel.usrmodel.user);
+        recevierHolder.phone.setText(orderModel.usrmodel.phone);
+        recevierHolder.address.setText(orderModel.usrmodel.address);
+
+
         String hintQStr = getResources().getString(R.string.pay_hint_quick);
         SpannableStringBuilder style=new SpannableStringBuilder(hintQStr);
 
         style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.global_pink)),2,4, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         payHintTv.setText(style);
 
-        if(orderModel.status == OrderModel.STATE_WAITTING_PAY ||
-                orderModel.status == OrderModel.STATUS_PAYFAIL) {
+        if(orderModel.pay_stat == OrderModel.PAY_STAT_WAITING){
             findViewById(R.id.submit_pay).setVisibility(View.VISIBLE);
             findViewById(R.id.submit_pay).setOnClickListener(this);
         }
@@ -183,28 +193,33 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
 
 
         if(null!=orderModel)
-            proIv.setImageUrl(HomeFloorModel.formBraUrl(orderModel.promodel.front),mImgLoader);
+            proIv.setImageUrl(HomeFloorModel.formBraUrl(orderModel.proList.get(0).front),mImgLoader);
     }
 
     private void requestOrderInfo()
     {
-        mAjax = ServiceConfig.getAjax(braConfig.URL_HOME_FLOOR);
+        mAjax = ServiceConfig.getAjax(braConfig.URL_ORDER_DETAIL);
         if (null == mAjax)
             return;
         showLoadingLayer();
+
+        mAjax.setData("order_id",mOrderId);
+        mAjax.setData("token",account.token);
 
         mAjax.setId(AJAX_FETCH_ORDERINFO);
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);
         mAjax.send();
     }
-    private void submitOrder() {
-        mAjax = ServiceConfig.getAjax(braConfig.URL_HOME_FLOOR);
+    private void payOrder() {
+        mAjax = ServiceConfig.getAjax(braConfig.URL_PAY_ORDER);
         if (null == mAjax)
             return;
         showLoadingLayer();
 
-        mAjax.setId(AJAX_SUBMIT_ORDER);
+        mAjax.setData("ccode",mCcode);
+        mAjax.setData("token",account.token);
+        mAjax.setId(AJAX_PREPAY_ORDER);
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);
         mAjax.send();
@@ -225,22 +240,50 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
     @Override
     public void onSuccess(JSONObject jsonObject, Response response) {
         closeLoadingLayer();
+        int err = jsonObject.optInt("err");
+        if(err!=0)
+        {
+            String msg =  jsonObject.optString("msg");
+            UiUtils.makeToast(this, ToolUtil.isEmpty(msg) ? getString(R.string.parser_error_msg) : msg);
+            return;
+        }
         if(AJAX_FETCH_ORDERINFO == response.getId())
         {
             orderModel = new OrderModel();
-            orderModel.parse(jsonObject);
+            orderModel.parse(jsonObject.optJSONObject("dt"));
             refreshOrderView();
+            return;
+        }
+        else if(AJAX_PREPAY_ORDER == response.getId())
+        {
+            boolean supp = WeixinUtil.isWXSupportPay(this);
+            if(!supp)
+            {
+                UiUtils.makeToast(this,"not support weixinpay");
+                return;
+            }
+            showLoadingLayer();
+            final JSONObject dt = jsonObject.optJSONObject("dt");
+            AppDialog bd = UiUtils.showDialog(this,"Buy",dt.toString(),R.string.btn_ok,
+                    new AppDialog.OnClickListener() {
+                        @Override
+                        public void onDialogClick(int nButtonId) {
+                            WeixinUtil.doWXPay(OrderActivity.this,dt);
+                        }
+                    });
+            bd.show();
         }
         if(AJAX_CANCEL_ORDER == response.getId())
         {
             finish();
+            return;
         }
-        else{
-            finish();
-            Bundle bundle = new Bundle();
-            bundle.putString(AfterPayActivity.ORDER_ID, "121212");
-            UiUtils.startActivity(OrderActivity.this, AfterPayActivity.class, bundle, true);
-        }
+//        else{
+//            finish();
+//            Bundle bundle = new Bundle();
+//            bundle.putString(AfterPayActivity.ORDER_ID, "121212");
+//            UiUtils.startActivity(OrderActivity.this, AfterPayActivity.class, bundle, true);
+//        }
     }
 
 
@@ -253,12 +296,12 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
         Bundle bundle = new Bundle();
         if(v.getId() == R.id.submit_pay)
         {
-            submitOrder();
+            payOrder();
         }
         else if(v.getId() ==R.id.pro_img)
         {
             if(null!=orderModel) {
-                bundle.putString(ProductDetailActivity.PRO_ID, orderModel.promodel.id);
+                bundle.putString(ProductDetailActivity.PRO_ID, orderModel.proList.get(0).id);
                 UiUtils.startActivity(OrderActivity.this, ProductDetailActivity.class, bundle, true);
             }
         }

@@ -38,8 +38,8 @@ public class ILogin {
 
 		account = new Account();
 		account.uid = info.get("uid");
-		account.skey = (info.get("skey"));
-		account.rowCreateTime = (Long.valueOf(info.get("row_create_time")));
+        account.token = (info.get("token"));
+        account.rowCreateTime = (Long.valueOf(info.get("row_create_time")));
 		
 		return account;
 	}
@@ -64,8 +64,8 @@ public class ILogin {
 	public static void saveIdentity(Account account) {
 		ContentValues values = new ContentValues();
 		values.put("uid", account.uid);
-		values.put("skey", account.skey);
-		values.put("row_create_time", new Date().getTime());
+		values.put("token", account.token);
+        values.put("row_create_time", new Date().getTime());
 		Database db = DbFactory.getInstance();
 		long ret = db.replace("t_login", values);
 	}

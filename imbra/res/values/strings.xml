@@ -71,9 +71,9 @@
     <string name="pay_info">支付信息</string>
     <string name="pay_wx">微信支付</string>
     <string name="size">尺码</string>
-    <string name="size_x">尺码:(%s)</string>
+    <string name="size_x">尺码: %s</string>
     <string name="num">数量</string>
-    <string name="num_x">数量:(%s)</string>
+    <string name="num_x">数量: %s</string>
 
     <string name="cancel_order">取消订单</string>
 
@@ -99,7 +99,11 @@
 
 
     <string name="pls_set_receiver">请设置收货人信息</string>
+    <string name="order_x">订单号:%s</string>
+    <string name="fee_x">订单金额:¥%s</string>
 
+    <string name="buy_self">给自己</string>
+    <string name="buy_friend">送朋友</string>
 
 
 </resources>
