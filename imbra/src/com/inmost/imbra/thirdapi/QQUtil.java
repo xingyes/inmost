@@ -11,8 +11,7 @@ import com.tencent.connect.share.QzoneShare;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
-import com.xingy.util.MyApplication;
-import com.xingy.util.ShareInfo;
+import com.xingy.share.ShareInfo;
 
 import java.util.ArrayList;
 
