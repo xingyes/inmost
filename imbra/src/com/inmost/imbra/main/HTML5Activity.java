@@ -23,11 +23,10 @@ import com.android.volley.toolbox.Volley;
 import com.inmost.imbra.R;
 import com.inmost.imbra.login.ILogin;
 import com.inmost.imbra.login.VerifyLoginActivity;
-import com.inmost.imbra.thirdapi.WeixinUtil;
-import com.inmost.imbra.util.ShareInfo;
 import com.inmost.imbra.util.ShareUtil;
 import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.util.ShareInfo;
 import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
 

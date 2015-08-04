@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.inmost.imbra.util.ShareInfo;
 import com.inmost.imbra.util.ShareUtil;
 import com.inmost.imbra.util.braConfig;
 import com.tencent.connect.share.QzoneShare;
@@ -13,6 +12,7 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 import com.xingy.util.MyApplication;
+import com.xingy.util.ShareInfo;
 
 import java.util.ArrayList;
 
