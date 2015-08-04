@@ -103,6 +103,8 @@ public class CircleImageView extends NetworkImageView {
         }
 
         Bitmap bmp = ImageHelper.drawableToBitmap(drawable);
+        if(null == bmp)
+            return;
         // 将bmp作为着色器，就是在指定区域内绘制bmp
         mBitmapShader = new BitmapShader(bmp, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         float scale = 1.0f;
