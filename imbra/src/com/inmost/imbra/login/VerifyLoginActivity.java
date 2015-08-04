@@ -229,7 +229,8 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 				UiUtils.makeToast(this, this.getString(R.string.parser_error_msg));
 				return;
 			}
-			Account account = new Account();
+            UiUtils.makeToast(VerifyLoginActivity.this,R.string.login_succ);
+            Account account = new Account();
 			account.uid = data.optString("uid");
             account.nickName = data.optString("nickname");
             account.token = data.optString("token");

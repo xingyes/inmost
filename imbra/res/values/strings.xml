@@ -79,8 +79,7 @@
 
     <string name="pay_hint_nor">如有问题请联系爱啵秀客服\n微信号： xxxxxx</string>
     <string name="pay_hint_quick">请在30分钟内完成支付\n逾期订单将自动取消</string>
-    <string name="pay_succ">支付成功</string>
-    <string name="pay_fail">支付成功</string>
+
 
     <string name="after_pay_hint_nor">详细订单信息请查看个人中心订单详情\n如有问题请联系爱啵秀客服\n微信号： xxxxxx</string>
     <string name="more_o2o_shop">更多店铺  敬请期待</string>

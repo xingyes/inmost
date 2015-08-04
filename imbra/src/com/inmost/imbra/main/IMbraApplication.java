@@ -34,9 +34,6 @@ public class IMbraApplication extends MyApplication {
         if(act==null)
             return;
 
-        act.iconUrl = "http://img2.imgtn.bdimg.com/it/u=921607941,1665261509&fm=21&gp=0.jpg";
-        act.nickName = "手机用户111";
-
         mAjax = ServiceConfig.getAjax(braConfig.URL_CHECK_TOKEN);
         if (null == mAjax)
             return;

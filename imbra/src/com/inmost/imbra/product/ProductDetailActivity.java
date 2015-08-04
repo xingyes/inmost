@@ -92,7 +92,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         mAjax = ServiceConfig.getAjax(braConfig.URL_PRODUCT_DETAIL);
         if (null == mAjax)
             return;
-        mAjax.setData("pid",1);
+        mAjax.setData("pid",Integer.valueOf(mProId) %3+1);
 
         showLoadingLayer();
         mAjax.setId(AJX_PRO_DETAIL);
@@ -241,7 +241,6 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         proHolder.productLayout.findViewById(R.id.shopping_btn).setOnClickListener(this);
 
         contentLayout.addView(proHolder.productLayout);
-        UiUtils.makeToast(this, "proid:" + proModel.id);
     }
 
 

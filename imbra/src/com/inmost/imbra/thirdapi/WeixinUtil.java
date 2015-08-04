@@ -1,7 +1,6 @@
 package com.inmost.imbra.thirdapi;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,7 +14,6 @@ import com.inmost.imbra.util.BMUtil;
 import com.inmost.imbra.util.ShareInfo;
 import com.inmost.imbra.util.ShareUtil;
 import com.tencent.mm.sdk.constants.Build;
-import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
@@ -28,7 +26,6 @@ import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.activity.BaseActivity;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -150,14 +147,10 @@ public class WeixinUtil {
 		req.timeStamp = json.optString("timestamp");//时间戳，防重发
 		req.packageValue = json.optString("package");//商家根据财付通文档填写的数据和签名
 
+        req.options = new com.tencent.mm.sdk.modelpay.PayReq.Options();
+        req.options.callbackClassName = "com.inmost.imbra.wxapi.WXEntryActivity";
         req.sign = json.optString("sign");//商家根据微信开放平台文档对数据做的签名
 
-        UiUtils.makeToast(context,
-                "appId:" + req.appId +",partnerId:" + req.partnerId + ",prepayId:" + req.prepayId +
-                        ",nonceStr:" + req.nonceStr +",timeStamp:" + req.timeStamp +
-                        ",packageValue:" + req.packageValue +
-                        ",sign:" + req.sign
-                        ,true);
         getWXApi(context).sendReq(req);
 	}
 
@@ -323,6 +316,53 @@ public class WeixinUtil {
 	}
 
 
+    public static void informWXPayResult(final Context aParent, int aErrcode) {
+        if (aErrcode == BaseResp.ErrCode.ERR_UNSUPPORT) {
+            UiUtils.showDialog(aParent,
+                    aParent.getString(com.xingy.R.string.no_support_weixin),
+                    aParent.getString(com.xingy.R.string.install_newest_weixin),
+                    aParent.getString(com.xingy.R.string.install_weixin_yes),
+                    aParent.getString(com.xingy.R.string.btn_cancel),
+                    new AppDialog.OnClickListener() {
+
+                        @Override
+                        public void onDialogClick(int nButtonId) {
+                            if (nButtonId == AppDialog.BUTTON_POSITIVE) {
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setData(Uri.parse("http://weixin.qq.com/"));
+                                aParent.startActivity(intent);
+                            }
+                        }
+                    }
+            );
+            return;
+        }
+
+        int strRid = R.string.pay_fail;
+        switch (aErrcode) {
+            //Pay resp
+//            case BaseResp.ErrCode.ERR_OK:
+//                strRid = R.string.pay_succ;
+//                break;
+            case BaseResp.ErrCode.ERR_AUTH_DENIED:
+                strRid = R.string.pay_auth_denied;
+                break;
+            case BaseResp.ErrCode.ERR_UNSUPPORT:
+                strRid = R.string.pay_unsupport;
+                break;
+            case BaseResp.ErrCode.ERR_SENT_FAILED:
+                strRid = R.string.pay_send_failed;
+                break;
+            case BaseResp.ErrCode.ERR_USER_CANCEL:
+                strRid = R.string.pay_cancel;
+                break;
+            default:
+                break;
+        }
+
+        UiUtils.makeToast(aParent, strRid);
+    }
+
     public static boolean checkWX(final Activity aParent, int baseApiLevel)
     {
         IWXAPI pWechatApi = WXAPIFactory.createWXAPI(aParent, APP_ID);
@@ -353,5 +393,7 @@ public class WeixinUtil {
 
         return true;
     }
+
+
 
 }

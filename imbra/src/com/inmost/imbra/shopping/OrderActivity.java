@@ -1,8 +1,12 @@
 package com.inmost.imbra.shopping;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -23,6 +27,7 @@ import com.inmost.imbra.main.IMbraApplication;
 import com.inmost.imbra.product.ProductDetailActivity;
 import com.inmost.imbra.thirdapi.WeixinUtil;
 import com.inmost.imbra.util.braConfig;
+import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
@@ -75,6 +80,24 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
     private TextView     payHintTv;
 
     private Account account;
+    public class WXPayResponseReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int aErrcode = intent.getIntExtra("errcode",-1);
+            WeixinUtil.informWXPayResult(context,aErrcode);
+            if(aErrcode == BaseResp.ErrCode.ERR_OK)
+            {
+                Bundle bundle = new Bundle();
+                bundle.putString(AfterPayActivity.ORDER_ID,mOrderId);
+                UiUtils.startActivity(OrderActivity.this, AfterPayActivity.class, bundle,true);
+                finish();
+            }
+        }
+    }
+
+    private WXPayResponseReceiver wxPayReceiver;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,10 +128,27 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
 
         setContentView(R.layout.activity_orderdetail);
 
-
         initViews();
 
+        if(null==wxPayReceiver) {
+            wxPayReceiver = new WXPayResponseReceiver();
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(WeixinUtil.BROADCAST_FROM_WXPAY);
+            LocalBroadcastManager.getInstance(this).registerReceiver(wxPayReceiver, filter);
+        }
     }
+
+    @Override
+    protected void onDestroy()
+    {
+        if(null != wxPayReceiver)
+        {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(wxPayReceiver);
+            wxPayReceiver = null;
+        }
+        super.onDestroy();
+    }
+
 
     private void initViews() {
         loadNavBar(R.id.order_nav);
@@ -263,15 +303,7 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
                 return;
             }
             showLoadingLayer();
-            final JSONObject dt = jsonObject.optJSONObject("dt");
-            AppDialog bd = UiUtils.showDialog(this,"Buy",dt.toString(),R.string.btn_ok,
-                    new AppDialog.OnClickListener() {
-                        @Override
-                        public void onDialogClick(int nButtonId) {
-                            WeixinUtil.doWXPay(OrderActivity.this,dt);
-                        }
-                    });
-            bd.show();
+            WeixinUtil.doWXPay(OrderActivity.this, jsonObject.optJSONObject("dt"));
         }
         if(AJAX_CANCEL_ORDER == response.getId())
         {

@@ -40,8 +40,7 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:id="@+id/menu_layout"
-        android:background="#73000000"
-        android:visibility="gone">
+        android:background="#73000000">
         <RelativeLayout
             android:id="@+id/menu_content"
             android:layout_width="240dp"
@@ -67,15 +66,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/user_layout"
-                android:padding="20dp"
+                android:padding="10dp"
                 android:layout_below="@id/call_help_tv"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp">
+                android:layout_centerHorizontal="true">
                 <RelativeLayout
                     android:id="@+id/head_layout"
                     android:layout_centerHorizontal="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="30dp"
                     android:layout_width="58dp"
                     android:layout_height="58dp">
                     <ImageView
@@ -101,7 +99,6 @@
                     android:layout_marginTop="9dp"
                     android:textColor="@color/global_nav_text"
                     android:id="@+id/user_name"/>
-
             </RelativeLayout>
 
             <!-- middle menu items -->
@@ -117,7 +114,7 @@
                 android:background="#80faa3c9"/>
                 <ListView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/menu_list_view"
                 android:cacheColorHint="@color/transparent"
                 android:listSelector="@color/transparent"

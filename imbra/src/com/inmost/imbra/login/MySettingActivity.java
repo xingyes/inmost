@@ -32,6 +32,7 @@ import com.inmost.imbra.shopping.OrderActivity;
 import com.inmost.imbra.shopping.OrderAdapter;
 import com.inmost.imbra.shopping.OrderModel;
 import com.inmost.imbra.util.braConfig;
+import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.CircleImageView;
 import com.xingy.lib.ui.TextField;
 import com.xingy.lib.ui.UiUtils;
@@ -60,6 +61,7 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
     private Ajax             mAjax;
     private boolean          bChanged = false;
     private Account          account;
+    private AppDialog        logoutDialog;
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -215,9 +217,20 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
         Intent ait = null;
         switch (v.getId()) {
             case R.id.logout_btn:
-                ILogin.clearAccount();
-                setResult(RESULT_OK);
-                finish();
+                if(logoutDialog == null) {
+                    logoutDialog = UiUtils.showDialog(this, R.string.caption_hint, R.string.r_u_sure_logout, R.string.btn_exit,
+                            R.string.btn_cancel, new AppDialog.OnClickListener() {
+                                @Override
+                                public void onDialogClick(int nButtonId) {
+                                    if (AppDialog.BUTTON_POSITIVE == nButtonId) {
+                                        ILogin.clearAccount();
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    }
+                                }
+                            });
+                }
+                logoutDialog.show();
                 break;
             case R.id.head:
                 UploadPhotoUtil.createUploadPhotoDlg(MySettingActivity.this).show();
@@ -253,7 +266,9 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
     @Override
     protected void onDestroy()
     {
-        android.util.Log.e("mysetting","-------------------onDestroy");
+        if(null!=logoutDialog)
+            logoutDialog.dismiss();
+        logoutDialog = null;
 
         super.onDestroy();
     }
