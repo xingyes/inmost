@@ -22,6 +22,7 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xingy.lib.ui.RadioDialog;
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.util.ShareInfo;
 import com.xingy.util.activity.BaseActivity;
 
 import java.util.ArrayList;

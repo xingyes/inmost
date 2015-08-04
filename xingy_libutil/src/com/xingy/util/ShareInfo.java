@@ -1,4 +1,4 @@
-package com.inmost.imbra.util;
+package com.xingy.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * 微信分享内容封装
  * 
- * @author zhangxuaninfo
+ * @author xingyao
  * 
  */
 public class ShareInfo implements Serializable, Cloneable {
@@ -58,7 +58,7 @@ public class ShareInfo implements Serializable, Cloneable {
 	}
 
 	public ShareInfo(String title, String wxcontent, String wxMomentsContent, String url, //
-			String normalText, String eventFrom, String iconUrl, Bitmap shareLogo) {
+                     String normalText, String eventFrom, String iconUrl, Bitmap shareLogo) {
 		super();
 		this.title = title;
 		this.summary = wxcontent;
@@ -72,7 +72,7 @@ public class ShareInfo implements Serializable, Cloneable {
 	}
 
 	public ShareInfo(String title, String wxcontent, String wxMomentsContent, String url,
-			String normalText, String eventFrom, String iconUrl, Bitmap shareLogo, String eventName) {
+                     String normalText, String eventFrom, String iconUrl, Bitmap shareLogo, String eventName) {
 		super();
 		this.title = title;
 		this.summary = wxcontent;

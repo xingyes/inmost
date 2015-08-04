@@ -1,6 +1,5 @@
 package com.inmost.imbra.util;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 
 import java.util.HashMap;
@@ -290,7 +289,7 @@ public class GlobalImageCache {
 				return false;
 			return true;
 		}
-		
+
 		public int getPosition() {
 			return position;
 		}

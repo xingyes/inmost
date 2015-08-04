@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import com.android.volley.toolbox.ImageLoader;
 import com.inmost.imbra.R;
 import com.inmost.imbra.util.BMUtil;
-import com.inmost.imbra.util.ShareInfo;
 import com.inmost.imbra.util.ShareUtil;
 import com.tencent.mm.sdk.constants.Build;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -24,6 +23,7 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.util.ShareInfo;
 import com.xingy.util.activity.BaseActivity;
 
 import org.json.JSONObject;
