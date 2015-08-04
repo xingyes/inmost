@@ -144,12 +144,13 @@ public class WeixinUtil {
 	public static void doWXPay(final Context context,final JSONObject json) {
 		PayReq req = new PayReq();
 		req.appId = APP_ID;
-		req.partnerId = json.optString("partnerId");//商家向财付通申请的商家id
-		req.prepayId = json.optString("prepayId");//预支付订单
-		req.nonceStr = json.optString("nonceStr");//随机串，防重发
-		req.timeStamp = json.optString("timeStamp");//时间戳，防重发
+		req.partnerId = json.optString("partnerid");//商家向财付通申请的商家id
+		req.prepayId = json.optString("prepayid");//预支付订单
+		req.nonceStr = json.optString("noncestr");//随机串，防重发
+		req.timeStamp = json.optString("timestamp");//时间戳，防重发
 		req.packageValue = json.optString("package");//商家根据财付通文档填写的数据和签名
-		req.sign = json.optString("sign");//商家根据微信开放平台文档对数据做的签名
+
+        req.sign = json.optString("sign");//商家根据微信开放平台文档对数据做的签名
 
         UiUtils.makeToast(context,
                 "appId:" + req.appId +",partnerId:" + req.partnerId + ",prepayId:" + req.prepayId +

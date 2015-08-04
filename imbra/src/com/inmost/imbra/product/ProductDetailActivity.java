@@ -20,7 +20,6 @@ import com.inmost.imbra.brand.BrandInfoActivity;
 import com.inmost.imbra.imgallery.ImageCheckActivity;
 import com.inmost.imbra.login.ILogin;
 import com.inmost.imbra.login.VerifyLoginActivity;
-import com.inmost.imbra.main.HomeFloorModel;
 import com.inmost.imbra.main.IMbraApplication;
 import com.inmost.imbra.shopping.ShoppingActivity;
 import com.inmost.imbra.util.braConfig;

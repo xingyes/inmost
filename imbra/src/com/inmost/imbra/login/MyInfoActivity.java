@@ -472,7 +472,6 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         {
             account = ILogin.getActiveAccount();
             if(null==account) {
-                setResult(RESULT_OK);
                 finish();
             }
             else

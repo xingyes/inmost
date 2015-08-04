@@ -213,7 +213,6 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 	@Override
 	public void onSuccess(JSONObject v, Response response) {
         closeLoadingLayer();
-        UiUtils.makeToast(this,v.toString(),true);
         final int ret = v.optInt("err");
 		if(ret != 0 )
 		{
@@ -236,29 +235,23 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
             account.token = data.optString("token");
             account.iconUrl = data.optString("himg");
             account.rowCreateTime = new Date().getTime();
-            android.util.Log.e("login",v.toString());
 
             ILogin.setActiveAccount(account);
-			ILogin.saveIdentity(account);
-            android.util.Log.e("login","savefinished");
-			setResult(RESULT_OK);
-			finish();
-
+            ILogin.saveIdentity(account);
+            finish();
 		}
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK)
-		{
-			Intent intent = new Intent();
-			setResult(RESULT_CANCELED, intent);
-			finish();
-			return true;
-		}
-		else
-			return super.onKeyDown(keyCode, event);
-	}
+//	@Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		if (keyCode == KeyEvent.KEYCODE_BACK)
+//		{
+//			finish();
+//			return true;
+//		}
+//		else
+//			return super.onKeyDown(keyCode, event);
+//	}
 
     /**
      *  weixin  login -------------
@@ -289,29 +282,29 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
             final String strState = intent.getStringExtra("state");
             String strOpenId = intent.getStringExtra("openId");
 
-            AppDialog ad = UiUtils.showDialog(VerifyLoginActivity.this, "Login",
-                    "Weixin login errcode:" + nErrCode + ",type:" + nType + ",state:" + strState + ",code:" + strCode +
-                            "openid:" + strOpenId,
-                    R.string.btn_ok, new AppDialog.OnClickListener() {
-                        @Override
-                        public void onDialogClick(int nButtonId) {
-                            wxLoginCallBack(strCode, strState);
-                        }
-                    });
+//            AppDialog ad = UiUtils.showDialog(VerifyLoginActivity.this, "Login",
+//                    "Weixin login errcode:" + nErrCode + ",type:" + nType + ",state:" + strState + ",code:" + strCode +
+//                            "openid:" + strOpenId,
+//                    R.string.btn_ok, new AppDialog.OnClickListener() {
+//                        @Override
+//                        public void onDialogClick(int nButtonId) {
+//                            wxLoginCallBack(strCode, strState);
+//                        }
+//                    });
 
 
-//            if(nType == ConstantsAPI.COMMAND_SENDAUTH)
-//            {
-//                if(nErrCode == BaseResp.ErrCode.ERR_OK)
-//                {
-//
-//                    wxLoginCallBack(strCode, strState);
-//                }
-//                else
-//                {
-//                    WeixinUtil.informWXLoginResult(VerifyLoginActivity.this,nErrCode);
-//                }
-//            }
+            if(nType == ConstantsAPI.COMMAND_SENDAUTH)
+            {
+                if(nErrCode == BaseResp.ErrCode.ERR_OK)
+                {
+
+                    wxLoginCallBack(strCode, strState);
+                }
+                else
+                {
+                    WeixinUtil.informWXLoginResult(VerifyLoginActivity.this,nErrCode);
+                }
+            }
         }
     }
 
@@ -320,7 +313,6 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
         if(mAjax!=null)
             mAjax.abort();
 
-        UiUtils.makeToast(this,"code:"+code);
         mAjax = ServiceConfig.getAjax(braConfig.URL_VERIFY_LOGIN);
         if (null == mAjax)
             return;
