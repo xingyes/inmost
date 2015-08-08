@@ -217,8 +217,9 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
 
         usrImgv.setUseShader(true);
         if(TextUtils.isEmpty(account.iconUrl)) {
-            usrImgv.setImageResource(R.drawable.no_head);
+            usrImgv.setVisibility(View.INVISIBLE);
         }else {
+            usrImgv.setVisibility(View.VISIBLE);
             usrImgv.setImageUrl(account.iconUrl,mImgLoader);
         }
         usrImgv.setOnClickListener(this);

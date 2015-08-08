@@ -1,5 +1,7 @@
 package com.xingy.util;
 
+import android.os.Looper;
+
 import com.xingy.lib.ILogin;
 import com.xingy.lib.IVersion;
 import com.xingy.util.cache.FileStorage;
@@ -67,7 +69,7 @@ public final class Log {
 		if (Config.DEBUG) {
 			android.util.Log.e(tag, msg);
 		}
-	}
+    }
 
 	public static void e(String tag, Exception ex) {
 		e(tag, ToolUtil.getStackTraceString(ex));

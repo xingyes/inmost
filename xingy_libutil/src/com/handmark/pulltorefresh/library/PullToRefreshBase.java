@@ -1283,7 +1283,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		JINGDONG;
 
 		static AnimationStyle getDefault() {
-			return JINGDONG;
+			return FLIP;
 		}
 
 		/**
