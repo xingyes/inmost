@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 import com.xingy.util.Config;
+import com.xingy.util.ImageHelper;
 import com.xingy.util.Log;
 import com.xingy.util.ToolUtil;
 
@@ -108,7 +109,7 @@ public class ImageFileUtils {
      * @return
      */
     public Bitmap getBitmap(String url) {
-        return BitmapFactory.decodeFile(getMD5FileName(url));
+        return ImageHelper.makeBitmapFromFile(getMD5FileName(url), 480);
     }
 
     /**

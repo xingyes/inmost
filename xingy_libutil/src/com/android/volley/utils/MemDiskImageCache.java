@@ -8,6 +8,8 @@ import com.android.volley.toolbox.ImageLoader;
 import com.xingy.util.db.ImageFileUtils;
 
 import java.io.IOException;
+import java.lang.ref.SoftReference;
+import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,17 +28,19 @@ public class MemDiskImageCache implements ImageLoader.ImageCache{
      */
     private ExecutorService mImageThreadPool = null;
 
+
+
     public MemDiskImageCache(Context context)
     {
         fileUtils = new ImageFileUtils(context, "BRA_PIC");
-        int maxMemory = (int) Runtime.getRuntime().maxMemory();
-        int mCacheSize = maxMemory / 4;
+        int mCacheSize = 4*1024*1024;
         mMemoryCache = new LruCache<String, Bitmap>(mCacheSize) {
                 @Override
                 protected int sizeOf(String key, Bitmap bitmap) {
                     return bitmap.getRowBytes() * bitmap.getHeight();
                 }
             };
+
     }
 
 
@@ -63,18 +67,6 @@ public class MemDiskImageCache implements ImageLoader.ImageCache{
 
     }
 
-    @Override
-    public Bitmap getBitmap(String url) {
-        Bitmap bm = mMemoryCache.get(url);
-        if(bm==null && fileUtils.isFileExists(url) && fileUtils.getFileSize(url) != 0){
-            //从SD卡获取手机里面获取Bitmap
-            bm = fileUtils.getBitmap(url);
-
-            //将Bitmap 加入内存缓存
-            addBitmapToMemoryCache(url, bm);
-        }
-        return bm;
-    }
 
     @Override
     public void putBitmap(String url, Bitmap bm) {
@@ -111,4 +103,30 @@ public class MemDiskImageCache implements ImageLoader.ImageCache{
         else
             return "";
     }
+
+
+
+
+
+
+
+    @Override
+    public Bitmap getBitmap(String url) {
+        Bitmap bm = mMemoryCache.get(url);
+        if(bm==null && fileUtils.isFileExists(url) && fileUtils.getFileSize(url) != 0){
+            //从SD卡获取手机里面获取Bitmap
+            bm = fileUtils.getBitmap(url);
+
+            //将Bitmap 加入内存缓存
+            addBitmapToMemoryCache(url, bm);
+        }
+        return bm;
+    }
+
+    public void clearMemCache()
+    {
+        if(null !=mMemoryCache)
+            mMemoryCache.evictAll();
+    }
+
 }

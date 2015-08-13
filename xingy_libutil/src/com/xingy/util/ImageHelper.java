@@ -250,4 +250,34 @@ public class ImageHelper {
 	public static Drawable bitmapToDrawable(Bitmap bitmap) {
 		return new BitmapDrawable(bitmap);
 	}
+
+
+
+    public static Bitmap makeBitmapFromFile(String path, final int thumbSize) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+        int width = options.outWidth;
+        int height = options.outHeight;
+        if (width > height) {
+            options.inSampleSize = Math.round((float) width / (float) thumbSize);
+        } else {
+            options.inSampleSize = Math.round((float) height / (float) thumbSize);
+        }
+        options.inJustDecodeBounds = false;
+        Bitmap bitmap = null;
+        try {
+            bitmap = BitmapFactory.decodeFile(path, options);
+        }
+        catch (OutOfMemoryError err)
+        {
+                System.gc();
+        }
+//            // 图片过大需要缩放
+//            if (options.inSampleSize > 1) {
+//            BitmapUtil bitmapUtil = new BitmapUtil();
+//            bitmap = bitmapUtil.scaleBitmap(bitmap, thumbSize, thumbSize);
+//            }
+        return bitmap;
+    }
 }

@@ -121,6 +121,8 @@ public class BlogVolleyActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
         mQueue = Volley.newRequestQueue(this);
         mImgLoader = new ImageLoader(mQueue, IMbraApplication.globalMDCache);
+        IMbraApplication.globalMDCache.clearMemCache();
+
 
         setContentView(R.layout.activity_scrollcontent);
 
