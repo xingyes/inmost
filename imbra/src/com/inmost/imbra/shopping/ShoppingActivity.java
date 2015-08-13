@@ -28,6 +28,7 @@ import com.inmost.imbra.product.ProductModel;
 import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.AutoHeightImageView;
+import com.xingy.lib.ui.RadioDialog;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
 import com.xingy.util.ToolUtil;
@@ -78,6 +79,9 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
     }
     private ReceiverHolder recevierHolder = new ReceiverHolder() ;
 
+    private RadioDialog.RadioAdapter aAdapter;
+
+    private AppDialog     coupOptDialog;
     private CouponModel   couponModel;
     public class CouponHolder {
         public EditText hintTv;
@@ -379,10 +383,42 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
                 startActivityForResult(ait,CODE_SELECT_ADDRESS);
                 break;
             case R.id.coupon_layout:
-                ait = new Intent(ShoppingActivity.this,CouponListActivity.class);
-                if(null!=couponModel)
-                    ait.putExtra(CouponListActivity.COUPON_MODEL,couponModel);
-                startActivityForResult(ait,CODE_SELECT_COUPON);
+                if(null==couponModel)
+                {
+                    ait = new Intent(ShoppingActivity.this,CouponListActivity.class);
+                    startActivityForResult(ait,CODE_SELECT_COUPON);
+                }
+                else
+                {
+                    if(coupOptDialog==null)
+                    {
+                        aAdapter = new RadioDialog.RadioAdapter(ShoppingActivity.this);
+                        final String[] coupopt = {"不使用代金券","重新选择代金券"};
+                        aAdapter.setList(coupopt,-1);
+                        coupOptDialog = UiUtils.showListDialog(ShoppingActivity.this,"优惠券方式",aAdapter,
+                                new RadioDialog.OnRadioSelectListener(){
+                                    @Override
+                                    public void onRadioItemClick(int which) {
+                                        if(which==0)
+                                        {
+                                            couponModel = null;
+                                            coupHolder.hintTv.setText("");
+                                        }
+                                        else
+                                        {
+                                            if(null!=couponModel) {
+                                                Intent ait = new Intent(ShoppingActivity.this, CouponListActivity.class);
+                                                ait.putExtra(CouponListActivity.COUPON_MODEL, couponModel);
+                                                startActivityForResult(ait, CODE_SELECT_COUPON);
+                                            }
+                                        }
+
+                                    }
+                                });
+                    }
+                    aAdapter.setPickIdx(-1);
+                    coupOptDialog.show();
+                }
                 break;
             case  R.id.submit_order:
                 debugCreateOrder();//createOrder();
