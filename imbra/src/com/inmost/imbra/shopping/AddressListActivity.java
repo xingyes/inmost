@@ -7,13 +7,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.inmost.imbra.login.Account;
+import com.inmost.imbra.login.ILogin;
+import com.inmost.imbra.util.braConfig;
 import com.inmost.imbra.R;
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.util.ServiceConfig;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
 import com.xingy.util.ajax.Response;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -27,6 +33,9 @@ public class AddressListActivity extends BaseActivity implements OnSuccessListen
     public static final int    ADDRESS_EDIT = 1003;
     public static final int    ADDRESS_ADD = 1004;
 
+    public static final int    AJAX_LIST = 101;
+    public static final int    AJAX_DEL_ADDRESS = 102;
+
     private Handler mHandler = new Handler();
     private Intent backIntent;
     private Ajax mAjax;
@@ -34,14 +43,17 @@ public class AddressListActivity extends BaseActivity implements OnSuccessListen
     private AddressModel            addPicked;
     private ListView mList;
     private AddressAdapter addressAdapter;
+    private Account act;
+    private View    emptyView;
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
         setContentView(R.layout.activity_list_address);
 
+        act = ILogin.getActiveAccount();
         Intent ait = getIntent();
-        if(null==ait)
+        if(null==ait || act==null)
         {
             finish();
             return;
@@ -53,6 +65,8 @@ public class AddressListActivity extends BaseActivity implements OnSuccessListen
 
         loadNavBar(R.id.address_list_navigation_bar);
 
+        emptyView = this.findViewById(R.id.address_list_listView_empty);
+        emptyView.setVisibility(View.GONE);
         mList = (ListView)this.findViewById(R.id.address_list_listView);
         addressAdapter = new AddressAdapter(this,-1,this);
         mList.setAdapter(addressAdapter);
@@ -64,47 +78,82 @@ public class AddressListActivity extends BaseActivity implements OnSuccessListen
         backIntent = new Intent();
     }
 
+    /**
+     *
+     */
     private void requestAddress()
     {
-//        mAjax = ServiceConfig.getAjax(braConfig.URL_GET_ADDRESSLIST);
-//        if (null == mAjax)
-//            return;
-//
-//        showLoadingLayer();
-//
-//        mAjax.setOnSuccessListener(this);
-//        mAjax.setOnErrorListener(this);
-//        mAjax.send();
+        mAjax = ServiceConfig.getAjax(braConfig.URL_GET_ADDRESSLIST);
+        if (null == mAjax)
+            return;
 
-        addressArray = new ArrayList<AddressModel>();
-        for(int i = 0 ; i< 4 ; i++)
-        {
-            AddressModel item = new AddressModel();
-            item.provinceId = 10 + i;
-            item.cityId = 50 + i*2;
-            item.townId = 23 + i;
-            item.address = "淞虹路1111号" + i + "楼";
-            item.user = "张三" + i;
-            item.phone = "1394040123" + i;
-            item.cityStr = "上海市徐汇区";
-            item.addid = ""+i;
-            addressArray.add(item);
+        showLoadingLayer();
 
-            if(null!=addPicked && item.addid.equals(addPicked.addid))
-                addressAdapter.setPick(i);
-        }
-
-        addressAdapter.setData(addressArray);
-        addressAdapter.notifyDataSetChanged();
-
+        mAjax.setId(AJAX_LIST);
+        mAjax.setData("token",act.token);
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
     }
 
+
+    /**
+     *
+     */
+    private void delAddress(final String addid)
+    {
+        mAjax = ServiceConfig.getAjax(braConfig.URL_DEL_ADDRESS);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+
+        mAjax.setId(AJAX_DEL_ADDRESS);
+        mAjax.setData("uaid",addid);
+        mAjax.setData("token",act.token);
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+    }
 
     @Override
     public void onSuccess(JSONObject jsonObject, Response response) {
+        closeLoadingLayer();
+        int err = jsonObject.optInt("err");
+        if (err != 0) {
+            String msg = jsonObject.optString("msg");
+            UiUtils.makeToast(this, ToolUtil.isEmpty(msg) ? getString(R.string.parser_error_msg) : msg);
+            return;
+        }
 
+        if(response.getId() == AJAX_DEL_ADDRESS)
+        {
+            requestAddress();
+            return;
+        }
+        JSONArray dt = jsonObject.optJSONArray("dt");
 
+        if(null==addressArray)
+        {
+            addressArray = new ArrayList<AddressModel>();
+        }
+        addressArray.clear();
+        for(int i=0;i<dt.length();i++)
+        {
+            JSONObject itemjson = dt.optJSONObject(i);
+            AddressModel addr = new AddressModel();
+            addr.parse(itemjson);
+            addressArray.add(addr);
+            if (null != addPicked && addr.addid.equals(addPicked.addid))
+                addressAdapter.setPick(i);
+        }
+        addressAdapter.setData(addressArray);
+        addressAdapter.notifyDataSetChanged();
+
+        emptyView.setVisibility(addressArray.size()<=0 ? View.VISIBLE:View.GONE);
     }
+
+
 
     @Override
     public void onEditAddress(int pos) {
@@ -116,8 +165,10 @@ public class AddressListActivity extends BaseActivity implements OnSuccessListen
 
     @Override
     public void onDelAddress(int pos) {
-        addressArray.remove(pos);
-        addressAdapter.notifyDataSetChanged();
+
+        AddressModel addr = addressArray.get(pos);
+        if(addr!=null)
+            delAddress(addr.addid);
     }
 
     @Override
@@ -166,7 +217,7 @@ public class AddressListActivity extends BaseActivity implements OnSuccessListen
                 requestCode == ADDRESS_EDIT)
         {
             if(resultCode ==RESULT_OK)
-                UiUtils.makeToast(this,"refresh addresslist");
+                requestAddress();
             else
                 UiUtils.makeToast(this,"canceled");
         }

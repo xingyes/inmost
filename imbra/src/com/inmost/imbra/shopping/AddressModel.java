@@ -7,6 +7,7 @@ import java.io.Serializable;
 public class AddressModel implements Serializable{
 
     public String addid;
+    public String userid;
     public String user;
     public String address;
     public String phone;
@@ -27,6 +28,7 @@ public class AddressModel implements Serializable{
     public void clear()
     {
         addid = "";
+        userid="";
         user = "";
         address="";
         phone="";
@@ -50,6 +52,9 @@ public class AddressModel implements Serializable{
      * @param json
      */
 	public void parse(JSONObject json){
+        addid = json.optString("uaid");
+        userid = json.optString("uid");
+
         user = json.optString("consignee");
         phone = json.optString("mobile");
         provinceId = json.optLong("province_id");

@@ -44,6 +44,8 @@ public class braConfig extends Config {
     //address
     public static final String URL_GET_ADDRESSLIST = "URL_GET_ADDRESSLIST";
     public static final String URL_EDIT_ADDRESS = "URL_EDIT_ADDRESS";
+    public static final String URL_DEL_ADDRESS = "URL_DEL_ADDRESS";
+    public static final String URL_ADD_ADDRESS = "URL_ADD_ADDRESS";
 
     //login
     public static final String URL_LOGIN = "URL_LOGIN";

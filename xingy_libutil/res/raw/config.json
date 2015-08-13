@@ -13,7 +13,12 @@
 "URL_VERIFY_LOGIN":{"url":"http:\/\/passport.imbraa.com\/user\/signup.json","method":"POST"},
 
 "URL_ORDER_DETAIL":{"url":"http:\/\/api.imbraa.com\/order\/detail.json","method":"GET"},
-"URL_PAY_ORDER":{"url":"http:\/\/api.imbraa.com\/order\/prepay.json","method":"POST"}
+"URL_PAY_ORDER":{"url":"http:\/\/api.imbraa.com\/order\/prepay.json","method":"POST"},
+
+"URL_GET_ADDRESSLIST":{"url":"http:\/\/api.imbraa.com\/user\/addr_list.json","method":"GET"},
+"URL_EDIT_ADDRESS":{"url":"http:\/\/api.imbraa.com\/user\/modify_addr.json","method":"POST"},
+"URL_DEL_ADDRESS":{"url":"http:\/\/api.imbraa.com\/user\/del_addr.json","method":"POST"},
+"URL_ADD_ADDRESS":{"url":"http:\/\/api.imbraa.com\/user\/new_addr.json","method":"POST"}
 
 },"enable":true,"message":"","version":"1","autoResume":1}
 

@@ -61,27 +61,23 @@
             android:dividerHeight="1px"
             android:layout_height="wrap_content"/>
 
-        <!--<TextView-->
-            <!--android:id="@+id/address_list_listView_empty"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginBottom="@dimen/margin_size_20xp"-->
-            <!--android:layout_marginLeft="@dimen/margin_size_30xp"-->
-            <!--android:layout_marginRight="@dimen/margin_size_30xp"-->
-            <!--android:layout_marginTop="@dimen/margin_size_20xp"-->
-            <!--android:background="@drawable/denom_off2"-->
-            <!--android:gravity="center"-->
-            <!--android:paddingBottom="@dimen/margin_size_50xp"-->
-            <!--android:paddingTop="@dimen/margin_size_50xp"-->
-            <!--android:text="@string/list_no_address"-->
-            <!--android:textColor="#ffababab"-->
-            <!--android:textSize="@dimen/bar_font_30" />-->
+        <TextView
+            android:id="@+id/address_list_listView_empty"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_size_20xp"
+            android:layout_marginLeft="@dimen/margin_size_30xp"
+            android:layout_marginRight="@dimen/margin_size_30xp"
+            android:layout_marginTop="@dimen/margin_size_20xp"
+            android:background="@drawable/denom_off2"
+            android:gravity="center"
+            android:paddingBottom="@dimen/margin_size_50xp"
+            android:paddingTop="@dimen/margin_size_50xp"
+            android:text="@string/list_no_address"
+            android:textColor="#ffababab"
+            android:textSize="@dimen/bar_font_30" />
     </RelativeLayout>
 
-    <include
-        android:layout_below="@id/address_list_navigation_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        layout="@layout/global_loading" />
+    <include layout="@layout/global_loading" />
 
 </RelativeLayout>

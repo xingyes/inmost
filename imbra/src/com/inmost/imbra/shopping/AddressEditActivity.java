@@ -8,6 +8,8 @@ import android.widget.EditText;
 
 import com.inmost.imbra.R;
 import com.inmost.imbra.imgallery.ImageCheckActivity;
+import com.inmost.imbra.login.Account;
+import com.inmost.imbra.login.ILogin;
 import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.IArea;
 import com.xingy.lib.IPageCache;
@@ -16,6 +18,7 @@ import com.xingy.lib.model.FullDistrictModel;
 import com.xingy.lib.ui.AreaPickerView;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
@@ -28,6 +31,7 @@ import org.json.JSONObject;
  */
 public class AddressEditActivity extends BaseActivity implements OnSuccessListener<JSONObject> {
 
+    private boolean  bAddFlag = true;
     private Ajax mAjax;
     public static final String ADDRESS_MODEL = "address_model";
 
@@ -40,6 +44,8 @@ public class AddressEditActivity extends BaseActivity implements OnSuccessListen
     private EditText  areaCodeEt;
     private EditText  addressEt;
     private AddressModel addressModel;
+
+    private Account  act;
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -48,8 +54,9 @@ public class AddressEditActivity extends BaseActivity implements OnSuccessListen
 
         loadNavBar(R.id.edit_add_nav);
 
+        act = ILogin.getActiveAccount();
         Intent ait = getIntent();
-        if(null == ait)
+        if(null == ait || null == act)
         {
             finish();
             return;
@@ -75,6 +82,7 @@ public class AddressEditActivity extends BaseActivity implements OnSuccessListen
             phoneEt.setText(addressModel.phone);
             addressEt.setText(addressModel.address);
             areaEt.setText(addressModel.cityStr);
+            bAddFlag = false;
         }
         else
             addressModel = new AddressModel();
@@ -119,18 +127,29 @@ public class AddressEditActivity extends BaseActivity implements OnSuccessListen
 
     public void submitEditAddress()
     {
-        if(!TextUtils.isEmpty(addressModel.addid ))
-            mAjax.setData("addid",addressModel.addid);
+        addressModel.postcode = areaCodeEt.getText().toString();
         addressModel.user = nameEt.getText().toString();
         addressModel.phone = phoneEt.getText().toString();
         addressModel.address = addressEt.getText().toString();
 
-        setResult(RESULT_OK,null);
-        finish();
-
-        mAjax = ServiceConfig.getAjax(braConfig.URL_EDIT_ADDRESS);
+        if(bAddFlag)
+            mAjax = ServiceConfig.getAjax(braConfig.URL_ADD_ADDRESS);
+        else
+            mAjax = ServiceConfig.getAjax(braConfig.URL_EDIT_ADDRESS);
         if (null == mAjax)
             return;
+
+
+        if(!bAddFlag)
+            mAjax.setData("uaid",addressModel.addid);
+        mAjax.setData("province_id",addressModel.provinceId);
+        mAjax.setData("city_id",addressModel.cityId);
+        mAjax.setData("town_id",addressModel.townId);
+        mAjax.setData("addr",addressModel.address);
+        mAjax.setData("postcode",addressModel.postcode);
+        mAjax.setData("consignee",addressModel.user);
+        mAjax.setData("mobile",addressModel.phone);
+        mAjax.setData("token",act.token);
 
 
         mAjax.setOnSuccessListener(this);
@@ -143,6 +162,7 @@ public class AddressEditActivity extends BaseActivity implements OnSuccessListen
     {
         switch(v.getId()) {
             case R.id.area:
+                UiUtils.hideSoftInput(AddressEditActivity.this,areaEt);
                 mAreaPicker.setVisibility(View.VISIBLE);
                 if(null == mAreaPickerListener)
                 {
@@ -152,8 +172,8 @@ public class AddressEditActivity extends BaseActivity implements OnSuccessListen
                         public void onSubmit() {
                             addressModel.provinceId = mAreaPicker.getProvince().getSortId();
 
-//                            addressModel.cityId = mAreaPicker.getCity();
-//                            addressModel.townId = mAreaPicker.getZone();
+                            addressModel.cityId = 12;
+                            addressModel.townId = 11;
                             addressModel.provinceStr = mAreaPicker.getProvince().getProvinceName();
                             addressModel.cityStr = mAreaPicker.getCity().getCityName();
                             addressModel.townStr = (null == mAreaPicker.getZone()  ? "" : mAreaPicker.getZone().getZoneName());
@@ -175,8 +195,26 @@ public class AddressEditActivity extends BaseActivity implements OnSuccessListen
 
 
     @Override
-    public void onSuccess(JSONObject v, Response response) {
+    public void onSuccess(JSONObject jsonObject, Response response) {
+        int err = jsonObject.optInt("err");
+        if (err != 0) {
+            String msg = jsonObject.optString("msg");
+            UiUtils.makeToast(this, ToolUtil.isEmpty(msg) ? getString(R.string.parser_error_msg) : msg);
+            return;
+        }
 
+        setResult(RESULT_OK,null);
+        finish();
+   }
 
+    @Override
+    public void onBackPressed()
+    {
+        if(mAreaPicker!=null && mAreaPicker.getVisibility() == View.VISIBLE)
+        {
+            mAreaPicker.setVisibility(View.GONE);
+        }
+        else
+            super.onBackPressed();
     }
 }
