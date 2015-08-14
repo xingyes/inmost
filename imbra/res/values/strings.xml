@@ -105,4 +105,19 @@
     <string name="buy_friend">送朋友</string>
 
 
+    <string name="order_stat_0">待审核</string>
+    <string name="order_stat_1">审核通过待支付</string>
+    <string name="order_stat_2">支付成功待出库</string>
+    <string name="order_stat_3">出库打包中</string>
+    <string name="order_stat_4">已出库</string>
+    <string name="order_stat_5">待审核</string>
+    <string name="order_stat_6">已签收</string>
+    <string name="order_err_0">订单错误</string>
+    <string name="order_err_1">系统作废</string>
+    <string name="order_err_2">客服作废</string>
+    <string name="order_err_3">用户作废</string>
+    <string name="order_err_4">部分退货</string>
+    <string name="order_err_5">全部退货</string>
+
+
 </resources>

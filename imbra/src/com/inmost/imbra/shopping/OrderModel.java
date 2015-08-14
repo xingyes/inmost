@@ -1,5 +1,6 @@
 package com.inmost.imbra.shopping;
 
+import com.inmost.imbra.R;
 import com.inmost.imbra.coupon.CouponModel;
 import com.inmost.imbra.product.ProductModel;
 
@@ -49,6 +50,12 @@ public class OrderModel implements Serializable{
     public static final int ORDER_STAT_PART_RETURN = -4;
     public static final int ORDER_STAT_FULL_RETURN = -5;
     public int order_stat; //0=待审核，1=审核通过待支付，2=支付成功待出库，3=出库打包中，4=已出库，5=待签收，6=已签收，-1=系统作废，-2=客服作废，-3=用户作废，-4=部分退货，-5=全部退货
+
+    public static final int[] orderStateStrRid = {R.string.order_stat_0,R.string.order_stat_1,
+            R.string.order_stat_2,R.string.order_stat_3,R.string.order_stat_4,R.string.order_stat_5,R.string.order_stat_6};
+
+    public static final int[] orderStateErrStrRid = {R.string.order_err_0,R.string.order_err_1,
+            R.string.order_err_2,R.string.order_err_3,R.string.order_err_4,R.string.order_err_5};
 
     public int ship_stat; //0=待发货，1=已收件，2=发货中，3=已签收，-1=用户拒收
 
@@ -154,7 +161,7 @@ public class OrderModel implements Serializable{
         last_update = json.optLong("last_update");
 
         JSONArray plist = json.optJSONArray("product_list");
-        for(int i = 0 ; i < plist.length();i++)
+        for(int i = 0 ; null!=plist && i < plist.length();i++)
         {
             ProductModel pro = new ProductModel();
             pro.parseFromOrder(plist.optJSONObject(i));

@@ -110,14 +110,21 @@ public class OrderAdapter extends BaseAdapter {
 
         OrderModel orderItem = mOrderArray.get(position);
 
-        holder.statusv.setText(orderItem.order_stat);
+        if(orderItem.order_stat>=0)
+            holder.statusv.setText(OrderModel.orderStateStrRid[orderItem.order_stat]);
+        else
+            holder.statusv.setText(OrderModel.orderStateStrRid[0 - orderItem.order_stat]);
+
         holder.orderidv.setText("订单号:" + orderItem.orderid);
 
-        holder.aimgv.setImageUrl(HomeFloorModel.formBraUrl(orderItem.proList.get(0).front),mImgLoader);
-        holder.namev.setText(orderItem.proList.get(0).title);
-        holder.pricev.setText(mActivity.getString(R.string.rmb_price,orderItem.proList.get(0).sale_price));
+        if(null!=orderItem.proList && orderItem.proList.size()>0) {
+            holder.aimgv.setImageUrl(HomeFloorModel.formBraUrl(orderItem.proList.get(0).front), mImgLoader);
+            holder.namev.setText(orderItem.proList.get(0).title);
+        }
 
-        holder.ordertimev.setText(ToolUtil.formatSuitableDate(orderItem.addtime));
+        holder.pricev.setText(mActivity.getString(R.string.rmb_price, orderItem.total_price));
+
+        holder.ordertimev.setText(ToolUtil.formatSuitableDate(orderItem.addtime*1000));
 
         holder.delbtn.setTag(position);
         holder.aimgv.setTag(position);

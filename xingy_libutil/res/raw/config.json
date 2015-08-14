@@ -12,6 +12,8 @@
 "URL_CREATE_ORDER":{"url":"http:\/\/api.imbraa.com\/order\/act.json","method":"POST"},
 "URL_VERIFY_LOGIN":{"url":"http:\/\/passport.imbraa.com\/user\/signup.json","method":"POST"},
 
+
+"URL_ORDER_LIST":{"url":"http:\/\/api.imbraa.com\/order\/list.json","method":"GET"},
 "URL_ORDER_DETAIL":{"url":"http:\/\/api.imbraa.com\/order\/detail.json","method":"GET"},
 "URL_PAY_ORDER":{"url":"http:\/\/api.imbraa.com\/order\/prepay.json","method":"POST"},
 

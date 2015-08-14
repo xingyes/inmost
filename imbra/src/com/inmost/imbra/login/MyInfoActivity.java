@@ -83,6 +83,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
     private OrderAdapter       orderAdapter;
     private ArrayList<OrderModel> mOrderArray;
     private int  mOrderNextPageNum;
+    private boolean bOrderFinished = false;
 
     private CouponAdapter couponAdapter;
     private class CouponBottom
@@ -168,7 +169,8 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
                     }
                  }
                  else if(mTabRid == R.id.tab_orderlist) {
-                        if (firstVisibleItem + visibleItemCount >= totalItemCount && mOrderNextPageNum > 1) {
+                        if (firstVisibleItem + visibleItemCount >= totalItemCount && mOrderNextPageNum > 1
+                                && !bOrderFinished) {
                             UiUtils.makeToast(MyInfoActivity.this, "first:" + firstVisibleItem + ",vis:" +
                                     visibleItemCount + ",totalItemCount" + totalItemCount);
                             requestOrderlist(mOrderNextPageNum);
@@ -190,6 +192,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
                     mFavArray.clear();
                     favAdapter.notifyDataSetChanged();
                     mFavNextPageNum = 1;
+                    bFavFinished = false;
                     requestFav(mFavNextPageNum);
                 }
                 else if(mTabRid == R.id.tab_coupon){
@@ -204,6 +207,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
                     orderAdapter.notifyDataSetChanged();
 
                     mOrderNextPageNum = 1;
+                    bOrderFinished = false;
                     requestOrderlist(mOrderNextPageNum);
 
                 }
@@ -269,11 +273,12 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
     }
 
     private void requestOrderlist(int page) {
-        mAjax = ServiceConfig.getAjax(braConfig.URL_SEARCH);
+        mAjax = ServiceConfig.getAjax(braConfig.URL_ORDER_LIST);
         if (null == mAjax)
             return;
 
-        mAjax.setData("page", page);
+//        mAjax.setData("page", page);
+        mAjax.setData("token", account.token);
         showLoadingLayer();
         mAjax.setId(R.id.tab_orderlist);
         mAjax.setOnSuccessListener(this);
@@ -363,16 +368,18 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         }
         else if(response.getId() == R.id.tab_orderlist)
         {
-            mOrderNextPageNum++;
-            JSONArray feeds = v.optJSONArray("products");
-            if (null != feeds) {
+            JSONArray feeds = v.optJSONArray("dt");
+            if (null != feeds && feeds.length()>0) {
                 for (int i = 0; i < feeds.length(); i++) {
                     OrderModel order = new OrderModel();
-                    order.orderid = ""+i;
                     order.parse(feeds.optJSONObject(i));
                     mOrderArray.add(order);
                 }
+                mOrderNextPageNum++;
+                bOrderFinished = false;
             }
+            else
+                bOrderFinished = true;
             orderAdapter.setData(mOrderArray);
             orderAdapter.notifyDataSetChanged();
             if(mOrderArray.size() <=0)

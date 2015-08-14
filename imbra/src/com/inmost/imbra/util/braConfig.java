@@ -24,6 +24,7 @@ public class braConfig extends Config {
     public static final String URL_PRODUCT_DETAIL = "URL_PRODUCT_DETAIL";
     public static final String URL_CREATE_ORDER = "URL_CREATE_ORDER";
     //order
+    public static final String URL_ORDER_LIST = "URL_ORDER_LIST";
     public static final String URL_ORDER_DETAIL = "URL_ORDER_DETAIL";
     public static final String URL_PAY_ORDER = "URL_PAY_ORDER";
 
