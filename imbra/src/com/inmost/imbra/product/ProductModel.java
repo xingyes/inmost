@@ -70,6 +70,32 @@ public class ProductModel implements Serializable {
     }
 
 
+    public void parseSearch(JSONObject jsonObject) {
+        clear();
+        id = jsonObject.optString("pid");
+        brandid = jsonObject.optString("bfid");
+        title = jsonObject.optString("tit");
+        front = jsonObject.optString("pic");
+
+        brandname = jsonObject.optString("bdesc");
+
+        state = jsonObject.optString("stat");
+        chooseStr = jsonObject.optString("cs");
+        if(!TextUtils.isEmpty(chooseStr))
+        {
+            String items[] = chooseStr.split(",",-1);
+            for(String item : items )
+                choose.add(item);
+        }
+        BigDecimal hun = new BigDecimal(100);
+        BigDecimal it = new BigDecimal(jsonObject.optLong("price"));
+        it = it.divide(hun ,2);
+        sale_price =  it.toPlainString();
+        it = new BigDecimal(jsonObject.optLong("dprice"));
+        it = it.divide(hun ,2);
+        ori_price = it.toPlainString();
+        fav = (jsonObject.optInt("is_fav")==1);
+    }
     public void parse(JSONObject jsonObject) {
         clear();
         id = jsonObject.optString("id");

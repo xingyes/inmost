@@ -71,6 +71,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
     private ArrayList<ProductModel> mProArray;
     private Product2RowAdapter mProAdapter;
     private int  mProNextPageNum;
+    private boolean  bSearchFinished = false;
 
 
     private LayoutInflater    mInflater;
@@ -161,8 +162,33 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
             return;
         }
 
-        mAjax.setData("page", page);
-		mAjax.setId(mTabIdx);
+        if(paramHolder.cupIdx>=0 && paramHolder.sizeIdx>=0)
+        {
+            String cs = mSearchParams.sizeModel.dtArray.get(paramHolder.sizeIdx).info +
+                    mSearchParams.cupModel.dtArray.get(paramHolder.cupIdx).info;
+            mAjax.setData("cs",cs);
+        }
+        if(mSearchParams.filterBrandIdx>=0)
+        {
+            mAjax.setData("bid",mSearchParams.brandModel.dtArray.get(mSearchParams.filterBrandIdx).id);
+        }
+        if(mSearchParams.filterFuncIdx>=0)
+        {
+            mAjax.setData("bf",mSearchParams.funcModel.dtArray.get(mSearchParams.filterFuncIdx).id);
+        }
+        if(mSearchParams.filterHighPriceIdx>=0 && mSearchParams.filterLowPriceIdx>=0)
+        {
+            paramHolder.priceTv.setText("" + mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterLowPriceIdx) + "~"
+                    + mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterHighPriceIdx));
+
+            mAjax.setData("prs",mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterLowPriceIdx);
+            mAjax.setData("pre",mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterHighPriceIdx);
+        }
+
+        mAjax.setData("pn", page);
+        mAjax.setData("ps", 10);
+
+        mAjax.setId(mTabIdx);
 		mAjax.setOnSuccessListener(this);
 		mAjax.setOnErrorListener(mActivity);
 		mAjax.send();
@@ -256,7 +282,8 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
                     }
                 }
                 else {
-                    if (firstVisibleItem + visibleItemCount >= totalItemCount && mProNextPageNum > 1) {
+                    if (firstVisibleItem + visibleItemCount >= totalItemCount && mProNextPageNum > 1
+                            && !bSearchFinished) {
                         UiUtils.makeToast(mActivity, "first:" + firstVisibleItem + ",vis:" +
                                 visibleItemCount + ",totalItemCount" + totalItemCount);
                         requestPage(mProNextPageNum);
@@ -431,17 +458,21 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
         else if(response.getId()==AJAX_SEARCH) {
             UiUtils.makeToast(mActivity, "searched " + mProNextPageNum);
 
-            mProNextPageNum++;
-            JSONArray feeds = v.optJSONArray("products");
-            if (null != feeds) {
+            JSONArray feeds = v.optJSONArray("dt");
+            if (null != feeds && feeds.length()>0) {
                 for (int i = 0; i < feeds.length(); i++) {
                     ProductModel pro = new ProductModel();
-                    pro.parse(feeds.optJSONObject(i));
+                    pro.parseSearch(feeds.optJSONObject(i));
                     mProArray.add(pro);
                 }
+                mProNextPageNum++;
+                bSearchFinished = false;
             }
+            else
+                bSearchFinished = true;
             mProAdapter.setData(mProArray);
             mProAdapter.notifyDataSetChanged();
+
         }
 
 //		final int ret = v.optInt("error");
