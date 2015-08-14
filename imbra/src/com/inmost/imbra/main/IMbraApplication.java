@@ -9,6 +9,7 @@ import com.inmost.imbra.util.braConfig;
 import com.xingy.util.MyApplication;
 import com.xingy.util.ServiceConfig;
 import com.xingy.util.ajax.Ajax;
+import com.xingy.util.ajax.OnErrorListener;
 import com.xingy.util.ajax.OnSuccessListener;
 import com.xingy.util.ajax.Response;
 
@@ -24,6 +25,7 @@ public class IMbraApplication extends MyApplication {
         WeixinUtil.getWXApi(this);
 
         super.onCreate();
+
         refreshToken();
 
     }
@@ -38,12 +40,21 @@ public class IMbraApplication extends MyApplication {
         if (null == mAjax)
             return;
         mAjax.setData("token",act.token);
-        mAjax.setData("uid",act.uid);
 
+        mAjax.setOnErrorListener(new OnErrorListener() {
+            @Override
+            public void onError(Ajax ajax, Response response) {
+                ILogin.clearAccount();
+            }
+        });
         mAjax.setOnSuccessListener(new OnSuccessListener<JSONObject>() {
             @Override
             public void onSuccess(JSONObject jsonObject, Response response) {
-
+                int err = jsonObject.optInt("err",-1);
+                if(err!=0)
+                {
+                    ILogin.clearAccount();
+                }
             }
         });
 

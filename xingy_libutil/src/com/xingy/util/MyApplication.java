@@ -32,7 +32,9 @@ public class MyApplication extends Application {
 		
 		DPIUtil.getDefaultDisplay(this.getApplicationContext());
 		DPIUtil.setDensity(this.getResources().getDisplayMetrics().density);
-		//CrashReport.initCrashReport(this);
+        ServiceConfig.setContext(MyApplication.app);
+
+        //CrashReport.initCrashReport(this);
 		//String userId = ILogin.getLoginUid() + ""; // ??��??ID
 		//CrashReport.setUserId(this, userId);
 		
@@ -123,9 +125,8 @@ public class MyApplication extends Application {
 		
 		// Retrieve the version code.
 		Context pContext = MyApplication.app.getApplicationContext();
-		ServiceConfig.setContext(pContext);
-		
-		MyApplication.getVersionCode(pContext);
+
+        MyApplication.getVersionCode(pContext);
 		
 		IArea.getAreaModels();
 		

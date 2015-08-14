@@ -87,6 +87,7 @@ public class ProductModel implements Serializable {
      "oid":"143858464979086",
      "pid":"1",
      "pname":"Lascivious奶油色胸衣和情趣内裤套装","buy_qty":"1","size":"70B","price":"89900",
+     pic:"",
      "credit":"0","credit_type":"0","discount_amt":"0","return_qty":"0","credit_cost":"0","last_update":null}]
      * @param jsonObject
      */
@@ -100,6 +101,7 @@ public class ProductModel implements Serializable {
         BigDecimal it = new BigDecimal(jsonObject.optLong("price"));
         it = it.divide(hun ,2);
         sale_price =  it.toPlainString();
+        front = jsonObject.optString("pic");
     }
 
 

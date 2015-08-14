@@ -44,8 +44,6 @@ public class SplashActivity extends BaseActivity implements ViewPager.OnPageChan
 		
 		setContentView(R.layout.activity_splash);
 		
-		// Update context.
-		ServiceConfig.setContext(this.getApplicationContext());
 						
 		//prestart here
 		IMbraApplication.start();

@@ -149,9 +149,9 @@ public class HomeFloorModel {
 
     public static String formBraUrl(String oldurl)
     {
-        if(!TextUtils.isEmpty(oldurl))
+        if(!TextUtils.isEmpty(oldurl) && !oldurl.startsWith("http://"))
             return "http://www.o2bra.com.cn/" + oldurl;
-        return "";
+        return oldurl;
 
     }
 
