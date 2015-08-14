@@ -18,6 +18,7 @@ import com.inmost.imbra.R;
 import com.inmost.imbra.blog.BlogVolleyActivity;
 import com.inmost.imbra.brand.BrandInfoActivity;
 import com.inmost.imbra.imgallery.ImageCheckActivity;
+import com.inmost.imbra.login.Account;
 import com.inmost.imbra.login.ILogin;
 import com.inmost.imbra.login.VerifyLoginActivity;
 import com.inmost.imbra.main.IMbraApplication;
@@ -61,6 +62,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
 
     private ArrayList<String> imgUrlArray;
     private HashMap<ImageView, Integer> imgvIdxMap;
+    private Account act;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,9 +86,22 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         mScorllV = (MyScrollView) this.findViewById(R.id.scroll_v);
         contentLayout = (LinearLayout) this.findViewById(R.id.scroll_content);
 
+        act = ILogin.getActiveAccount();
         requestData();
+
     }
 
+
+    @Override
+    protected void onResume()
+    {
+        if(null == act) {
+            act = ILogin.getActiveAccount();
+            requestData();
+        }
+
+        super.onResume();
+    }
 
     private void requestData() {
         mAjax = ServiceConfig.getAjax(braConfig.URL_PRODUCT_DETAIL);
@@ -94,6 +109,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
             return;
         mAjax.setData("pid",Integer.valueOf(mProId) %3+1);
 
+        mAjax.setData("uid",act.uid);
         showLoadingLayer();
         mAjax.setId(AJX_PRO_DETAIL);
         mAjax.setOnSuccessListener(this);
@@ -101,15 +117,25 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         mAjax.send();
     }
 
+
+    /**
+     * fav modify need login
+     */
     private void removeFav() {
-        mAjax = ServiceConfig.getAjax(braConfig.URL_PRODUCT_DETAIL);
+        if(act == null)
+        {
+            UiUtils.startActivity(ProductDetailActivity.this,VerifyLoginActivity.class,true);
+            return;
+        }
+        mAjax = ServiceConfig.getAjax(braConfig.URL_MODIFY_FAV);
         if (null == mAjax)
             return;
-        String url = mAjax.getUrl() + mProId;
-        mAjax.setUrl(url);
 
         showLoadingLayer();
         mAjax.setId(AJX_REMOVE_FAV);
+        mAjax.setData("cur_id", mProId);
+        mAjax.setData("token",act.token);
+        mAjax.setData("act",2); //2 for del;
 
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);
@@ -117,14 +143,21 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
     }
 
     private void addFav() {
-        mAjax = ServiceConfig.getAjax(braConfig.URL_PRODUCT_DETAIL);
+        if(act == null)
+        {
+            UiUtils.startActivity(ProductDetailActivity.this,VerifyLoginActivity.class,true);
+            return;
+        }
+
+        mAjax = ServiceConfig.getAjax(braConfig.URL_MODIFY_FAV);
         if (null == mAjax)
             return;
-        String url = mAjax.getUrl() + mProId;
-        mAjax.setUrl(url);
 
         showLoadingLayer();
         mAjax.setId(AJX_ADD_FAV);
+        mAjax.setData("cur_id", mProId);
+        mAjax.setData("token",act.token);
+        mAjax.setData("act",1); //1 for add;
 
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);
@@ -343,7 +376,6 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
                         removeFav();
                     else
                         addFav();
-                    UiUtils.makeToast(this, "go fav");
                     break;
                 case R.id.shopping_btn:
                 case R.id.shopping_go_btn:

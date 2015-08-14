@@ -66,7 +66,7 @@ public class ProductModel implements Serializable {
         it = new BigDecimal(jsonObject.optLong("dprice"));
         it = it.divide(hun ,2);
         ori_price = it.toPlainString();
-        fav = jsonObject.optBoolean("fav");
+        fav = (jsonObject.optInt("is_fav")==1);
     }
 
 

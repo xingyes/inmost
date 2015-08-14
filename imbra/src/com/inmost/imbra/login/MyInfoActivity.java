@@ -76,6 +76,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
     private Product2RowAdapter favAdapter;
     private ArrayList<ProductModel> mFavArray;
     private int  mFavNextPageNum;
+    private boolean  bFavFinished = false;
 
     private int     mTabRid;
 
@@ -123,6 +124,9 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         mCouponArray =  new ArrayList<CouponModel>();
         mFavArray = new ArrayList<ProductModel>();
 
+        mFavNextPageNum = 1;
+        mOrderNextPageNum = 1;
+
         // 初始化布局元素
         initViews();
 
@@ -156,7 +160,8 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
                 if(mTabRid == R.id.tab_favor) {
-                    if (firstVisibleItem + visibleItemCount >= totalItemCount && mFavNextPageNum>1) {
+                    if (firstVisibleItem + visibleItemCount >= totalItemCount && mFavNextPageNum>1 &&
+                            !bFavFinished) {
                             UiUtils.makeToast(MyInfoActivity.this, "first:" + firstVisibleItem + ",vis:" +
                                     visibleItemCount + ",totalItemCount" + totalItemCount);
                             requestFav(mFavNextPageNum);
@@ -251,11 +256,12 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
 	}
 
     private void requestFav(int page) {
-        mAjax = ServiceConfig.getAjax(braConfig.URL_SEARCH);
+        mAjax = ServiceConfig.getAjax(braConfig.URL_FAV_LIST);
         if (null == mAjax)
             return;
 
-        mAjax.setData("page", page);
+//        mAjax.setData("page", page);
+        mAjax.setData("token",account.token);
         showLoadingLayer();
         mAjax.setId(R.id.tab_favor);
         mAjax.setOnSuccessListener(this);
@@ -330,14 +336,20 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         closeLoadingLayer();
         if(response.getId()==R.id.tab_favor) {
 
-            mFavNextPageNum++;
             JSONArray feeds = v.optJSONArray("products");
-            if (null != feeds) {
+            if (null != feeds && feeds.length()>0) {
                 for (int i = 0; i < feeds.length(); i++) {
                     ProductModel pro = new ProductModel();
                     pro.parse(feeds.optJSONObject(i));
                     mFavArray.add(pro);
                 }
+
+                bFavFinished = false;
+                mFavNextPageNum++;
+            }
+            else
+            {
+                bFavFinished = true;
             }
             favAdapter.setData(mFavArray);
             favAdapter.notifyDataSetChanged();
@@ -405,7 +417,6 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         if (checkedId == R.id.tab_favor)
         {
             if(favAdapter == null) {
-                mFavNextPageNum = 1;
                 favAdapter = new Product2RowAdapter(this, mImgLoader);
                 requestFav(mFavNextPageNum);
             }
@@ -442,7 +453,6 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
                     }
 
                 });
-                mOrderNextPageNum = 1;
                 requestOrderlist(mOrderNextPageNum);
             }
             couponHolder.couponLayout.setVisibility(View.GONE);

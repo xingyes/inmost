@@ -47,6 +47,10 @@ public class braConfig extends Config {
     public static final String URL_DEL_ADDRESS = "URL_DEL_ADDRESS";
     public static final String URL_ADD_ADDRESS = "URL_ADD_ADDRESS";
 
+    //fav
+    public static final String URL_MODIFY_FAV = "URL_MODIFY_FAV";
+    public static final String URL_FAV_LIST = "URL_FAV_LIST";
+
     //login
     public static final String URL_LOGIN = "URL_LOGIN";
     public static final String URL_REGISTER = "URL_REGISTER";
