@@ -186,19 +186,19 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
 //				fOut.flush();
 //				fOut.close();
 
-//                Ajax ajax = ServiceConfig.getAjax(Config.URL_IMAGE_STREAM_UPLOAD,
-//                        (mUploadPhotoSrc == UPLOADPHOTO_SNAPSHOT ?  PARAM_UPLOAD_SNAPSHOT : PARAM_UPLOAD_COVER));
-//                if( null != ajax ) {
-//                    showLoadingLayer();
-//                    ajax.setData("act_id",this.mEventId);
-//                    ajax.setData("uid",mEvent.sponsorInfo.mUid);
-//                    ajax.setFile("actimg", byteArray);
-//                    ajax.setOnSuccessListener(this);
+                Ajax ajax = ServiceConfig.getAjax(braConfig.URL_IMAGE_STREAM_UPLOAD);
+                if( null != ajax ) {
+                    showLoadingLayer();
+                    ajax.setData("token",account.token);
+                    ajax.setFile("uavatar", byteArray);
+
+//                    ajax.setFile("uavatar", byteArray);
+                    ajax.setOnSuccessListener(this);
 //                    ajax.setId(AJAX_UPLOAD_SNAPSHOT);
-//                    ajax.setOnErrorListener(this);
-//                    addAjax(ajax);
-//                    ajax.send();
-//                }
+                    ajax.setOnErrorListener(this);
+                    addAjax(ajax);
+                    ajax.send();
+                }
             }
 
 //            mIsProcessing = false;
@@ -207,6 +207,14 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
 
     @Override
     public void onSuccess(JSONObject jsonObject, Response response) {
+        closeLoadingLayer();
+        int err = jsonObject.optInt("err");
+        if(err!=0)
+        {
+            String msg =  jsonObject.optString("msg");
+            UiUtils.makeToast(this, ToolUtil.isEmpty(msg) ? getString(R.string.parser_error_msg) : msg);
+            return;
+        }
 
     }
 

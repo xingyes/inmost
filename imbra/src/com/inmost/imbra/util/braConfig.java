@@ -56,6 +56,8 @@ public class braConfig extends Config {
     public static final String URL_LOGIN = "URL_LOGIN";
     public static final String URL_REGISTER = "URL_REGISTER";
     public static final String URL_CHECK_TOKEN = "URL_CHECK_TOKEN";
+    public static final String URL_IMAGE_STREAM_UPLOAD = "URL_IMAGE_STREAM_UPLOAD";
+
 
     public static final String URL_VERIFYCODE_SMS = "URL_VERIFYCODE_SMS";
 	public static final String URL_VERIFY_LOGIN = "URL_VERIFY_LOGIN";
