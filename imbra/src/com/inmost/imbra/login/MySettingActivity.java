@@ -133,6 +133,7 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
         else if (requestCode == UploadPhotoUtil.CAMERA_WITH_DATA)
         {
 //            mIsProcessing = true;
+            showLoadingLayer();
             Uri imgUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
             String path = UploadPhotoUtil.getImgPath(this, requestCode, resultCode, data);
@@ -146,32 +147,46 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
             Uri fileUri = Uri.fromFile(file);
             sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
                     fileUri));
-            try {
-                Thread.sleep(2000);
+
+            Cursor cursor =null;
+            Uri uri = null;
+            int tryount = 0;
+            try{
+                while(cursor==null || cursor.getCount()<=0 && tryount < 10) {
+                    cursor = getContentResolver().query(imgUri, null,
+                            MediaStore.Images.Media.DISPLAY_NAME + "='"
+                                    + file.getName() + "'",
+                            null, null);
+                    android.util.Log.e("open pic","time:" + tryount + " cursor null?" + (cursor==null));
+                    if(cursor != null && cursor.getCount() > 0) {
+                        android.util.Log.e("open pic","moteToLast");
+                        cursor.moveToLast();
+                        long id = cursor.getLong(0);
+                        uri = ContentUris.withAppendedId(imgUri, id);
+                        break;
+                    }
+                    else {
+                        tryount++;
+                        Thread.sleep(300);
+                    }
+
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }finally {
+                if (null != cursor && !cursor.isClosed())
+                    cursor.close();
             }
-            Cursor cursor = getContentResolver().query(imgUri, null,
-                    MediaStore.Images.Media.DISPLAY_NAME + "='"
-                            + file.getName() + "'",
-                    null, null);
-            Uri uri = null;
-            if (cursor != null && cursor.getCount() > 0) {
-                cursor.moveToLast();
-                long id = cursor.getLong(0);
-                uri = ContentUris.withAppendedId(imgUri, id);
-            }
-            if(null!=cursor && !cursor.isClosed())
-                cursor.close();
             ToolUtil.showClipIntentWithData(this,uri);
         }
         else if(requestCode == ToolUtil.GO_CROP_ACTIVITY)
         {
+            closeLoadingLayer();
+
             //final AutoHeightImageView curImg = (AutoHeightImageView) mPicImages.get(mCurPicIdx);
             //String localPath = curImg.mCustomInfo.get("localPath");
 
             final Bitmap bitmap =  (null == data) ? null : (Bitmap)data.getParcelableExtra("data");
-            imgSetting.setPreIconBitmap(bitmap);
             if (null != bitmap) {
                 ByteArrayOutputStream  stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -190,7 +205,7 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
                 if( null != ajax ) {
                     showLoadingLayer();
                     ajax.setData("token",account.token);
-                    ajax.setFile("uavatar", byteArray);
+                    ajax.setFile("uavatar", byteArray, "img.jpg");
 
 //                    ajax.setFile("uavatar", byteArray);
                     ajax.setOnSuccessListener(this);
@@ -216,6 +231,17 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
             return;
         }
 
+        JSONObject dt = jsonObject.optJSONObject("dt");
+        if(null!=dt) {
+            String newurl = dt.optString("uimg");
+            if (null != account && !TextUtils.isEmpty(newurl))
+            {
+                account.iconUrl = newurl;
+                bChanged = true;
+                setResult(RESULT_OK);
+                imgSetting.setPreNetIconUrl(account.iconUrl, mImgLoader);
+            }
+        }
     }
 
 
@@ -277,6 +303,10 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
         if(null!=logoutDialog)
             logoutDialog.dismiss();
         logoutDialog = null;
+        if(bChanged) {
+            ILogin.setActiveAccount(account);
+            ILogin.saveIdentity(account);
+        }
 
         super.onDestroy();
     }

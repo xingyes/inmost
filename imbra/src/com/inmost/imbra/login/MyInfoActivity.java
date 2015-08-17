@@ -492,8 +492,16 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
             if(null==account) {
                 finish();
             }
-            else
-                UiUtils.makeToast(this,"will refresh myinfo");
+            else {
+                account = ILogin.getActiveAccount();
+                if(TextUtils.isEmpty(account.iconUrl)) {
+                    usrImgv.setVisibility(View.INVISIBLE);
+                }else {
+                    usrImgv.setVisibility(View.VISIBLE);
+                    usrImgv.setImageUrl(account.iconUrl,mImgLoader);
+                }
+                usrNamev.setText(account.nickName);
+            }
         }
         else if (requestCode == UploadPhotoUtil.PHOTO_PICKED_WITH_DATA && null != data)
         {
