@@ -75,8 +75,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
 
     private Product2RowAdapter favAdapter;
     private ArrayList<ProductModel> mFavArray;
-    private int  mFavNextPageNum;
-    private boolean  bFavFinished = false;
+//    private int  mFavNextPageNum;
 
     private int     mTabRid;
 
@@ -125,7 +124,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         mCouponArray =  new ArrayList<CouponModel>();
         mFavArray = new ArrayList<ProductModel>();
 
-        mFavNextPageNum = 1;
+//        mFavNextPageNum = 1;
         mOrderNextPageNum = 1;
 
         // 初始化布局元素
@@ -160,15 +159,15 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
-                if(mTabRid == R.id.tab_favor) {
-                    if (firstVisibleItem + visibleItemCount >= totalItemCount && mFavNextPageNum>1 &&
-                            !bFavFinished) {
-                            UiUtils.makeToast(MyInfoActivity.this, "first:" + firstVisibleItem + ",vis:" +
-                                    visibleItemCount + ",totalItemCount" + totalItemCount);
-                            requestFav(mFavNextPageNum);
-                    }
-                 }
-                 else if(mTabRid == R.id.tab_orderlist) {
+//                if(mTabRid == R.id.tab_favor) {
+//                    if (firstVisibleItem + visibleItemCount >= totalItemCount && mFavNextPageNum>1 &&
+//                            !bFavFinished) {
+//                            UiUtils.makeToast(MyInfoActivity.this, "first:" + firstVisibleItem + ",vis:" +
+//                                    visibleItemCount + ",totalItemCount" + totalItemCount);
+//                            requestFav(mFavNextPageNum);
+//                    }
+//                 }
+                 if(mTabRid == R.id.tab_orderlist) {
                         if (firstVisibleItem + visibleItemCount >= totalItemCount && mOrderNextPageNum > 1
                                 && !bOrderFinished) {
                             UiUtils.makeToast(MyInfoActivity.this, "first:" + firstVisibleItem + ",vis:" +
@@ -191,9 +190,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
                 if(mTabRid == R.id.tab_favor) {
                     mFavArray.clear();
                     favAdapter.notifyDataSetChanged();
-                    mFavNextPageNum = 1;
-                    bFavFinished = false;
-                    requestFav(mFavNextPageNum);
+                    requestFav();
                 }
                 else if(mTabRid == R.id.tab_coupon){
                     mCouponArray.clear();
@@ -207,7 +204,6 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
                     orderAdapter.notifyDataSetChanged();
 
                     mOrderNextPageNum = 1;
-                    bOrderFinished = false;
                     requestOrderlist(mOrderNextPageNum);
 
                 }
@@ -259,7 +255,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
 
 	}
 
-    private void requestFav(int page) {
+    private void requestFav() {
         mAjax = ServiceConfig.getAjax(braConfig.URL_FAV_LIST);
         if (null == mAjax)
             return;
@@ -341,20 +337,13 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         closeLoadingLayer();
         if(response.getId()==R.id.tab_favor) {
 
-            JSONArray feeds = v.optJSONArray("products");
+            JSONArray feeds = v.optJSONArray("dt");
             if (null != feeds && feeds.length()>0) {
                 for (int i = 0; i < feeds.length(); i++) {
                     ProductModel pro = new ProductModel();
-                    pro.parse(feeds.optJSONObject(i));
+                    pro.parseSearch(feeds.optJSONObject(i));
                     mFavArray.add(pro);
                 }
-
-                bFavFinished = false;
-                mFavNextPageNum++;
-            }
-            else
-            {
-                bFavFinished = true;
             }
             favAdapter.setData(mFavArray);
             favAdapter.notifyDataSetChanged();
@@ -425,8 +414,12 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         {
             if(favAdapter == null) {
                 favAdapter = new Product2RowAdapter(this, mImgLoader);
-                requestFav(mFavNextPageNum);
+                requestFav();
             }
+            else if(favAdapter.getCount()<=0) {
+                noHintView.setText(R.string.no_fav_hint);
+            }
+            noHintView.setVisibility(favAdapter.getCount()>0 ? View.GONE : View.VISIBLE);
             couponHolder.couponLayout.setVisibility(View.GONE);
             pullList.setAdapter(favAdapter);
         }
@@ -436,8 +429,11 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
             {
                 couponAdapter = new CouponAdapter(this,-1);
                 requestCoupon();
-
             }
+            else if(couponAdapter.getCount()<=0)
+                noHintView.setText(R.string.no_coupon_hint);
+            noHintView.setVisibility(couponAdapter.getCount()>0 ? View.GONE : View.VISIBLE);
+
             couponHolder.couponLayout.setVisibility(View.VISIBLE);
             pullList.setAdapter(couponAdapter);
         }
@@ -462,6 +458,10 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
                 });
                 requestOrderlist(mOrderNextPageNum);
             }
+            else if(orderAdapter.getCount()<=0)
+                noHintView.setText(R.string.no_order_hint);
+            noHintView.setVisibility(orderAdapter.getCount()>0 ? View.GONE : View.VISIBLE);
+
             couponHolder.couponLayout.setVisibility(View.GONE);
             pullList.setAdapter(orderAdapter);
         }

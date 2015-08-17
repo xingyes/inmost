@@ -107,7 +107,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         mAjax = ServiceConfig.getAjax(braConfig.URL_PRODUCT_DETAIL);
         if (null == mAjax)
             return;
-        mAjax.setData("pid",Integer.valueOf(mProId) %3+1);
+        mAjax.setData("pid",mProId);
 
         mAjax.setData("uid",act.uid);
         showLoadingLayer();

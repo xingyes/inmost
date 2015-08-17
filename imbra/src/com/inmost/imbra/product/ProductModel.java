@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public class ProductModel implements Serializable {
 
+    public String fid;    //fav_id
+    public long   timemark;
     public String id;    //skuid
     public String title;  //pn
     public String sale_price;
@@ -45,6 +47,7 @@ public class ProductModel implements Serializable {
 
     public void parseBra(JSONObject jsonObject) {
         clear();
+        fid = jsonObject.optString("fid");
         id = jsonObject.optString("skuid");
         title = jsonObject.optString("pn");
         front = jsonObject.optString("pic");
@@ -72,11 +75,16 @@ public class ProductModel implements Serializable {
 
     public void parseSearch(JSONObject jsonObject) {
         clear();
+        fid = jsonObject.optString("fid");
         id = jsonObject.optString("pid");
         brandid = jsonObject.optString("bfid");
-        title = jsonObject.optString("tit");
+        if(jsonObject.has("title"))
+            title = jsonObject.optString("tit");
+        else if(jsonObject.has("tit"))
+            title = jsonObject.optString("tit");
         front = jsonObject.optString("pic");
-
+        if(jsonObject.has("time"))
+            timemark = jsonObject.optLong("time");
         brandname = jsonObject.optString("bdesc");
 
         state = jsonObject.optString("stat");
@@ -96,6 +104,7 @@ public class ProductModel implements Serializable {
         ori_price = it.toPlainString();
         fav = (jsonObject.optInt("is_fav")==1);
     }
+
     public void parse(JSONObject jsonObject) {
         clear();
         id = jsonObject.optString("id");
