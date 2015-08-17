@@ -102,25 +102,37 @@ public class BasicParamModel {
         ParamDtModel pd = new ParamDtModel();
         pd.info = "A";
         cupModel.dtArray.add(pd);
+        cupModel.dtStrArray.add(pd.info);
 
         pd = new ParamDtModel();
         pd.info = "B";
         cupModel.dtArray.add(pd);
+        cupModel.dtStrArray.add(pd.info);
+
         pd = new ParamDtModel();
         pd.info = "C";
         cupModel.dtArray.add(pd);
+        cupModel.dtStrArray.add(pd.info);
+
         pd = new ParamDtModel();
         pd.info = "D";
         cupModel.dtArray.add(pd);
+        cupModel.dtStrArray.add(pd.info);
+
         pd = new ParamDtModel();
         pd.info = "E";
         cupModel.dtArray.add(pd);
+        cupModel.dtStrArray.add(pd.info);
+
         pd = new ParamDtModel();
         pd.info = "F";
         cupModel.dtArray.add(pd);
+        cupModel.dtStrArray.add(pd.info);
+
         pd = new ParamDtModel();
         pd.info = "G";
         cupModel.dtArray.add(pd);
+        cupModel.dtStrArray.add(pd.info);
 
         /**
          * size
@@ -129,30 +141,27 @@ public class BasicParamModel {
         pd = new ParamDtModel();
         pd.info = "60";
         sizeModel.dtArray.add(pd);
-
+        sizeModel.dtStrArray.add(pd.info);
         pd = new ParamDtModel();
         pd.info = "65";
         sizeModel.dtArray.add(pd);
+        sizeModel.dtStrArray.add(pd.info);
         pd = new ParamDtModel();
         pd.info = "70";
         sizeModel.dtArray.add(pd);
+        sizeModel.dtStrArray.add(pd.info);
         pd = new ParamDtModel();
         pd.info = "75";
         sizeModel.dtArray.add(pd);
+        sizeModel.dtStrArray.add(pd.info);
         pd = new ParamDtModel();
         pd.info = "80";
         sizeModel.dtArray.add(pd);
+        sizeModel.dtStrArray.add(pd.info);
         pd = new ParamDtModel();
         pd.info = "85";
         sizeModel.dtArray.add(pd);
-        pd = new ParamDtModel();
-        pd.info = "90";
-        sizeModel.dtArray.add(pd);
-        pd = new ParamDtModel();
-        pd.info = "95";
-        sizeModel.dtArray.add(pd);
-
-
+        sizeModel.dtStrArray.add(pd.info);
 
     }
 

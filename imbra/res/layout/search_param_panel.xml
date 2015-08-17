@@ -3,18 +3,21 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <RadioGroup
+    <GridView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cup_param_group"
+        android:gravity="center"
+        android:layout_marginBottom="5dp"
+        android:listSelector="@drawable/none"
+        android:orientation="horizontal"/>
+
+    <GridView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/size_param_group"
         android:gravity="center"
-        android:layout_marginBottom="5dp"
-        android:orientation="horizontal"/>
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/cup_param_group"
-        android:gravity="center"
+        android:listSelector="@drawable/none"
         android:orientation="horizontal"/>
 
     <LinearLayout
@@ -97,5 +100,20 @@
 
 
     </LinearLayout>
+
+    <TextView
+        android:gravity="center_horizontal"
+        android:drawableTop="@drawable/icon_sorry"
+        android:layout_marginTop="40dp"
+        android:drawablePadding="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/no_hint"
+        android:layout_below="@id/home_tab_rg"
+        android:text="@string/no_product_hint"
+        android:textColor="@color/global_text_info_color"
+        android:textSize="@dimen/bar_font_24"
+        />
 
 </LinearLayout>

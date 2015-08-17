@@ -47,4 +47,8 @@
         android:scrollbars="none"/>
 
 
+
+    <include layout="@layout/global_loading"/>
+
+
 </RelativeLayout>  

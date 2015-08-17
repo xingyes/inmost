@@ -92,6 +92,7 @@
     <string name="about_us"> 关于爱啵</string>
 
     <string name="input_coupon">请输入优惠码</string>
+    <string name="no_product_hint">Opps，没有搜到商品，更改筛选条件试试～</string>
     <string name="no_coupon_hint">Opps，您还没有优惠券呢～</string>
     <string name="no_order_hint">Opps，您还没有订单呢～</string>
     <string name="no_fav_hint">Opps，您还没有收藏商品呢～</string>

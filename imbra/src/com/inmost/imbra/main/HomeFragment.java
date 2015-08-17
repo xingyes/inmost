@@ -1,11 +1,13 @@
 package com.inmost.imbra.main;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,9 +17,12 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -49,8 +54,8 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 	
 	private MainActivity    mActivity;
 	private View  mRootView;
-	
-	private PullToRefreshListView pullList;
+
+    private PullToRefreshListView pullList;
     private ListView              mListV;
 	private Ajax mAjax;
 
@@ -82,10 +87,13 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
     private class ParamViewHolder
     {
         public View paramLayout;
-        public RadioGroup sizeGroup;
-        public int        sizeIdx = -1;
-        public RadioGroup cupGroup;
-        public int        cupIdx = -1;
+        public GridView sizeGroup;
+        public int      filterSizeIdx;
+        public SizeCupAdapter  sizeAdapter;
+
+        public GridView cupGroup;
+        public int     filterCupIdx;
+        public SizeCupAdapter  cupAdapter;
 
         public View      extraLayout;
         private View    brandLayout;
@@ -95,6 +103,9 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
         private View     priceLayout;
         public TextView  priceTv;
         public View.OnTouchListener extraParamTouchListener;
+
+        private TextView noHintView;
+
     };
     private ParamViewHolder  paramHolder;
 
@@ -162,10 +173,10 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
             return;
         }
 
-        if(paramHolder.cupIdx>=0 && paramHolder.sizeIdx>=0)
+        if(paramHolder.filterSizeIdx>=0 && paramHolder.filterSizeIdx>=0)
         {
-            String cs = mSearchParams.sizeModel.dtArray.get(paramHolder.sizeIdx).info +
-                    mSearchParams.cupModel.dtArray.get(paramHolder.cupIdx).info;
+            String cs = mSearchParams.sizeModel.dtStrArray.get(paramHolder.filterSizeIdx) +
+                    mSearchParams.cupModel.dtStrArray.get(paramHolder.filterCupIdx);
             mAjax.setData("cs",cs);
         }
         if(mSearchParams.filterBrandIdx>=0)
@@ -181,8 +192,8 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
             paramHolder.priceTv.setText("" + mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterLowPriceIdx) + "~"
                     + mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterHighPriceIdx));
 
-            mAjax.setData("prs",mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterLowPriceIdx);
-            mAjax.setData("pre",mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterHighPriceIdx);
+            mAjax.setData("prs",mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterLowPriceIdx));
+            mAjax.setData("pre",mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterHighPriceIdx));
         }
 
         mAjax.setData("pn", page);
@@ -320,6 +331,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
             }
         });
 
+
         /**
          * headview
          */
@@ -327,40 +339,56 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
         mInflater = mActivity.getLayoutInflater();
 
         paramHolder.paramLayout = mInflater.inflate(R.layout.search_param_panel,null);
-        paramHolder.sizeGroup = (RadioGroup) paramHolder.paramLayout.findViewById(R.id.size_param_group);
-        paramHolder.sizeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        paramHolder.noHintView = (TextView)paramHolder.paramLayout.findViewById(R.id.no_hint);
+        paramHolder.noHintView.setVisibility(View.GONE);
+
+        paramHolder.sizeGroup = (GridView) paramHolder.paramLayout.findViewById(R.id.size_param_group);
+        paramHolder.sizeGroup.setPadding(80,0,80,0);
+        paramHolder.sizeAdapter = new SizeCupAdapter();
+        paramHolder.sizeGroup.setAdapter(paramHolder.sizeAdapter);
+        paramHolder.sizeGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (paramHolder.sizeIdx == checkedId)
-                    return;
-
-                RadioButton curRB = (RadioButton) group.findViewById(checkedId);
-                if (paramHolder.sizeIdx >= 0) {
-                    RadioButton oldRB = (RadioButton) group.findViewById(paramHolder.sizeIdx);
-                    oldRB.setChecked(false);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(paramHolder.filterSizeIdx == position)
+                {
+                    paramHolder.filterSizeIdx = -1;
                 }
+                else
+                    paramHolder.filterSizeIdx = position;
+                paramHolder.sizeAdapter.setPick(paramHolder.filterSizeIdx);
+                paramHolder.sizeAdapter.notifyDataSetChanged();
 
-                curRB.setChecked(true);
-                paramHolder.sizeIdx = checkedId;
+                mProArray.clear();
+                mProNextPageNum = 1;
+                mActivity.showLoadingLayer();
+                requestPage(mProNextPageNum);
             }
         });
-        paramHolder.cupGroup = (RadioGroup) paramHolder.paramLayout.findViewById(R.id.cup_param_group);
-        paramHolder.cupGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+        paramHolder.cupGroup = (GridView) paramHolder.paramLayout.findViewById(R.id.cup_param_group);
+        paramHolder.cupAdapter = new SizeCupAdapter();
+        paramHolder.cupGroup.setPadding(20,0,20,0);
+
+        paramHolder.cupGroup.setAdapter(paramHolder.cupAdapter);
+        paramHolder.cupGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (paramHolder.cupIdx == checkedId)
-                    return;
-
-                RadioButton curRB = (RadioButton) group.findViewById(checkedId);
-                if (paramHolder.cupIdx >= 0) {
-                    RadioButton oldRB = (RadioButton) group.findViewById(paramHolder.cupIdx);
-                    oldRB.setChecked(false);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(paramHolder.filterCupIdx == position)
+                {
+                    paramHolder.filterCupIdx = -1;
                 }
+                else
+                    paramHolder.filterCupIdx = position;
+                paramHolder.cupAdapter.setPick(paramHolder.filterCupIdx);
+                paramHolder.cupAdapter.notifyDataSetChanged();
 
-                curRB.setChecked(true);
-                paramHolder.cupIdx = checkedId;
+                if(paramHolder.sizeAdapter.getPickIdx()>=0) {
+                    paramHolder.sizeAdapter.setPick(-1);
+                    paramHolder.sizeAdapter.notifyDataSetChanged();
+                }
             }
         });
+
         paramHolder.extraLayout = paramHolder.paramLayout.findViewById(R.id.extra_param_layout);
         paramHolder.extraLayout.setVisibility(View.GONE);
         paramHolder.brandTv = (TextView)paramHolder.paramLayout.findViewById(R.id.brand_param_tv);
@@ -456,7 +484,6 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
             mFloorAdapter.notifyDataSetChanged();
         }
         else if(response.getId()==AJAX_SEARCH) {
-            UiUtils.makeToast(mActivity, "searched " + mProNextPageNum);
 
             JSONArray feeds = v.optJSONArray("dt");
             if (null != feeds && feeds.length()>0) {
@@ -473,6 +500,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
             mProAdapter.setData(mProArray);
             mProAdapter.notifyDataSetChanged();
 
+            paramHolder.noHintView.setVisibility(mProArray.size()>0 ? View.GONE:View.VISIBLE);
         }
 
 //		final int ret = v.optInt("error");
@@ -530,70 +558,14 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 
 
     public void renderParamPanel() {
-        RadioGroup.LayoutParams rl;
-        ArrayList<ParamDtModel> numArray;
-        numArray = mSearchParams.sizeModel.dtArray;
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.choose_btn_focus);
-        int w = bm.getWidth();
-        if(numArray != null && numArray.size()>0) {
-            paramHolder.sizeGroup.removeAllViews();
+        paramHolder.sizeAdapter.setData(mSearchParams.sizeModel.dtStrArray, -1);
+        paramHolder.sizeGroup.setNumColumns(paramHolder.sizeAdapter.getCount());
+        paramHolder.sizeAdapter.notifyDataSetChanged();
 
-            int margin = (DPIUtil.getWidth() - numArray.size()*w)/(numArray.size()+1)/2;
-            if(margin<0)
-            {
-                margin = 10;
-                w = (DPIUtil.getWidth() - (numArray.size()+1)*margin)/numArray.size();
-            }
-            rl = new RadioGroup.LayoutParams(w, w);
+        paramHolder.cupAdapter.setData(mSearchParams.cupModel.dtStrArray,-1);
+        paramHolder.cupGroup.setNumColumns(paramHolder.cupAdapter.getCount());
+        paramHolder.cupAdapter.notifyDataSetChanged();
 
-            rl.leftMargin = margin;
-            rl.rightMargin = margin;
-
-            for (int i = 0; null != numArray && i < numArray.size(); i++) {
-                RadioButton rb = new RadioButton(mActivity);
-                rb.setBackgroundResource(R.drawable.param_btn_choose_state);
-                rb.setTextColor(mActivity.getResources().getColorStateList(R.color.txt_pink_white_selector));
-                rb.setTextSize(DPIUtil.px2sp(mActivity,w/2));
-
-                rb.setButtonDrawable(R.drawable.none);
-                rb.setSingleLine(true);
-                rb.setGravity(Gravity.CENTER);
-                rb.setText(numArray.get(i).info);
-
-                paramHolder.sizeGroup.addView(rb, rl);
-            }
-        }
-
-
-        ArrayList<ParamDtModel> paramArray;
-        paramArray = mSearchParams.cupModel.dtArray;
-        w = bm.getWidth();
-        bm.recycle();
-        bm = null;
-        if(paramArray != null && paramArray.size()>0) {
-            int margin = (DPIUtil.getWidth() - paramArray.size() * w) / (paramArray.size() + 1) / 2;
-            if (margin < 0) {
-                margin = 10;
-                w = (DPIUtil.getWidth() - (paramArray.size() + 1) * margin) / paramArray.size();
-            }
-            rl = new RadioGroup.LayoutParams(w, w);
-
-            rl.leftMargin = margin;
-            rl.rightMargin = margin;
-            paramHolder.cupGroup.removeAllViews();
-            for (int i = 0; null != paramArray && i < paramArray.size(); i++) {
-                RadioButton rb = new RadioButton(mActivity);
-                rb.setText(paramArray.get(i).info);
-                rb.setTextSize(DPIUtil.px2sp(mActivity,w/2));
-                rb.setBackgroundResource(R.drawable.param_btn_choose_state);
-                rb.setTextColor(mActivity.getResources().getColorStateList(R.color.txt_pink_white_selector));
-                rb.setButtonDrawable(R.drawable.none);
-                rb.setSingleLine(true);
-                rb.setGravity(Gravity.CENTER);
-
-                paramHolder.cupGroup.addView(rb, rl);
-            }
-        }
 //        mOptPanelHolder.brandAdapter.setList(mSearchParams.brandStringArray,-1);
 //        mOptPanelHolder.brandAdapter.notifyDataSetChanged();
 //        mOptPanelHolder.tagAdapter.setList(mSearchParams.tagStringArray,-1);
@@ -672,4 +644,96 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
         requestPage(mProNextPageNum);
 
     }
+
+
+
+
+    public class SizeCupAdapter extends BaseAdapter
+    {
+
+        private ArrayList<String> dataset;
+        public int mPickIdx = -1;
+        private RelativeLayout.LayoutParams rl;
+        public void setData(ArrayList<String> infos, int pick) {
+            if (dataset == null)
+                dataset = new ArrayList<String>();
+            else
+                dataset.clear();
+
+            mPickIdx = pick;
+            dataset.addAll(infos);
+
+            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.choose_btn_focus);
+            int w = bm.getWidth();
+
+            int margin = (DPIUtil.getWidth() - infos.size()*w)/(infos.size()+1)/2;
+            if(margin<0)
+            {
+                margin = 10;
+                w = (DPIUtil.getWidth() - (infos.size()+1)*margin)/infos.size();
+            }
+            rl = new RelativeLayout.LayoutParams(w, w);
+
+                rl.leftMargin = margin;
+                rl.rightMargin = margin;
+
+            }
+
+        @Override
+        public int getCount() {
+            return (dataset==null) ? 0 : dataset.size();
+        }
+
+        public void setPick(int p)
+        {
+            mPickIdx = p;
+        }
+
+        public int getPickIdx()
+        {
+            return mPickIdx;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return (dataset==null) ? 0 : dataset.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+//            if (null == convertView)
+//            {
+//                convertView = View.inflate(mActivity, R.layout.radio_center_item, null);
+//                holder = new ItemHolder();
+//                holder.mName = (TextView) convertView.findViewById(com.xingy.R.id.radio_item_name);
+//                holder.mName.setBackgroundResource(R.drawable.param_btn_choose_state);
+//                holder.mName.setTextColor(mActivity.getResources().getColorStateList(R.color.txt_pink_white_selector));
+//                convertView.setTag(holder);
+//            }
+//            else
+//                holder = (ItemHolder) convertView.getTag();
+
+            TextView tv = new TextView(mActivity);
+            tv.setGravity(Gravity.CENTER);
+            tv.setLayoutParams(rl);
+
+            String info = dataset.get(position);
+            tv.setText(info);
+            tv.setBackgroundResource(R.drawable.choose_btn_normal);
+            tv.setTextColor(mActivity.getResources().getColor(R.color.global_pink));
+            if(mPickIdx == position)
+            {
+                tv.setBackgroundResource(R.drawable.choose_btn_focus);
+                tv.setTextColor(mActivity.getResources().getColor(R.color.white));
+            }
+            return tv;
+        }
+    }
+
 }
