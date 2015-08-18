@@ -143,6 +143,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 
 
         initView();
+
         initParams();
 
         mFloorNextPageNum = 1;
@@ -192,8 +193,8 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
             paramHolder.priceTv.setText("" + mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterLowPriceIdx) + "~"
                     + mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterHighPriceIdx));
 
-            mAjax.setData("prs",mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterLowPriceIdx));
-            mAjax.setData("pre",mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterHighPriceIdx));
+            mAjax.setData("prs",mSearchParams.pricerangeModel.dtArray.get(mSearchParams.filterLowPriceIdx).id);
+            mAjax.setData("pre",mSearchParams.pricerangeModel.dtArray.get(mSearchParams.filterHighPriceIdx).id);
         }
 
         mAjax.setData("pn", page);
@@ -250,8 +251,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
                     mListV.addHeaderView(paramHolder.paramLayout);
                     pullList.setAdapter(mProAdapter);
                     if(mProAdapter.getCount()<=0) {
-                        mActivity.showLoadingLayer();
-                        requestPage(mProNextPageNum);
+                        researchPro(true);
                     }
                     if(null!=mSearchListener)
                         mSearchListener.onTabChecked(TAB_PRO);
@@ -319,9 +319,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
                     requestTopic(mFloorNextPageNum);
                 }
                 else {
-                    mProArray.clear();
-                    mProNextPageNum = 1;
-                    requestPage(mProNextPageNum);
+                    researchPro(false);
                 }
                 mHandler.postDelayed(new Runnable() {
                     @Override
@@ -337,7 +335,8 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
          */
         paramHolder = new ParamViewHolder();
         mInflater = mActivity.getLayoutInflater();
-
+        paramHolder.filterSizeIdx = -1;
+        paramHolder.filterCupIdx = -1;
         paramHolder.paramLayout = mInflater.inflate(R.layout.search_param_panel,null);
         paramHolder.noHintView = (TextView)paramHolder.paramLayout.findViewById(R.id.no_hint);
         paramHolder.noHintView.setVisibility(View.GONE);
@@ -355,13 +354,20 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
                 }
                 else
                     paramHolder.filterSizeIdx = position;
+
                 paramHolder.sizeAdapter.setPick(paramHolder.filterSizeIdx);
                 paramHolder.sizeAdapter.notifyDataSetChanged();
 
-                mProArray.clear();
-                mProNextPageNum = 1;
-                mActivity.showLoadingLayer();
-                requestPage(mProNextPageNum);
+                if(paramHolder.filterCupIdx<0) {
+                    paramHolder.filterCupIdx = 0;
+                    paramHolder.cupAdapter.setPick(paramHolder.filterCupIdx);
+                    paramHolder.cupAdapter.notifyDataSetChanged();
+                }
+
+
+                if(paramHolder.filterSizeIdx>=0) {
+                    researchPro(true);
+                }
             }
         });
 
@@ -383,8 +389,15 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
                 paramHolder.cupAdapter.notifyDataSetChanged();
 
                 if(paramHolder.sizeAdapter.getPickIdx()>=0) {
+                    paramHolder.filterSizeIdx = -1;
                     paramHolder.sizeAdapter.setPick(-1);
                     paramHolder.sizeAdapter.notifyDataSetChanged();
+                }
+
+                //反选后重搜所有商品
+                if(paramHolder.filterCupIdx<0)
+                {
+                    researchPro(true);
                 }
             }
         });
@@ -419,15 +432,19 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
                         if (v == paramHolder.brandLayout) {
                             mSearchParams.filterBrandIdx = -1;
                             mSearchListener.onBrandParamCancel();
+
+                            researchPro(true);
                         }
                         else if (v == paramHolder.funcLLayout) {
                             mSearchParams.filterFuncIdx = -1;
                             mSearchListener.onFuncParamCancel();
+                            researchPro(true);
                         }
                         else if (v == paramHolder.priceLayout) {
                             mSearchParams.filterHighPriceIdx = -1;
                             mSearchParams.filterLowPriceIdx = -1;
                             mSearchListener.onPriceParamCancel();
+                            researchPro(true);
                         }
                     }
                 }
@@ -640,11 +657,20 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
         else
             paramHolder.extraLayout.setVisibility(View.VISIBLE);
 
-        mProNextPageNum = 1;
-        requestPage(mProNextPageNum);
+        researchPro(true);
+
 
     }
 
+
+    private void researchPro(boolean showLoading)
+    {
+        mProArray.clear();
+        mProNextPageNum = 1;
+        if(showLoading)
+            mActivity.showLoadingLayer();
+        requestPage(mProNextPageNum);
+    }
 
 
 
