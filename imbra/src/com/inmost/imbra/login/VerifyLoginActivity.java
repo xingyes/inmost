@@ -37,6 +37,9 @@ import java.util.Date;
 
 public class VerifyLoginActivity extends BaseActivity implements OnSuccessListener<JSONObject> {
 
+    public static final String    FLAG_CHANGE_PHONE = "change_phone";
+    private boolean flagChangePhone = false;
+
     public static final int   ACTIVITY_CODE_LOGIN = 5555;
 	public static final int   COUTING_DOWN_SECOND = 120;
 	public static final int   MSG_INTERVAL = 0x100;
@@ -47,14 +50,17 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 	private EditText    mInputVerifyCode;
 
 	private TextView    mRequestVerifyBtn;
+    private TextView    mSubmitBtn;
 	private boolean     bSending;
 	private int         mCounting = COUTING_DOWN_SECOND;
 
 	public static final int   REQ_REGISTER = 1;
 	public static final int   REQ_SMS = 2;
+    public static final int   REQ_CHANGE_PHONE = 3;
 
     private Ajax  mAjax;
-
+    private Account act;
+    private String  phoneStr;
     /**
      * weixin
      */
@@ -93,9 +99,22 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_verify_login);
 
+        act = ILogin.getActiveAccount();
+        Intent ait = getIntent();
+        if(null==ait)
+        {
+            finish();
+            return;
+        }
+        flagChangePhone = ait.getBooleanExtra(FLAG_CHANGE_PHONE,false);
+        if(flagChangePhone && null==act)
+        {
+            finish();
+            return;
+        }
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_verify_login);
         // 初始化布局元素
         initViews();
         setResult(RESULT_CANCELED);
@@ -104,7 +123,6 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 
 	private void initViews() {
         loadNavBar(R.id.login_nav);
-
         mPhonev = (EditText) this.findViewById(R.id.phone);
         mPhonev.setOnClickListener(this);
         mPhonev.requestFocus();
@@ -113,8 +131,15 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 		mRequestVerifyBtn = (TextView) this.findViewById(R.id.request_verify_code);
 		mRequestVerifyBtn.setOnClickListener(this);
 
-		findViewById(R.id.verify_login).setOnClickListener(this);
-        findViewById(R.id.weixin_login).setOnClickListener(this);;
+        mSubmitBtn = (TextView)findViewById(R.id.verify_login);
+        mSubmitBtn.setOnClickListener(this);
+        findViewById(R.id.weixin_login).setOnClickListener(this);
+
+        if(flagChangePhone) {
+            findViewById(R.id.weixin_login).setVisibility(View.GONE);
+            mNavBar.setText(R.string.change_phone_num);
+            mSubmitBtn.setText(R.string.submit);
+        }
 
 	}
 
@@ -143,7 +168,10 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 		}
 		else if(v.getId() == R.id.verify_login)
 		{
-            verifyAndLogin();
+            if(flagChangePhone)
+                changePhoneNum();
+            else
+                verifyAndLogin();
 		}
         else if(v.getId() == R.id.weixin_login)
         {
@@ -152,6 +180,37 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 		else
 			super.onClick(v);
 	}
+
+    private void changePhoneNum()
+    {
+        String phoneNum = mPhonev.getText().toString();
+        if(!ToolUtil.isPhoneNum(phoneNum))
+        {
+            UiUtils.makeToast(this, R.string.please_input_correct_phone_num);
+            return;
+        }
+        String verifycode = mInputVerifyCode.getText().toString();
+        if(ToolUtil.isEmpty(verifycode))
+        {
+            UiUtils.makeToast(this, R.string.please_input_verifycode);
+            return;
+        }
+
+        if(null!=mAjax)
+            mAjax.abort();
+        mAjax = ServiceConfig.getAjax(braConfig.URL_CHANGE_PHONE);
+        if (null == mAjax)
+            return;
+        showLoadingLayer();
+        mAjax.setId(REQ_CHANGE_PHONE);
+        mAjax.setData("token",act.token);
+        mAjax.setData("mob", phoneNum);
+        mAjax.setData("vcode", verifycode);
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+    }
 
 	private void verifyAndLogin() {
 
@@ -221,7 +280,13 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 			return;
 		}
 
-		if(response.getId() == REQ_REGISTER)
+        if(response.getId() == REQ_CHANGE_PHONE)
+        {
+            UiUtils.makeToast(this,R.string.submit_succ);
+            setResult(RESULT_OK);
+            finish();
+        }
+		else if(response.getId() == REQ_REGISTER)
 		{
             JSONObject data = v.optJSONObject("dt");
 			if(null == data)

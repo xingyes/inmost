@@ -109,7 +109,8 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
             return;
         mAjax.setData("pid",mProId);
 
-        mAjax.setData("uid",act.uid);
+        if(null!=act)
+            mAjax.setData("uid",act.uid);
         showLoadingLayer();
         mAjax.setId(AJX_PRO_DETAIL);
         mAjax.setOnSuccessListener(this);

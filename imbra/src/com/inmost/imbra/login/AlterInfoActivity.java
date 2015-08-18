@@ -37,17 +37,25 @@ public class AlterInfoActivity extends BaseActivity implements OnSuccessListener
 	private EditText mContentEdit;
 	private String   mItemLabel;
 	private String   mActivityLabel;
-	
+
+    private Account  act;
 	private boolean  bIsInputPhone;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		
-		Intent ait = getIntent();
+
+        act = ILogin.getActiveAccount();
+        if(act == null)
+        {
+            UiUtils.startActivity(this,VerifyLoginActivity.class,true);
+            finish();
+            return;
+        }
+        Intent ait = getIntent();
 		if(null == ait)
-		{
+       	{
 			finish();
 			return;
 		}
@@ -88,7 +96,6 @@ public class AlterInfoActivity extends BaseActivity implements OnSuccessListener
             mContentEdit.setHint(mOriInfo);
         }
 			
-		
 		findViewById(R.id.submit_btn).setOnClickListener(this);
 	}
 	
@@ -119,16 +126,15 @@ public class AlterInfoActivity extends BaseActivity implements OnSuccessListener
 		
 		Ajax ajax = ServiceConfig.getAjax(mServiceUrlKey);
 
-        UiUtils.makeToast(this,R.string.submit_succ);
-        setResult(RESULT_OK);
-        finish();
-		if (null == ajax)
+        if (null == ajax)
 			return;
-		
+
+        ajax.setData("token",act.token);
 		ajax.setData(mParam, strContent);
 		ajax.setOnSuccessListener(this);
-		
-		this.addAjax(ajax);
+        if(mParam.equals("nickname"))
+            act.nickName = strContent;
+        this.addAjax(ajax);
 		ajax.send();
 	}
 
@@ -143,7 +149,10 @@ public class AlterInfoActivity extends BaseActivity implements OnSuccessListener
 			return;
 		}
 
-		UiUtils.makeToast(this,R.string.submit_succ);
+        ILogin.setActiveAccount(act);
+        ILogin.saveIdentity(act);
+
+        UiUtils.makeToast(this,R.string.submit_succ);
 		setResult(RESULT_OK);
 		finish();
 	}

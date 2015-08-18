@@ -180,6 +180,7 @@
 	<string name="district">地区</string>
 	<string name="address_detail">详细地址</string>
 	<string name="phone_num">手机号</string>
+    <string name="change_phone_num">更改绑定手机</string>
 
     <string name="weixin_id">微信号</string>
 	<string name="id_card">身份证</string>

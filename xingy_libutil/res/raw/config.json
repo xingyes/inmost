@@ -13,7 +13,8 @@
 "URL_VERIFY_LOGIN":{"url":"http:\/\/passport.imbraa.com\/user\/signup.json","method":"POST"},
 "URL_CHECK_TOKEN":{"url":"http:\/\/passport.imbraa.com\/user\/check_token.json","method":"GET"},
 "URL_IMAGE_STREAM_UPLOAD":{"url":"http:\/\/api.imbraa.com\/user\/upload.json","method":"STREAM"},
-
+"URL_CHANGE_NICKNAME":{"url":"http:\/\/passport.imbraa.com\/user\/modify_info.json","method":"POST"},
+"URL_CHANGE_PHONE":{"url":"http:\/\/passport.imbraa.com\/user\/modify_mobile.json","method":"POST"},
 
 "URL_ORDER_LIST":{"url":"http:\/\/api.imbraa.com\/order\/list.json","method":"GET"},
 "URL_ORDER_DETAIL":{"url":"http:\/\/api.imbraa.com\/order\/detail.json","method":"GET"},

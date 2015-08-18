@@ -271,9 +271,9 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
                 break;
             case R.id.nickname:
                 ait = new Intent(this,AlterInfoActivity.class);
-                ait.putExtra(AlterInfoActivity.ALTER_ITEM, getString(R.string.real_name));
-                ait.putExtra(AlterInfoActivity.SERVICE_URL_KEY, braConfig.URL_SET_INFO);
-                ait.putExtra(AlterInfoActivity.PARAM_KEY, "nick");
+                ait.putExtra(AlterInfoActivity.ALTER_ITEM, getString(R.string.nick_name));
+                ait.putExtra(AlterInfoActivity.SERVICE_URL_KEY, braConfig.URL_CHANGE_NICKNAME);
+                ait.putExtra(AlterInfoActivity.PARAM_KEY, "nickname");
                 ait.putExtra(AlterInfoActivity.ORI_INFO, account.nickName);
                 this.startActivityForResult(ait,MyInfoActivity.MY_SETTING_CODE);
                 break;
@@ -281,14 +281,10 @@ public class MySettingActivity extends BaseActivity implements OnSuccessListener
                 UiUtils.startActivity(MySettingActivity.this, AddressListActivity.class, true);
                 break;
             case R.id.bind_phone:
-                ait = new Intent(this,AlterInfoActivity.class);
-                ait.putExtra(AlterInfoActivity.ALTER_ITEM, getString(R.string.bind_phone));
-                ait.putExtra(AlterInfoActivity.SERVICE_URL_KEY, braConfig.URL_SET_INFO);
-                ait.putExtra(AlterInfoActivity.PARAM_KEY, "phone");
+                ait = new Intent(this,VerifyLoginActivity.class);
+                ait.putExtra(VerifyLoginActivity.FLAG_CHANGE_PHONE,true);
                 if(!TextUtils.isEmpty(account.phone))
                     ait.putExtra(AlterInfoActivity.ORI_INFO, account.phone);
-                else
-                    ait.putExtra(AlterInfoActivity.ORI_INFO, "请绑定手机，便于我们联系您");
                 this.startActivityForResult(ait,MyInfoActivity.MY_SETTING_CODE);
 
 
