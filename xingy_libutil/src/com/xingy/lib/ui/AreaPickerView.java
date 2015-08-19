@@ -10,7 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.xingy.R;
-import com.xingy.lib.IArea;
+import com.xingy.lib.IAreav2;
 import com.xingy.lib.model.ChangeProvinceModel;
 import com.xingy.lib.model.ChangeProvinceModel.CityModel;
 import com.xingy.lib.model.ChangeProvinceModel.CityModel.ZoneModel;
@@ -61,7 +61,7 @@ public class AreaPickerView extends UiBase implements OnWheelScrollListener, OnC
 		super(context, attrs, R.layout.area_picker);
 		mContext = context;
         parseAttrs(attrs);
-		provinceList = IArea.getAreaModels();
+		provinceList = IAreav2.getAreaModels();
 	}
 
     private void parseAttrs(AttributeSet attrs) {

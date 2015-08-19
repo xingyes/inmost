@@ -2,19 +2,13 @@ package com.inmost.imbra.shopping;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
 import com.inmost.imbra.R;
-import com.inmost.imbra.imgallery.ImageCheckActivity;
 import com.inmost.imbra.login.Account;
 import com.inmost.imbra.login.ILogin;
 import com.inmost.imbra.util.braConfig;
-import com.xingy.lib.IArea;
-import com.xingy.lib.IPageCache;
-import com.xingy.lib.model.ChangeDistrictModel;
-import com.xingy.lib.model.FullDistrictModel;
 import com.xingy.lib.ui.AreaPickerView;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;

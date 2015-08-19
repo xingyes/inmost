@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class IArea {
-	private static final String LOG_TAG = IArea.class.getName();
+public class IAreav2 {
+	private static final String LOG_TAG = IAreav2.class.getName();
 	private static ArrayList<ChangeProvinceModel> areaModels;
 	
 	public static ArrayList<ChangeProvinceModel> getAreaModels() {
@@ -49,7 +49,7 @@ public class IArea {
 	
 	private static void changeFromRawFile() {
 		Resources pResources = MyApplication.app.getResources();
-		InputStream pInputStream = pResources.openRawResource(R.raw.fulldistrict);
+		InputStream pInputStream = pResources.openRawResource(R.raw.changeprovinces);
 		
 		try {
 			byte[] aBytes = new byte[pInputStream.available()];

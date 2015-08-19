@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 
 import com.xingy.lib.AppStorage;
-import com.xingy.lib.IArea;
 import com.xingy.lib.UExceptionHandler;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.activity.BaseActivity;
@@ -127,8 +126,8 @@ public class MyApplication extends Application {
 		Context pContext = MyApplication.app.getApplicationContext();
 
         MyApplication.getVersionCode(pContext);
-		
-		IArea.getAreaModels();
+
+//        IAreav2.getAreaModels();
 		
 		// Create new instance of AppStorage
 		mStorage = new AppStorage(pContext);
