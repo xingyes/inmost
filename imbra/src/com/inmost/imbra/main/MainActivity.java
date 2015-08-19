@@ -42,6 +42,7 @@ import com.xingy.lib.ui.CircleImageView;
 import com.xingy.lib.ui.NavigationBar.OnLeftButtonClickListener;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.lib.ui.VerticalRangeSeekBar;
+import com.xingy.util.Config;
 import com.xingy.util.ServiceConfig;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
@@ -934,7 +935,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         mSearchParams = new BasicParamModel();
 
         IPageCache cache = new IPageCache();
-        String content = cache.get(BasicParamModel.CACHE_KEY);
+        String content = cache.get(Config.BASIC_PARAM_CACHEKEY);
         if(!TextUtils.isEmpty(content))
         {
             try {
@@ -984,7 +985,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         mSearchParams.parse(jsonObject);
 
         IPageCache cache = new IPageCache();
-        cache.set(BasicParamModel.CACHE_KEY, jsonObject.toString(), 86400);
+        cache.set(Config.BASIC_PARAM_CACHEKEY, jsonObject.toString(), 86400);
 
         renderParamPanel();
         if(null!=mHomePg)

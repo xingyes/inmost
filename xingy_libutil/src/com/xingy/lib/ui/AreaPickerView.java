@@ -10,10 +10,11 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.xingy.R;
-import com.xingy.lib.IAreav2;
-import com.xingy.lib.model.ChangeProvinceModel;
-import com.xingy.lib.model.ChangeProvinceModel.CityModel;
-import com.xingy.lib.model.ChangeProvinceModel.CityModel.ZoneModel;
+import com.xingy.lib.IArea;
+import com.xingy.lib.model.ProvinceModel.CityModel;
+import com.xingy.lib.model.ProvinceModel.CityModel.ZoneModel;
+import com.xingy.lib.model.ProvinceModel;
+import com.xingy.util.Config;
 
 import java.util.ArrayList;
 
@@ -38,8 +39,8 @@ public class AreaPickerView extends UiBase implements OnWheelScrollListener, OnC
 	//private OnWheelChangedListener mCityWheelListener;
 	//private OnWheelChangedListener mZoneWheelListener;
 	
-	private ArrayList<ChangeProvinceModel> provinceList;
-	private ChangeProvinceModel    province;
+	private ArrayList<ProvinceModel> provinceList;
+	private ProvinceModel    province;
 	private ArrayList<CityModel> cityList;
 	private CityModel        city;
 	private ArrayList<ZoneModel> zoneList;
@@ -61,8 +62,8 @@ public class AreaPickerView extends UiBase implements OnWheelScrollListener, OnC
 		super(context, attrs, R.layout.area_picker);
 		mContext = context;
         parseAttrs(attrs);
-		provinceList = IAreav2.getAreaModels();
-	}
+		provinceList = IArea.getProvinces(Config.BASIC_PARAM_CACHEKEY);
+    }
 
     private void parseAttrs(AttributeSet attrs) {
         if( null == attrs || null == mContext )
@@ -89,7 +90,7 @@ public class AreaPickerView extends UiBase implements OnWheelScrollListener, OnC
 	}
 	
 	
-	public ChangeProvinceModel getProvince()
+	public ProvinceModel getProvince()
 	{
 		return province;
 	}
@@ -177,7 +178,7 @@ public class AreaPickerView extends UiBase implements OnWheelScrollListener, OnC
 
 
 	private void refreshCityAdapter() {
-		ChangeProvinceModel tmp = provinceList.get(mPrivonceWheel.getCurrentItem());
+        ProvinceModel tmp = provinceList.get(mPrivonceWheel.getCurrentItem());
 		if(null != province && tmp.getProvinceName().equals(province.getProvinceName()))
 			return;
 		province = tmp;
@@ -211,7 +212,7 @@ public class AreaPickerView extends UiBase implements OnWheelScrollListener, OnC
 		String names[] = new String[nSize];
 		
 		for( int nIdx = 0; nIdx < nSize; nIdx++ ) {
-			ChangeProvinceModel pMode = provinceList.get(nIdx);
+			ProvinceModel pMode = provinceList.get(nIdx);
 			names[nIdx] = pMode.getProvinceName();
 		}
 		

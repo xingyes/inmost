@@ -1,10 +1,12 @@
 package com.inmost.imbra.basic;
 
+import com.xingy.lib.IAreav2;
+import com.xingy.lib.model.FullDistrictModel;
+
 import org.json.JSONObject;
 
 public class BasicParamModel {
 
-    public static final String CACHE_KEY = "bra_search_params";
     public BasicParamItemModel  brandModel;
     public BasicParamItemModel  funcModel;
     public BasicParamItemModel  pricerangeModel;

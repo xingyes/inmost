@@ -1,5 +1,7 @@
 package com.xingy.lib.model;
 
+import android.text.TextUtils;
+
 import com.xingy.util.ToolUtil;
 
 import org.json.JSONException;
@@ -13,10 +15,10 @@ import java.util.Iterator;
 
 @SuppressWarnings("serial")
 public class ProvinceModel extends BaseModel  implements Serializable{
-	private int mProvinceId;
+	public int mProvinceId;
 	private int mProvinceIPId;
 	private String mProvinceName;
-	private int mProSortId;
+	public int mProSortId;
 	private ArrayList<CityModel> mCityModels = new ArrayList<CityModel>();
 	
 	public int getProvinceId() {
@@ -45,39 +47,43 @@ public class ProvinceModel extends BaseModel  implements Serializable{
 		if(null == json){
 			return;
 		}
-		
-		mProvinceId = json.optInt("id", 0);
+
+        mProvinceName = json.optString("name");
+        mProvinceId = json.optInt("id", 0);
 		mProvinceIPId = json.optInt("ip_id", 0);
-		mProvinceName = json.optString("name", "");
 		mProSortId = json.optInt("sortId", 0);
 		
-		if(!ToolUtil.isEmptyList(json, "city")) {
-			JSONObject pCityJson = json.optJSONObject("city");
-			if( null != pCityJson ) {
-				Iterator<String> iter = pCityJson.keys();
-				while( iter.hasNext() ) {
-					CityModel pCityModel = new CityModel();
-					String key = iter.next();
-					pCityModel.parse(pCityJson.getJSONObject(key));
-					mCityModels.add(pCityModel);
-				}
+		JSONObject pCityJson = json.optJSONObject("cities");
+        if(pCityJson==null || pCityJson.length()<=0)
+            return;
+
+        Iterator<String> iter = pCityJson.keys();
+		while( iter.hasNext() ) {
+		    CityModel pCityModel = new CityModel();
+			String key = iter.next();
+			pCityModel.parse(pCityJson.optJSONObject(key));
+            if(TextUtils.isDigitsOnly(key)) {
+                pCityModel.mCityId = Integer.valueOf(key);
+                pCityModel.mCitySortId = Integer.valueOf(key);
+            }
+
+            mCityModels.add(pCityModel);
+        }
 				
-				Collections.sort(mCityModels, new Comparator(){
-					@Override
-					public int compare(Object one, Object another) {
+		Collections.sort(mCityModels, new Comparator(){
+				@Override
+				public int compare(Object one, Object another) {
 						CityModel a = (CityModel) one;
 						CityModel b = (CityModel) another;
 						return ToolUtil.compareInt(a.getCitySortId(), b.getCitySortId());
-					}
-				});
-			}
-		}
+				}
+		    });
 	}
-	
+
 	public class CityModel  implements Serializable{
-		private int mCityId;
+		public int mCityId;
 		private String mCityName;
-		private int mCitySortId;
+        public int mCitySortId;
 		private ArrayList<ZoneModel> mZoneModels = new ArrayList<ZoneModel>();
 		
 		public int getCityId() {
@@ -102,36 +108,42 @@ public class ProvinceModel extends BaseModel  implements Serializable{
 				return;
 			}
 			
-			mCityId = json.optInt("id", 0);
-			mCityName = json.optString("name", "");
-			mCitySortId = json.optInt("sortId", 0);
+			mCityId = json.optInt("id");
+			mCityName = json.optString("name");
+			mCitySortId = json.optInt("sortId");
 			
-			if(!ToolUtil.isEmptyList(json, "district")) {
-				JSONObject pZoneJson = json.getJSONObject("district");
-				Iterator<String> iter = pZoneJson.keys();
-				while(iter.hasNext()) {
-					ZoneModel model = new ZoneModel();
-					String key = iter.next();
-					model.parse(pZoneJson.getJSONObject(key));
-					mZoneModels.add(model);
-				}
+			JSONObject pZoneJson = json.optJSONObject("areas");
+            if(pZoneJson==null || pZoneJson.length()<=0)
+                return;
+
+			Iterator<String> iter = pZoneJson.keys();
+			while(iter.hasNext()) {
+				ZoneModel model = new ZoneModel();
+				String key = iter.next();
+                model.mZoneName = pZoneJson.optString(key);
+				if(TextUtils.isDigitsOnly(key)) {
+                    model.mZoneId = Integer.valueOf(key);
+                    model.mZoneSortId = Integer.valueOf(key);
+                }
+				mZoneModels.add(model);
+			}
 				
-				Collections.sort(mZoneModels, new Comparator(){
+			Collections.sort(mZoneModels, new Comparator(){
 					@Override
 					public int compare(Object one, Object another) {
 						ZoneModel a = (ZoneModel) one;
 						ZoneModel b = (ZoneModel) another;
 						return ToolUtil.compareInt(a.getZoneSortId(), b.getZoneSortId());
-					}
-				});
 			}
+				});
+
 		}
 		
 		
 		public class ZoneModel {
-			private int mZoneId;
-			private String mZoneName;
-			private int mZoneSortId;
+			public int mZoneId;
+			public String mZoneName;
+            public int mZoneSortId;
 			
 			public int getZoneId(){
 				return this.mZoneId;

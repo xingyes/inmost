@@ -1,5 +1,8 @@
 package com.xingy.lib.model;
 
+import android.content.Intent;
+import android.text.TextUtils;
+
 import com.xingy.util.ToolUtil;
 
 import org.json.JSONException;
@@ -28,27 +31,29 @@ public class FullDistrictModel extends BaseModel{
 			return null;
 		}
 		
-		strMD5 = json.optString("md5", "");
-		if(!ToolUtil.isEmptyList(json, "fullDistrict")) {
-			JSONObject data = json.getJSONObject("fullDistrict");
-			if(null != data) {
-				Iterator<String> iter = data.keys();
-				while(iter.hasNext()) {
-					ProvinceModel model = new ProvinceModel();
-					String key = iter.next();
-					model.parse(data.getJSONObject(key));
-					mProvnceModels.add(model);
-				}
+		strMD5 = json.optString("v", "");
+		JSONObject data = json.getJSONObject("dt");
+		if(null != data && data.length()>0 ) {
+		    Iterator<String> iter = data.keys();
+			while(iter.hasNext()) {
+			    ProvinceModel model = new ProvinceModel();
+			    String key = iter.next();
+				model.parse(data.optJSONObject(key));
+                if(TextUtils.isDigitsOnly(key)) {
+                    model.mProvinceId = Integer.valueOf(key);
+                    model.mProSortId = Integer.valueOf(key);
+                }
+                mProvnceModels.add(model);
+			}
 				
-				Collections.sort(mProvnceModels, new Comparator(){
+			Collections.sort(mProvnceModels, new Comparator(){
 					@Override
 					public int compare(Object one, Object another) {
 						ProvinceModel a = (ProvinceModel) one;
 						ProvinceModel b = (ProvinceModel) another;
 						return ToolUtil.compareInt(a.getProvinceSortId(), b.getProvinceSortId());
 					}
-				});
-			}
+			});
 		}
 		
 		return null;

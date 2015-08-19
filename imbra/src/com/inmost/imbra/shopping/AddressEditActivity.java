@@ -164,13 +164,13 @@ public class AddressEditActivity extends BaseActivity implements OnSuccessListen
 
                         @Override
                         public void onSubmit() {
-                            addressModel.provinceId = mAreaPicker.getProvince().getSortId();
+                            addressModel.provinceId = mAreaPicker.getProvince().getProvinceId();
 
-                            addressModel.cityId = 12;
-                            addressModel.townId = 11;
+                            addressModel.cityId = mAreaPicker.getCity().getCityId();
                             addressModel.provinceStr = mAreaPicker.getProvince().getProvinceName();
                             addressModel.cityStr = mAreaPicker.getCity().getCityName();
                             addressModel.townStr = (null == mAreaPicker.getZone()  ? "" : mAreaPicker.getZone().getZoneName());
+                            addressModel.townId = (null == mAreaPicker.getZone()  ? 0 : mAreaPicker.getZone().getZoneId());
 
                             areaEt.setText(addressModel.provinceStr + " " + addressModel.cityStr + " " + addressModel.townStr);
                             mAreaPicker.setVisibility(View.INVISIBLE);
