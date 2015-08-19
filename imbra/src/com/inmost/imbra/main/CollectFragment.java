@@ -22,6 +22,7 @@ import com.inmost.imbra.search_backup.SearchActivity;
 import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
@@ -41,6 +42,7 @@ public class CollectFragment extends Fragment implements OnSuccessListener<JSONO
     private PullToRefreshListView pullList;
     private HomeFloorAdapter mAdapter;
     private int mNextPageNum;
+    private boolean bFinished = false;
     private Ajax mAjax;
 
     private ArrayList<HomeFloorModel> mHomeFloors;
@@ -76,11 +78,13 @@ public class CollectFragment extends Fragment implements OnSuccessListener<JSONO
     }
 
     private void requestPage(int page) {
-        mAjax = ServiceConfig.getAjax(braConfig.URL_HOME_FLOOR_O2O);
+        mAjax = ServiceConfig.getAjax(braConfig.URL_GET_COLLECT);
         if (null == mAjax)
             return;
 
-        mAjax.setData("page", page);
+        mAjax.setData("pn", page);
+        mAjax.setData("ps", 10);
+        mAjax.setData("dp", ToolUtil.getAppWidth() + "*" + ToolUtil.getAppHeight());
         mActivity.showLoadingLayer();
 
         mAjax.setOnSuccessListener(this);
@@ -105,7 +109,8 @@ public class CollectFragment extends Fragment implements OnSuccessListener<JSONO
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
-                if (firstVisibleItem + visibleItemCount >= totalItemCount && mNextPageNum > 1) {
+                if (firstVisibleItem + visibleItemCount >= totalItemCount && mNextPageNum > 1
+                        && !bFinished) {
                     UiUtils.makeToast(mActivity, "first:" + firstVisibleItem + ",vis:" +
                             visibleItemCount + ",totalItemCount" + totalItemCount);
                     requestPage(mNextPageNum);
@@ -145,31 +150,27 @@ public class CollectFragment extends Fragment implements OnSuccessListener<JSONO
     public void onSuccess(JSONObject v, Response response) {
 
         mActivity.closeLoadingLayer();
-        mNextPageNum++;
-//		final int ret = v.optInt("error");
-//		if(ret != 0 )
-//		{
-//			String msg =  v.optString("data");
-//			UiUtils.makeToast(mActivity, ToolUtil.isEmpty(msg) ? getString(R.string.parser_error_msg): msg);
-//			return;
-//		}
-//
-//		JSONObject data = v.optJSONObject("data");
-//		if(null == data)
-//		{
-//			UiUtils.makeToast(mActivity, getString(R.string.parser_error_msg));
-//			return;
-//		}
+        final int ret = v.optInt("error");
+		if(ret != 0 )
+		{
+			String msg =  v.optString("data");
+			UiUtils.makeToast(mActivity, ToolUtil.isEmpty(msg) ? getString(R.string.parser_error_msg): msg);
+			return;
+		}
 
-        JSONArray feeds = v.optJSONArray("feeds");
-        if (null != feeds) {
+        JSONArray feeds = v.optJSONArray("dt");
+        if (null != feeds && feeds.length()>0) {
             for (int i = 0; i < feeds.length(); i++) {
                 HomeFloorModel model = new HomeFloorModel();
                 model.parseCollect(feeds.optJSONObject(i));
                 if(model.type == HomeFloorModel.TYPE_COLLECTION)
                     mHomeFloors.add(model);
             }
+            bFinished = false;
+            mNextPageNum++;
         }
+        else
+            bFinished = true;
         mAdapter.setData(mHomeFloors);
         mAdapter.notifyDataSetChanged();
     }
@@ -194,11 +195,11 @@ public class CollectFragment extends Fragment implements OnSuccessListener<JSONO
         }
         else if (item.type == HomeFloorModel.TYPE_COLLECTION) {
             Bundle bund = new Bundle();
-            bund.putString(CollectPagerActivity.COLLECT_ID, item.type_id);
+            bund.putString(CollectPagerActivity.COLLECT_ID, item.id);
             UiUtils.startActivity(mActivity, CollectPagerActivity.class, bund, true);
         } else if (item.type == HomeFloorModel.TYPE_BLOG) {
             Bundle bund = new Bundle();
-            bund.putString(BlogVolleyActivity.BLOG_ID, item.type_id);
+            bund.putString(BlogVolleyActivity.BLOG_ID, item.id);
             UiUtils.startActivity(mActivity, BlogVolleyActivity.class, bund, true);
         }
     }

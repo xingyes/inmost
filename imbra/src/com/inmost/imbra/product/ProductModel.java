@@ -10,6 +10,9 @@ import java.util.ArrayList;
 
 public class ProductModel implements Serializable {
 
+    public static final int FAV_OK = 1;
+    public static final int FAV_NO = 0;
+
     public String fid;    //fav_id
     public long   timemark;
     public String id;    //skuid
@@ -69,7 +72,7 @@ public class ProductModel implements Serializable {
         it = new BigDecimal(jsonObject.optLong("dprice"));
         it = it.divide(hun ,2);
         ori_price = it.toPlainString();
-        fav = (jsonObject.optInt("is_fav")==1);
+        fav = (jsonObject.optInt("is_fav")==FAV_OK);
     }
 
 

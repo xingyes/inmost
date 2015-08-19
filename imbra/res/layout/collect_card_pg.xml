@@ -32,15 +32,24 @@
             android:id="@+id/pro_img"
             android:layout_alignParentTop="true"/>
 
-        <CheckBox
-            android:padding="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/fav_btn"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_margin="5dp"
-            android:button="@drawable/fav_btn_selector"/>
+            <TextView
+                android:layout_margin="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+
+                android:drawableTop="@drawable/fav_btn_selector"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/fav_cnt"
+                android:textColor="@color/global_nav_text"
+                android:textSize="@dimen/bar_font_24"
+                android:layout_below="@id/fav_btn"
+                android:gravity="center_horizontal"
+                android:text="1"
+                />
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -12,6 +12,7 @@ public class BasicParamModel {
     public BasicParamItemModel  pricerangeModel;
     public BasicParamItemModel  guideModel;
     public BasicParamItemModel  optiontypeModel;
+    public BasicParamItemModel  storeMapdModel;
 
     public BasicParamItemModel  sizeModel;
     public BasicParamItemModel  cupModel;
@@ -47,6 +48,10 @@ public class BasicParamModel {
             optiontypeModel = new BasicParamItemModel();
         else
             optiontypeModel.clear();
+        if (null==storeMapdModel)
+            storeMapdModel = new BasicParamItemModel();
+        else
+            storeMapdModel.clear();
         if(null == sizeModel)
             sizeModel = new BasicParamItemModel();
         else
@@ -94,6 +99,11 @@ public class BasicParamModel {
             optiontypeModel.parse(item);
         }
 
+        item = json.optJSONObject("storesmap");
+        if(item!=null)
+        {
+            storeMapdModel.parse(item);
+        }
         JSONObject brands = json.optJSONObject("brand");
         if(brands!=null)
         {

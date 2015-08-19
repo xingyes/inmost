@@ -37,6 +37,7 @@ import com.inmost.imbra.login.ILogin;
 import com.inmost.imbra.login.MyInfoActivity;
 import com.inmost.imbra.login.VerifyLoginActivity;
 import com.inmost.imbra.util.braConfig;
+import com.xingy.lib.IArea;
 import com.xingy.lib.IPageCache;
 import com.xingy.lib.ui.CircleImageView;
 import com.xingy.lib.ui.NavigationBar.OnLeftButtonClickListener;
@@ -953,7 +954,16 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
             mAjax = ServiceConfig.getAjax(braConfig.URL_BASIC_PARAMS);
             if (null == mAjax)
                 return;
-
+            if(null!=mSearchParams) {
+                mAjax.setData("bv",mSearchParams.brandModel.ver);
+                mAjax.setData("bfv",mSearchParams.funcModel.ver);
+                mAjax.setData("prv",mSearchParams.pricerangeModel.ver);
+//                mAjax.setData("gv",mSearchParams.brandModel.ver);
+                mAjax.setData("otv",mSearchParams.optiontypeModel.ver);
+//                mAjax.setData("csv",mSearchParams.brandModel.ver);
+                mAjax.setData("smv",mSearchParams.storeMapdModel.ver);
+                mAjax.setData("adv", IArea.ver);
+            }
             mAjax.setOnSuccessListener(this);
             mAjax.send();
         }

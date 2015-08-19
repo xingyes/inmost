@@ -2,6 +2,7 @@ package com.inmost.imbra.collect;
 
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -9,52 +10,64 @@ import java.util.ArrayList;
  */
 public class CollectCardModel {
 
-    public static final String TYPE_BRAND = "BRAND";
-    public static final String TYPE_PRODUCT = "PRODUCT";
+    public static final int TYPE_PRODUCT = 0;
+    public static final int TYPE_BRAND = 1;
     public String description;
     public String title;
     public String collection_id;
     public String id;
-    public String type_id;
     public String status;
     public String imgUrl;
-    public String type;
+    public int    type;
+    public int  fav;
+    public int  fav_cnt;
 
     public String brand_id;
+    public String brand_name;
+
     public String product_type_id;
     public String cost_price;
     public String sale_price;
 
 
     public void clear() {
+        fav = 0;
+        fav_cnt = 0;
         id = "";
-        type = "";
         title = "";
         description = "";
         collection_id = "";
         status = "";
         imgUrl = "";
-        type_id = "";
+        type = TYPE_PRODUCT;
+    }
+
+    public void parseCollect(JSONObject json) {
+        clear();
+
+        type = TYPE_PRODUCT;
+        id = json.optString("pid");
+        title = json.optString("title");
+        description = json.optString("description");
+        status = json.optString("status");
+        imgUrl = json.optString("pic");
+        fav = json.optInt("is_fav");
+        fav_cnt = json.optInt("fav_cnt");
+
+        BigDecimal hun = new BigDecimal(100);
+        BigDecimal it = new BigDecimal(json.optLong("price"));
+        it = it.divide(hun, 2);
+        sale_price =  it.toPlainString();
 
     }
 
-    public void parse(JSONObject json) {
+    public void parseBrand(JSONObject json)
+    {
         clear();
 
-        type = json.optString("type");
-        id = json.optString("id");
-        type_id = json.optString("type_id");
-        title = json.optString("title");
-        description = json.optString("description");
-        collection_id = json.optString("collection_id");
-        status = json.optString("status");
-        imgUrl = json.optString("cover");
-
-        JSONObject typejson = json.optJSONObject("type_object");
-        brand_id = typejson.optString("id");
-        cost_price = typejson.optString("cost_price");
-        sale_price = typejson.optString("sale_price");
-        product_type_id = typejson.optString("product_type_id");
-
+        type = TYPE_BRAND;
+        brand_id = json.optString("bid");
+        brand_name = json.optString("bname");
+        imgUrl = json.optString("pic");
     }
 }

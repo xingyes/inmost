@@ -20,7 +20,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,7 +29,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.inmost.imbra.R;
 import com.inmost.imbra.basic.BasicParamModel;
-import com.inmost.imbra.basic.ParamDtModel;
 import com.inmost.imbra.blog.BlogVolleyActivity;
 import com.inmost.imbra.collect.CollectPagerActivity;
 import com.inmost.imbra.product.Product2RowAdapter;
@@ -58,7 +56,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
     private PullToRefreshListView pullList;
     private ListView              mListV;
 	private Ajax mAjax;
-
+    private boolean bFinished = false;
 
 
 
@@ -286,7 +284,8 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
                 if(mTabIdx == TAB_HOME) {
-                    if (firstVisibleItem + visibleItemCount >= totalItemCount && mFloorNextPageNum>1) {
+                    if (firstVisibleItem + visibleItemCount >= totalItemCount && mFloorNextPageNum>1
+                            && !bFinished) {
                         UiUtils.makeToast(mActivity, "first:" + firstVisibleItem + ",vis:" +
                             visibleItemCount + ",totalItemCount" + totalItemCount);
                     requestTopic(mFloorNextPageNum);
@@ -487,15 +486,18 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 //        }
 		if(response.getId() == AJAX_HOMEFLOOR) {
 
-            mFloorNextPageNum++;
             JSONArray feeds = v.optJSONArray("dt");
-            if (null != feeds) {
+            if (null != feeds && feeds.length()>0) {
                 for (int i = 0; i < feeds.length(); i++) {
                     HomeFloorModel model = new HomeFloorModel();
                     model.parse(feeds.optJSONObject(i));
                     mHomeFloors.add(model);
                 }
+                bFinished = false;
+                mFloorNextPageNum++;
             }
+            else
+                bFinished = true;
 
             mFloorAdapter.setData(mHomeFloors);
             mFloorAdapter.notifyDataSetChanged();
@@ -558,13 +560,13 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
         else if(item.type == HomeFloorModel.TYPE_COLLECTION)
         {
             Bundle bund = new Bundle();
-            bund.putString(CollectPagerActivity.COLLECT_ID,item.type_id);
+            bund.putString(CollectPagerActivity.COLLECT_ID,item.id);
             UiUtils.startActivity(mActivity, CollectPagerActivity.class, bund, true);
         }
         else if(item.type == HomeFloorModel.TYPE_BLOG)
         {
             Bundle bund = new Bundle();
-            bund.putString(BlogVolleyActivity.BLOG_ID,item.type_id);
+            bund.putString(BlogVolleyActivity.BLOG_ID,item.id);
             UiUtils.startActivity(mActivity, BlogVolleyActivity.class, bund, true);
         }
     }

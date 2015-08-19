@@ -79,6 +79,7 @@ public class ToolUtil {
 	private static int mAppWidthDip = 0;
 	
 	private static int mAppWidth = 0;
+    private static int mAppHeight = 0;
 
 	private static SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -112,6 +113,16 @@ public class ToolUtil {
 
 		return mAppWidth;
 	}
+
+    public static int getAppHeight() {
+        if (mAppHeight != 0)
+            return mAppHeight;
+
+        mAppHeight = getEquipmentHeight(MyApplication.app);
+
+        return mAppHeight;
+    }
+
 
 	public static float getDensityDpi() {
 		return MyApplication.app.getResources().getDisplayMetrics().densityDpi;

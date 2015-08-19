@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class IArea {
+    public static String ver;
 	private static final String LOG_TAG = IArea.class.getName();
 	private static ArrayList<ProvinceModel> provinceModels;
 	
@@ -34,6 +35,7 @@ public class IArea {
 				JSONObject json = new JSONObject(str);
 				FullDistrictModel model  = new FullDistrictModel();
 				model.parse(json.optJSONObject("addresses"));
+                ver = model.getMD5Value();
                 provinceModels = model.getProvinceModels();
 			}catch (JSONException ex) {
 				Log.e(LOG_TAG, ex);

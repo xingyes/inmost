@@ -3,6 +3,7 @@ package com.inmost.imbra.collect;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,14 +21,19 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.inmost.imbra.R;
 import com.inmost.imbra.brand.BrandInfoActivity;
+import com.inmost.imbra.login.Account;
+import com.inmost.imbra.login.ILogin;
+import com.inmost.imbra.login.VerifyLoginActivity;
 import com.inmost.imbra.main.HomeFloorModel;
 import com.inmost.imbra.main.IMbraApplication;
 import com.inmost.imbra.product.ProductDetailActivity;
+import com.inmost.imbra.product.ProductModel;
 import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.ui.AutoHeightImageView;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.DPIUtil;
 import com.xingy.util.ServiceConfig;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
@@ -40,6 +47,8 @@ import java.util.ArrayList;
 public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPageChangeListener,
         OnSuccessListener<JSONObject> {
 
+    public static final int  AJX_ADD_FAV = 1123;
+    public static final int  AJX_REMOVE_FAV = 1124;
 
     public static final String COLLECT_ID = "collect_id";
     public static final int    CODE_GO_DETAIL = 1203;
@@ -55,11 +64,13 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
     private int lastIdx = 0;
     // 定义ViewPager适配器
     private ViewPagerAdapter vpAdapter;
+    private Account   account;
 
 
     // 记录当前选中位置
     private int currentIndex;
-
+    private Drawable favOnDb;
+    private Drawable favOffDb;
 
 
     @Override
@@ -70,7 +81,7 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
         mImgLoader = new ImageLoader(mQueue, IMbraApplication.globalMDCache);
 
         setContentView(R.layout.activity_glance_vp);
-
+        account = ILogin.getActiveAccount();
         coverModel = new CollectTitlePgModel();
         Cards = new ArrayList<CollectCardModel>();
 
@@ -83,6 +94,11 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
         mId = intent.getStringExtra(COLLECT_ID);
 
         requestData();
+        favOnDb = getResources().getDrawable(R.drawable.fav_on);
+        favOffDb = getResources().getDrawable(R.drawable.fav_off);
+        favOnDb.setBounds(0, 0, favOnDb.getMinimumWidth(), favOnDb.getMinimumHeight());
+        favOffDb.setBounds(0, 0, favOffDb.getMinimumWidth(), favOffDb.getMinimumHeight());
+
         initPager();
 
 	}
@@ -91,9 +107,14 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
         mAjax = ServiceConfig.getAjax(braConfig.URL_GET_COLLECT);
         if (null == mAjax)
             return;
-        String url = mAjax.getUrl() + mId;
-        mAjax.setUrl(url);
 
+        mAjax.setData("pn", 1);
+        mAjax.setData("ps", 10);
+        mAjax.setData("dp", ToolUtil.getAppWidth() + "*" + ToolUtil.getAppHeight());
+
+        mAjax.setData("id",mId);
+        if(null!=account)
+            mAjax.setData("uid",account.uid);
         showLoadingLayer();
 
         mAjax.setOnSuccessListener(this);
@@ -167,20 +188,67 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
     @Override
     public void onSuccess(JSONObject json, Response response) {
         closeLoadingLayer();
+        final int ret = json.optInt("error");
+        if(ret != 0 )
+        {
+            String msg =  json.optString("data");
+            UiUtils.makeToast(this, ToolUtil.isEmpty(msg) ? getString(R.string.parser_error_msg): msg);
+            return;
+        }
 
+        if(response.getId() == AJX_ADD_FAV)
+        {
+            CollectCardModel curItem = Cards.get(currentIndex-1);
+            curItem.fav_cnt++;
+            curItem.fav = ProductModel.FAV_OK;
+            viewPager.removeAllViews();
+            vpAdapter = new ViewPagerAdapter();
+            viewPager.setAdapter(vpAdapter);
 
-        coverModel.parse(json.optJSONObject("collection"));
+            viewPager.setCurrentItem(currentIndex);
+
+            return;
+        }
+        else if(response.getId() == AJX_REMOVE_FAV)
+        {
+            CollectCardModel curItem = Cards.get(currentIndex-1);
+            curItem.fav_cnt--;
+            curItem.fav = ProductModel.FAV_NO;
+
+            viewPager.removeAllViews();
+            vpAdapter = new ViewPagerAdapter();
+            viewPager.setAdapter(vpAdapter);
+
+            viewPager.setCurrentItem(currentIndex);
+
+            return;
+        }
+
+        JSONArray ar = json.optJSONArray("dt");
+        if(null==ar)
+            return;
+        JSONObject dt = ar.optJSONObject(0);
+        coverModel.parse(dt);
 
         bgImgView.setImageUrl(HomeFloorModel.formBraUrl(coverModel.bgUrl),mImgLoader);
 
 
-        JSONArray cardary = json.optJSONArray("cards");
+        JSONArray cardary = dt.optJSONArray("pl");
         for(int i = 0 ; i < cardary.length(); i++)
         {
             CollectCardModel item = new CollectCardModel();
-            item.parse(cardary.optJSONObject(i));
+            item.parseCollect(cardary.optJSONObject(i));
             Cards.add(item);
         }
+
+        JSONObject bd = dt.optJSONObject("bd");
+        if(bd!=null)
+        {
+            CollectCardModel item = new CollectCardModel();
+            item.parseBrand(bd);
+            Cards.add(item);
+        }
+
 
         viewPager.setVisibility(View.VISIBLE);
         // 设置数据
@@ -242,13 +310,13 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
             }
             else
             {
-                final CollectCardModel item = Cards.get(position-1);
-                if(item.type.equalsIgnoreCase(CollectCardModel.TYPE_BRAND))
+                final CollectCardModel curItem = Cards.get(position-1);
+                if(curItem.type==CollectCardModel.TYPE_BRAND)
                 {
                     page = LayoutInflater.from(getBaseContext()).inflate(R.layout.collect_brand_pg, null);
                     NetworkImageView proImgV = (NetworkImageView)page.findViewById(R.id.brand_img);
 
-                    proImgV.setImageUrl(HomeFloorModel.formBraUrl(item.imgUrl),mImgLoader);
+                    proImgV.setImageUrl(HomeFloorModel.formBraUrl(curItem.imgUrl),mImgLoader);
                     TextView brandStatusTv = (TextView)page.findViewById(R.id.brand_status);
 
                     brandStatusTv.setText(R.string.click_go);
@@ -257,24 +325,35 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
                         @Override
                         public void onClick(View v) {
                             Bundle bundle = new Bundle();
-                            bundle.putString(BrandInfoActivity.BRAND_ID,item.brand_id);
+                            bundle.putString(BrandInfoActivity.BRAND_ID,curItem.brand_id);
                             UiUtils.startActivity(CollectPagerActivity.this,BrandInfoActivity.class,bundle,true);
                         }
                     });
                 }
 			    else{
                     page = LayoutInflater.from(getBaseContext()).inflate(R.layout.collect_card_pg, null);
-                    CheckBox favBtn = (CheckBox) page.findViewById(R.id.fav_btn);
+
                     AutoHeightImageView proImgV = (AutoHeightImageView) page.findViewById(R.id.pro_img);
-                    proImgV.setImageUrl(HomeFloorModel.formBraUrl(item.imgUrl), mImgLoader);
+                    proImgV.setImageUrl(HomeFloorModel.formBraUrl(curItem.imgUrl), mImgLoader);
                     TextView proIntroTv = (TextView) page.findViewById(R.id.pro_intro);
                     TextView proPriceTv = (TextView) page.findViewById(R.id.pro_price);
                     TextView proStatusTv = (TextView) page.findViewById(R.id.pro_status);
+                    TextView favCnTv = (TextView)page.findViewById(R.id.fav_cnt);
+                    favCnTv.setOnClickListener(favCheckListener);
+                    favCnTv.setTag(curItem.id);
 
-                    proIntroTv.setText(item.description);
-                    proPriceTv.setText(item.sale_price);
-                    proStatusTv.setText(item.status);
-                    page.setTag(item.type_id);
+                    if(curItem.fav==ProductModel.FAV_OK)
+                    {
+                        favCnTv.setCompoundDrawables(null,favOnDb,null,null);
+                    }
+                    else {
+                        favCnTv.setCompoundDrawables(null, favOffDb, null, null);
+                    }
+                    proIntroTv.setText(curItem.title);
+                    proPriceTv.setText(curItem.sale_price);
+                    proStatusTv.setText(curItem.status);
+                    favCnTv.setText(""+curItem.fav_cnt);
+                    page.setTag(curItem.id);
                     page.setOnClickListener(itemListener);
                 }
 
@@ -387,5 +466,73 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
             requestData();
         }
     }
+
+
+    /**
+     * fav modify need login
+     */
+    private void removeFav(final String proid) {
+        if(account == null)
+        {
+            UiUtils.startActivity(this,VerifyLoginActivity.class,true);
+            return;
+        }
+        mAjax = ServiceConfig.getAjax(braConfig.URL_MODIFY_FAV);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+        mAjax.setId(AJX_REMOVE_FAV);
+        mAjax.setData("cur_id", proid);
+        mAjax.setData("token",account.token);
+        mAjax.setData("act",2); //2 for del;
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+    }
+
+    private void addFav(final String proid) {
+        if(account == null)
+        {
+            UiUtils.startActivity(this,VerifyLoginActivity.class,true);
+            return;
+        }
+
+        mAjax = ServiceConfig.getAjax(braConfig.URL_MODIFY_FAV);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+        mAjax.setId(AJX_ADD_FAV);
+        mAjax.setData("cur_id", proid);
+        mAjax.setData("token",account.token);
+        mAjax.setData("act",1); //1 for add;
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+    }
+
+
+    private View.OnClickListener favCheckListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Object obj = v.getTag();
+            if(null!=obj && obj instanceof String)
+            {
+                CollectCardModel curItem = Cards.get(currentIndex-1);
+                if(curItem.fav==ProductModel.FAV_NO)
+                {
+                    ((TextView)v).setCompoundDrawables(null,favOnDb,null,null);
+                    addFav((String)obj);
+                }
+                else {
+                    ((TextView) v).setCompoundDrawables(null, favOffDb, null, null);
+                    removeFav((String) obj);
+                }
+            }
+        }
+    };
 
 }

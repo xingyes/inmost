@@ -201,11 +201,11 @@ public class LookFragment extends Fragment implements OnSuccessListener<JSONObje
         }
         else if (item.type == HomeFloorModel.TYPE_COLLECTION) {
             Bundle bund = new Bundle();
-            bund.putString(CollectPagerActivity.COLLECT_ID, item.type_id);
+            bund.putString(CollectPagerActivity.COLLECT_ID, item.id);
             UiUtils.startActivity(mActivity, CollectPagerActivity.class, bund, true);
         } else if (item.type == HomeFloorModel.TYPE_BLOG) {
             Bundle bund = new Bundle();
-            bund.putString(BlogVolleyActivity.BLOG_ID, item.type_id);
+            bund.putString(BlogVolleyActivity.BLOG_ID, item.id);
             UiUtils.startActivity(mActivity, BlogVolleyActivity.class, bund, true);
         }
     }

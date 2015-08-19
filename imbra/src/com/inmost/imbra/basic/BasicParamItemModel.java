@@ -12,6 +12,7 @@ public class BasicParamItemModel {
     public ArrayList<ParamDtModel> dtArray;
     public ArrayList<String> dtStrArray;
     public int          idx = -1;
+    public String    dtStr;
 
     public BasicParamItemModel()
     {
@@ -45,6 +46,12 @@ public class BasicParamItemModel {
 
         msg = json.optString("msg");
         ver = json.optLong("v");
+        String store = json.optString("dt");
+        if(null!=store)
+        {
+            dtStr = store;
+            return;
+        }
         JSONArray dta = json.optJSONArray("dt");
         for (int i = 0; null != dta && i < dta.length(); i++) {
             ParamDtModel item = new ParamDtModel();

@@ -17,10 +17,13 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.inmost.imbra.R;
 import com.inmost.imbra.blog.BlogVolleyActivity;
 import com.inmost.imbra.collect.CollectPagerActivity;
+import com.inmost.imbra.login.Account;
+import com.inmost.imbra.login.ILogin;
 import com.inmost.imbra.search_backup.SearchActivity;
 import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
@@ -45,7 +48,7 @@ public class BlogFragment extends Fragment implements OnSuccessListener<JSONObje
     private ArrayList<HomeFloorModel> mHomeFloors;
     private ImageLoader mImgLoader;
     private Handler mHandler = new Handler();
-
+    private Account   account;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,11 +57,10 @@ public class BlogFragment extends Fragment implements OnSuccessListener<JSONObje
 
 
         initView();
-
+        account = ILogin.getActiveAccount();
         mNextPageNum = 1;
         requestPage(mNextPageNum);
         mHomeFloors = new ArrayList<HomeFloorModel>();
-
         return mRootView;
     }
 
@@ -79,7 +81,11 @@ public class BlogFragment extends Fragment implements OnSuccessListener<JSONObje
         if (null == mAjax)
             return;
 
-        mAjax.setData("page", page);
+        mAjax.setData("pn", page);
+        mAjax.setData("ps", 10);
+        mAjax.setData("dp", ToolUtil.getAppWidth() + "*" + ToolUtil.getAppHeight());
+        if(null!=account)
+            mAjax.setData("uid",account.uid);
         mActivity.showLoadingLayer();
 
         mAjax.setOnSuccessListener(this);
@@ -141,26 +147,21 @@ public class BlogFragment extends Fragment implements OnSuccessListener<JSONObje
 
 
     @Override
-    public void onSuccess(JSONObject v, Response response) {
+    public void onSuccess(JSONObject jsonObject, Response response) {
 
         mActivity.closeLoadingLayer();
         mNextPageNum++;
-//		final int ret = v.optInt("error");
-//		if(ret != 0 )
-//		{
-//			String msg =  v.optString("data");
-//			UiUtils.makeToast(mActivity, ToolUtil.isEmpty(msg) ? getString(R.string.parser_error_msg): msg);
-//			return;
-//		}
-//
-//		JSONObject data = v.optJSONObject("data");
-//		if(null == data)
-//		{
-//			UiUtils.makeToast(mActivity, getString(R.string.parser_error_msg));
-//			return;
-//		}
 
-        JSONArray feeds = v.optJSONArray("blogs");
+        int err = jsonObject.optInt("err");
+        if(err!=0)
+        {
+            String msg =  jsonObject.optString("msg");
+            UiUtils.makeToast(mActivity, ToolUtil.isEmpty(msg) ? getString(R.string.parser_error_msg): msg);
+            return;
+        }
+
+
+        JSONArray feeds = jsonObject.optJSONArray("dt");
         if (null != feeds) {
             for (int i = 0; i < feeds.length(); i++) {
                 HomeFloorModel model = new HomeFloorModel();
@@ -192,11 +193,11 @@ public class BlogFragment extends Fragment implements OnSuccessListener<JSONObje
         }
         else if (item.type == HomeFloorModel.TYPE_COLLECTION) {
             Bundle bund = new Bundle();
-            bund.putString(CollectPagerActivity.COLLECT_ID, item.type_id);
+            bund.putString(CollectPagerActivity.COLLECT_ID, item.id);
             UiUtils.startActivity(mActivity, CollectPagerActivity.class, bund, true);
         } else if (item.type == HomeFloorModel.TYPE_BLOG) {
             Bundle bund = new Bundle();
-            bund.putString(BlogVolleyActivity.BLOG_ID, item.type_id);
+            bund.putString(BlogVolleyActivity.BLOG_ID, item.id);
             UiUtils.startActivity(mActivity, BlogVolleyActivity.class, bund, true);
         }
     }

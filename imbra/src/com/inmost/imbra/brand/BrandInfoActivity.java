@@ -224,13 +224,13 @@ public class BrandInfoActivity extends BaseActivity implements OnSuccessListener
             else if(item.type == HomeFloorModel.TYPE_COLLECTION)
             {
                 Bundle bund = new Bundle();
-                bund.putString(CollectPagerActivity.COLLECT_ID,item.type_id);
+                bund.putString(CollectPagerActivity.COLLECT_ID,item.id);
                 UiUtils.startActivity(this, CollectPagerActivity.class, bund, true);
             }
             else if(item.type == HomeFloorModel.TYPE_BLOG)
             {
                 Bundle bund = new Bundle();
-                bund.putString(BlogVolleyActivity.BLOG_ID,item.type_id);
+                bund.putString(BlogVolleyActivity.BLOG_ID,item.id);
                 UiUtils.startActivity(this, BlogVolleyActivity.class, bund, true);
             }
         }

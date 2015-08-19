@@ -50,17 +50,15 @@ public class CollectTitlePgModel {
         clear();
 
         id = json.optString("id");
-        title = json.optString("title");
-        view_count = json.optInt("view_count");
-        intro = json.optString("intro");
-        bgUrl = json.optString("background");
+        title = json.optString("tit");
+        view_count = json.optInt("cnt");
+        intro = json.optString("desc");
+        bgUrl = json.optString("bgpic");
 
-        JSONObject job = json.optJSONObject("editor");
-        if(null!=job)
         {
-            editor.avatar = job.optString("avatar");
-            editor.id = job.optString("id");
-            editor.name = job.optString("name");
+//            editor.avatar = job.optString("avatar");
+//            editor.id = job.optString("id");
+            editor.name = json.optString("usr");
 
         }
 

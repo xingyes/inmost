@@ -1,8 +1,8 @@
 {"errno":0,"data":{
 "URL_HOME_FLOOR":{"url":"http:\/\/api.imbraa.com\/topic\/list.json","method":"GET"},
 "URL_HOME_FLOOR_O2O":{"url":"http:\/\/www.o2bra.com.cn\/api\/feeds/newest","method":"GET"},
-"URL_GET_COLLECT":{"url":"http:\/\/www.o2bra.com.cn\/api\/collections\/","method":"GET"},
-"URL_GET_BLOG":{"url":"http:\/\/www.o2bra.com.cn\/api\/blogs\/","method":"GET"},
+"URL_GET_COLLECT":{"url":"http:\/\/api.imbraa.com\/event\/list.json","method":"GET"},
+"URL_GET_BLOG":{"url":"http:\/\/api.imbraa.com\/blog\/list.json","method":"GET"},
 "URL_GET_LOOK":{"url":"http:\/\/www.o2bra.com.cn\/api\/lookbooks\/","method":"GET"},
 "URL_SEARCH":{"url":"http:\/\/api.imbraa.com\/search\/act.json","method":"GET"},
 "URL_BASIC_PARAMS":{"url":"http:\/\/api.imbraa.com\/basic\/data.json","method":"GET"},

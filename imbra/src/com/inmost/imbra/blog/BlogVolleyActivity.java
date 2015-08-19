@@ -29,12 +29,15 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.inmost.imbra.R;
 import com.inmost.imbra.imgallery.ImageCheckActivity;
+import com.inmost.imbra.login.Account;
+import com.inmost.imbra.login.ILogin;
 import com.inmost.imbra.main.HomeFloorModel;
 import com.inmost.imbra.main.IMbraApplication;
 import com.inmost.imbra.product.ProductDetailActivity;
 import com.inmost.imbra.product.ProductModel;
 import com.inmost.imbra.product.ProductVPAdapter;
 import com.inmost.imbra.util.braConfig;
+import com.xingy.lib.model.ProvinceModel;
 import com.xingy.lib.ui.AutoHeightImageView;
 import com.xingy.lib.ui.MyScrollView;
 import com.xingy.lib.ui.ScrollStopableViewPager;
@@ -52,6 +55,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class BlogVolleyActivity extends BaseActivity implements
         OnSuccessListener<JSONObject> {
@@ -74,7 +78,7 @@ public class BlogVolleyActivity extends BaseActivity implements
     public LinearLayout contentLayout;
 
     public boolean scrollIng = false;
-
+    private Account   account;
     private Ajax mAjax;
 //    private Handler mHandler = new Handler(){
 //        @Override
@@ -123,7 +127,7 @@ public class BlogVolleyActivity extends BaseActivity implements
         mImgLoader = new ImageLoader(mQueue, IMbraApplication.globalMDCache);
         IMbraApplication.globalMDCache.clearMemCache();
 
-
+        account = ILogin.getActiveAccount();
         setContentView(R.layout.activity_scrollcontent);
 
 //        contentList = new ArrayList<TextImgModel>();
@@ -136,7 +140,6 @@ public class BlogVolleyActivity extends BaseActivity implements
             return;
         }
         mId = intent.getStringExtra(BLOG_ID);
-        UiUtils.makeToast(this,"blogid:" + mId);
         requestData();
         initviews();
 	}
@@ -145,8 +148,15 @@ public class BlogVolleyActivity extends BaseActivity implements
         mAjax = ServiceConfig.getAjax(braConfig.URL_GET_BLOG);
         if (null == mAjax)
             return;
-        String url = mAjax.getUrl() + mId;
-        mAjax.setUrl(url);
+
+        mAjax.setData("pn", 1);
+        mAjax.setData("ps", 10);
+        mAjax.setData("dp", ToolUtil.getAppWidth() + "*" + ToolUtil.getAppHeight());
+        if(null!=account)
+            mAjax.setData("uid",account.uid);
+
+        mAjax.setData("id",mId);
+
 
         showLoadingLayer();
 
@@ -215,41 +225,60 @@ public class BlogVolleyActivity extends BaseActivity implements
     @Override
     public void onSuccess(JSONObject json, Response response) {
         closeLoadingLayer();
-        JSONObject blogjson = json.optJSONObject("blog");
+
+        int err = json.optInt("err");
+        if(err!=0)
+        {
+            String msg =  json.optString("msg");
+            UiUtils.makeToast(this, ToolUtil.isEmpty(msg) ? getString(R.string.parser_error_msg): msg);
+            return;
+        }
+
+        JSONArray ar = json.optJSONArray("dt");
+        if(null==ar || ar.length()<=0)
+            return;
+
+        JSONObject blogjson = ar.optJSONObject(0);
 
         if(imgvIdxMap == null) {
             imgUrlArray = new ArrayList<String>();
             imgvIdxMap = new HashMap<ImageView, Integer>();
         }
         contentLayout.removeAllViews();
-        addArticleTitle(contentLayout,BlogVolleyActivity.this,blogjson.optString("title"));
+        addArticleTitle(contentLayout,BlogVolleyActivity.this,blogjson.optString("tit"));
 
-        JSONObject ob = blogjson.optJSONObject("author");
-        addArticleAuthor(contentLayout, BlogVolleyActivity.this, ob.optString("name"));
+        addArticleAuthor(contentLayout, BlogVolleyActivity.this, blogjson.optString("usr"));
 
-        addArticleContent(contentLayout,BlogVolleyActivity.this,blogjson.optString("content"),DPIUtil.dip2px(15));
-        JSONArray ary = blogjson.optJSONArray("pictures");
+        JSONArray ary = blogjson.optJSONArray("dt");
         for(int i =0 ;null!=ary && i < ary.length();i++) {
             JSONObject pi = ary.optJSONObject(i);
-            //img
-            String imgurl = HomeFloorModel.formBraUrl(pi.optString("original"));
-            int w = pi.optInt("width");
-            int h = pi.optInt("height");
+            Iterator<String> iter = pi.keys();
+            while(iter.hasNext()) {
+                String key = iter.next();
 
-            String txt = pi.optString("description");
+                if (key.equals("txt")) {
+                    String txt = pi.optString("txt");
+                    addArticleContent(contentLayout, BlogVolleyActivity.this, txt, DPIUtil.dip2px(15));
+                }
+                if (key.equals("img")) {
+                    //img
+                    JSONObject imgb = pi.optJSONObject(key);
+                    String imgurl = HomeFloorModel.formBraUrl(imgb.optString("url"));
+                    int w = imgb.optInt("w");
+                    int h = imgb.optInt("h");
 
-            NetworkImageView v = addArticleImg(contentLayout,BlogVolleyActivity.this,w,h);
-            v.setImageUrl(imgurl,mImgLoader);
-            imgvIdxMap.put(v, imgvUrlMap.size());
-            imgUrlArray.add(imgurl);
-            v.setOnClickListener(this);
-            imgvUrlMap.put(imgurl,v);
-
-            addArticleContent(contentLayout,BlogVolleyActivity.this,txt,DPIUtil.dip2px(15));
+                    NetworkImageView v = addArticleImg(contentLayout, BlogVolleyActivity.this, w, h);
+                    v.setImageUrl(imgurl, mImgLoader);
+                    imgvIdxMap.put(v, imgvUrlMap.size());
+                    imgUrlArray.add(imgurl);
+                    v.setOnClickListener(this);
+                    imgvUrlMap.put(imgurl, v);
+                }
+            }
         }
 
 
-        final JSONArray relarry = blogjson.optJSONArray("relations");
+        final JSONArray relarry = blogjson.optJSONArray("pl");
         addRelativePro(contentLayout,BlogVolleyActivity.this,relarry,mImgLoader,
                 new ProductVPAdapter.OnVPItemClickListener() {
                     @Override
