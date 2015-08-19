@@ -57,9 +57,9 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:id="@+id/expire_time"
-        android:textSize="@dimen/bar_font_30"
+        android:textSize="@dimen/bar_font_24"
         android:textColor="@color/global_text_info_color"
-        android:text="截止日期：2016-07-01"/>
+        android:text="2016-07-01～2016-07-01"/>
     </RelativeLayout>
 
     <ImageView

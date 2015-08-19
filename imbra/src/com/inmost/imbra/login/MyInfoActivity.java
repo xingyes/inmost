@@ -59,6 +59,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         RadioGroup.OnCheckedChangeListener, AdapterView.OnItemClickListener {
 
     public static final int MY_SETTING_CODE = 12304;
+
 	private Intent  mIntent = null;
     private Ajax    mAjax;
     private PullToRefreshListView pullList;
@@ -281,14 +282,56 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         mAjax.send();
     }
 
+    /**
+     * coupon
+     */
     private void requestCoupon() {
-        mAjax = ServiceConfig.getAjax(braConfig.URL_SEARCH);
+        mAjax = ServiceConfig.getAjax(braConfig.URL_COUPON_LIST);
         if (null == mAjax)
             return;
 
+
         showLoadingLayer();
+        mAjax.setData("token",account.token);
         mAjax.setId(R.id.tab_coupon);
         mAjax.setOnSuccessListener(this);
+        mAjax.send();
+    }
+
+    private void getCoupon()
+    {
+        String coup = couponHolder.inputCoupon.getText().toString();
+        if(TextUtils.isEmpty(coup))
+        {
+            UiUtils.makeToast(this,R.string.no_empty_allowed);
+            return;
+        }
+        mAjax = ServiceConfig.getAjax(braConfig.URL_GET_COUPON);
+        if (null == mAjax)
+            return;
+
+
+        showLoadingLayer();
+        mAjax.setData("cpon",couponHolder.inputCoupon.getText().toString());
+        mAjax.setData("token",account.token);
+        mAjax.setOnSuccessListener(new OnSuccessListener<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject jsonObject, Response response) {
+                closeLoadingLayer();
+                int err = jsonObject.optInt("err");
+                if(err!=0)
+                {
+                    String msg =  jsonObject.optString("msg");
+                    UiUtils.makeToast(MyInfoActivity.this, ToolUtil.isEmpty(msg) ? getString(R.string.parser_error_msg): msg);
+                    return;
+                }
+                UiUtils.makeToast(MyInfoActivity.this,R.string.submit_succ);
+                mCouponArray.clear();
+                couponAdapter.notifyDataSetChanged();
+
+                requestCoupon();
+            }
+        });
         mAjax.send();
     }
 
@@ -304,7 +347,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
                 UiUtils.makeToast(this, "Show coupon usage");
                 break;
             case R.id.submit_coupon:
-                UiUtils.makeToast(this,"Submit coupon code");
+                getCoupon();
                 break;
             default:
                 super.onClick(v);
@@ -381,14 +424,20 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
         }
         else if(response.getId() == R.id.tab_coupon)
         {
-            JSONArray feeds = v.optJSONArray("products");
-            if (null != feeds) {
-                for (int i = 0; i < feeds.length() - 1; i++) {
+            //coupon_code：优惠券码
+            // title：优惠券描述
+            // begin_time：起始时间，以时间戳为单位，显示格式由APP处理
+            // end_time：结束时间，以时间戳为单位
+
+            JSONArray dt = v.optJSONArray("dt");
+            if (null != dt && dt.length()>0) {
+                for (int i = 0; i < dt.length(); i++) {
                     CouponModel coup = new CouponModel();
-                    coup.id = ""+i;
-                    coup.discountNum = 10*i;
-                    coup.title = "本券仅限手机端购买使用，逾期自动作废";
-                    coup.expireTime = 0;
+                    coup.parse(dt.optJSONObject(i));
+//                    coup.id = ""+i;
+//                    coup.discountNum = 10*i;
+//                    coup.title = "本券仅限手机端购买使用，逾期自动作废";
+//                    coup.expireTime = 0;
                     mCouponArray.add(coup);
                 }
             }

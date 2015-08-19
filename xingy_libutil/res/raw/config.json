@@ -25,6 +25,9 @@
 "URL_DEL_ADDRESS":{"url":"http:\/\/api.imbraa.com\/user\/del_addr.json","method":"POST"},
 "URL_ADD_ADDRESS":{"url":"http:\/\/api.imbraa.com\/user\/new_addr.json","method":"POST"},
 
+"URL_GET_COUPON":{"url":"http:\/\/api.imbraa.com\/coupon\/exchange.json","method":"POST"},
+"URL_COUPON_LIST":{"url":"http:\/\/api.imbraa.com\/coupon\/list.json","method":"GET"},
+
 "URL_MODIFY_FAV":{"url":"http:\/\/api.imbraa.com\/user\/fav_cntl.json","method":"POST"},
 "URL_FAV_LIST":{"url":"http:\/\/api.imbraa.com\/user\/fav_list.json","method":"GET"}
 

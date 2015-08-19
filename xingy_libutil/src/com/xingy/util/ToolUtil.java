@@ -81,8 +81,9 @@ public class ToolUtil {
 	private static int mAppWidth = 0;
 
 	private static SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	
-	public static int GO_CROP_ACTIVITY = 10001;
+    private static SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    public static int GO_CROP_ACTIVITY = 10001;
 	public static float getDensity() {
 		if (mDensity != 0)
 			return mDensity;
@@ -350,7 +351,7 @@ public class ToolUtil {
 
 	// @param format yyyy-MM-dd HH:mm:ss
 	public static String toDate(long milliSeconds) {
-		return mFormat.format(new Date(milliSeconds));
+		return mDateFormat.format(new Date(milliSeconds));
 	}
 
 	public static String formatSuitableDate(long milliSeconds) {

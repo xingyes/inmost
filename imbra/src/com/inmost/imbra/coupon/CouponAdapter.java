@@ -76,11 +76,12 @@ public class CouponAdapter extends BaseAdapter {
         CouponModel item = mCouponArray.get(position);
 
         holder.titlev.setText(item.title);
-        holder.discountv.setText("" + item.discountNum);
-        holder.expirev.setText(ToolUtil.formatSuitableDate(item.expireTime));
+        holder.discountv.setText(item.coupon_fee);
+        holder.expirev.setText(ToolUtil.toDate(item.startTime*1000) +"～"+ ToolUtil.toDate(item.expireTime*1000));
 
-//        if(item.expireTime)
-        if(position %3 == 1)
+
+        long cursecond = System.currentTimeMillis()/1000;
+        if(item.expireTime < cursecond) //expired
         {
             holder.root.setBackgroundResource(R.drawable.coupon_disable_bg);
             holder.rmb.setTextColor(mActivity.getResources().getColor(R.color.global_text_info_light));

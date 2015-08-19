@@ -63,8 +63,13 @@ public class braConfig extends Config {
 
     public static final String URL_VERIFYCODE_SMS = "URL_VERIFYCODE_SMS";
 	public static final String URL_VERIFY_LOGIN = "URL_VERIFY_LOGIN";
-	
-	//weibo about
+
+    //coupon
+    public static final String URL_GET_COUPON = "URL_GET_COUPON";
+    public static final String URL_COUPON_LIST = "URL_COUPON_LIST";
+
+
+    //weibo about
 	public static final String WB_APP_KEY = "3721412749";
 	public static final String WB_SCOPE = "email,direct_messages_read,direct_messages_write,"
 				+ "friendships_groups_read,friendships_groups_write,statuses_to_me_read," 

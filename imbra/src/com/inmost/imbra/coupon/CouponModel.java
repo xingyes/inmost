@@ -11,9 +11,8 @@ public class CouponModel implements Serializable {
 
     public String id;
     public String title;
-    public int    discountNum;
     public long   expireTime;
-    public String coupon_code;
+    public long   startTime;
     public String coupon_fee;
 
 
@@ -21,19 +20,25 @@ public class CouponModel implements Serializable {
         id = "";
         title = "";
         expireTime = 0;
-        discountNum = 20;
     }
 
+    //coupon_code：优惠券码
+    // title：优惠券描述
+    // begin_time：起始时间，以时间戳为单位，显示格式由APP处理
+    // end_time：结束时间，以时间戳为单位
     public void parse(JSONObject jsonObject) {
         clear();
-        id = jsonObject.optString("id");
+        id = jsonObject.optString("coupon_code");
         title = jsonObject.optString("title");
 
-        coupon_code = jsonObject.optString("coupon_code");
         BigDecimal hun = new BigDecimal(100);
-        BigDecimal it = new BigDecimal(jsonObject.optLong("coupon_fee"));
+        BigDecimal it = new BigDecimal(jsonObject.optLong("quota"));
         it = it.divide(hun, 2);
         coupon_fee = it.toPlainString();
+
+        startTime = jsonObject.optLong("begin_time");
+        expireTime = jsonObject.optLong("end_time");
+
     }
 
 }

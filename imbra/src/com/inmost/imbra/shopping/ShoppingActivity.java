@@ -445,7 +445,7 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
         else if(requestCode == CODE_SELECT_COUPON && resultCode == RESULT_OK && null!=data )
         {
             couponModel = (CouponModel)data.getSerializableExtra(CouponListActivity.COUPON_MODEL);
-            coupHolder.hintTv.setText(getString(R.string.coupon_x,couponModel.discountNum));
+            coupHolder.hintTv.setText(getString(R.string.coupon_x,couponModel.coupon_fee));
         }
         else
             super.onActivityResult(requestCode,resultCode,data);
