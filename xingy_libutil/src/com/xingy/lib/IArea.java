@@ -34,7 +34,7 @@ public class IArea {
 			try{
 				JSONObject json = new JSONObject(str);
 				FullDistrictModel model  = new FullDistrictModel();
-				model.parse(json.optJSONObject("addresses"));
+				model.parse(json);
                 ver = model.getMD5Value();
                 provinceModels = model.getProvinceModels();
 			}catch (JSONException ex) {

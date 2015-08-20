@@ -44,7 +44,7 @@ public class DbInner extends Database {
 
 			try {
 				db.execSQL("create table if not exists t_login(uid varchar(16) primary key, token varchar(64)," +
-                        "iconurl varchar(256), nickname varchar(128) ,row_create_time INTEGER)");
+                        "iconurl varchar(256), nickname varchar(128) ,phone varchar(16), row_create_time INTEGER)");
 			} catch (Exception ex) {
 				Log.e(LOG_TAG, "onCreate|t_login|" + ToolUtil.getStackTraceString(ex));
 				;

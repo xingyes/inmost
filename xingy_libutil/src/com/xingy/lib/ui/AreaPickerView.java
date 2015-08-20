@@ -62,7 +62,7 @@ public class AreaPickerView extends UiBase implements OnWheelScrollListener, OnC
 		super(context, attrs, R.layout.area_picker);
 		mContext = context;
         parseAttrs(attrs);
-		provinceList = IArea.getProvinces(Config.BASIC_PARAM_CACHEKEY);
+		provinceList = IArea.getProvinces(Config.DISTRICT_PARAM_CACHEKEY);
     }
 
     private void parseAttrs(AttributeSet attrs) {

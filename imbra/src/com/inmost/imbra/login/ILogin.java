@@ -41,6 +41,7 @@ public class ILogin {
         account.token = (info.get("token"));
         account.iconUrl = (info.get("iconurl"));
         account.nickName = (info.get("nickname"));
+        account.phone = (info.get("phone"));
 
         account.rowCreateTime = (Long.valueOf(info.get("row_create_time")));
 		
@@ -70,6 +71,7 @@ public class ILogin {
 		values.put("token", account.token);
         values.put("iconurl", account.iconUrl);
         values.put("nickname", account.nickName);
+        values.put("phone", account.phone);
         values.put("row_create_time", new Date().getTime());
 		Database db = DbFactory.getInstance();
 		long ret = db.replace("t_login", values);

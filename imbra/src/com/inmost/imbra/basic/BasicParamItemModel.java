@@ -50,7 +50,6 @@ public class BasicParamItemModel {
         if(null!=store)
         {
             dtStr = store;
-            return;
         }
         JSONArray dta = json.optJSONArray("dt");
         for (int i = 0; null != dta && i < dta.length(); i++) {

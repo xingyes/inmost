@@ -62,7 +62,7 @@ public class OrderModel implements Serializable{
     public String remark;
 
 
-    public  long  addtime;
+    public  String  strAddtime;
     public long   last_update;
     public long   payexpire;
     public String ccode;
@@ -101,7 +101,7 @@ public class OrderModel implements Serializable{
 
         remark = "";
 
-        addtime = 0;
+        strAddtime = "";
         last_update = 0;
         payexpire = 0;
         ccode = "";
@@ -157,7 +157,7 @@ public class OrderModel implements Serializable{
         ship_stat = json.optInt("ship_stat");
         remark = json.optString("remark");
 
-        addtime = json.optLong("addtime");
+        strAddtime = json.optString("addtime");
         last_update = json.optLong("last_update");
 
         JSONArray plist = json.optJSONArray("product_list");

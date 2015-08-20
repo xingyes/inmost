@@ -183,8 +183,8 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
 
     private void changePhoneNum()
     {
-        String phoneNum = mPhonev.getText().toString();
-        if(!ToolUtil.isPhoneNum(phoneNum))
+        phoneStr = mPhonev.getText().toString();
+        if(!ToolUtil.isPhoneNum(phoneStr))
         {
             UiUtils.makeToast(this, R.string.please_input_correct_phone_num);
             return;
@@ -204,7 +204,7 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
         showLoadingLayer();
         mAjax.setId(REQ_CHANGE_PHONE);
         mAjax.setData("token",act.token);
-        mAjax.setData("mob", phoneNum);
+        mAjax.setData("mob", phoneStr);
         mAjax.setData("vcode", verifycode);
 
         mAjax.setOnSuccessListener(this);
@@ -283,6 +283,9 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
         if(response.getId() == REQ_CHANGE_PHONE)
         {
             UiUtils.makeToast(this,R.string.submit_succ);
+            act.phone = phoneStr;
+            ILogin.setActiveAccount(act);
+            ILogin.saveIdentity(act);
             setResult(RESULT_OK);
             finish();
         }
@@ -300,6 +303,7 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
             account.nickName = data.optString("nickname");
             account.token = data.optString("token");
             account.iconUrl = data.optString("himg");
+            account.phone = data.optString("phone");
             account.rowCreateTime = new Date().getTime();
 
             ILogin.setActiveAccount(account);

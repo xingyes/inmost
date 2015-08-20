@@ -56,8 +56,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements OnSuccessListener<JSONObject>,
-        AdapterView.OnItemClickListener,HomeFragment.SearchCheckListener,
+public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener,
+        HomeFragment.SearchCheckListener,
         RadioGroup.OnCheckedChangeListener{
 
     private Account  account;
@@ -117,8 +117,6 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 //		}
 //	};
 
-    private Ajax mAjax;
-
     private FragmentManager      mFragmentManager;
     private int                  pgIdx;
     private static final int     PG_IDX_HOME = 0;
@@ -137,7 +135,8 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
     private LookFragment         mLookPg;
 
     //o2o
-    private O2OFragment mO2OPg;
+//    private O2OFragment mO2OPg;
+    private H5Fragment  mO2OPg;
 
     private ImageLoader mImgLoader;
 
@@ -272,9 +271,10 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
     private void showO2OPg() {
         if(null == mO2OPg)
         {
-            mO2OPg = new O2OFragment();
-            mO2OPg.setImgLoader(mImgLoader);
+            mO2OPg = new H5Fragment();
             hideFragments().add(R.id.main_content,mO2OPg).show(mO2OPg).commitAllowingStateLoss();
+            mO2OPg.setUrl(mSearchParams.storeMapdModel.dtStr);
+            mO2OPg.setZoomable(false);
         }
         else
             hideFragments().show(mO2OPg).commitAllowingStateLoss();
@@ -931,43 +931,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
      * end of optPanel ------------------------------------------------------------------------
      */
 
-    private void initParams() {
 
-        mSearchParams = new BasicParamModel();
-
-        IPageCache cache = new IPageCache();
-        String content = cache.get(Config.BASIC_PARAM_CACHEKEY);
-        if(!TextUtils.isEmpty(content))
-        {
-            try {
-                JSONObject json = new JSONObject(content);
-                mSearchParams.parse(json);
-                renderParamPanel();
-                if(null !=mHomePg)
-                    mHomePg.renderParamPanel();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-//        if(cache.isExpire(BasicParamModel.CACHE_KEY))
-        {
-            mAjax = ServiceConfig.getAjax(braConfig.URL_BASIC_PARAMS);
-            if (null == mAjax)
-                return;
-            if(null!=mSearchParams) {
-                mAjax.setData("bv",mSearchParams.brandModel.ver);
-                mAjax.setData("bfv",mSearchParams.funcModel.ver);
-                mAjax.setData("prv",mSearchParams.pricerangeModel.ver);
-//                mAjax.setData("gv",mSearchParams.brandModel.ver);
-                mAjax.setData("otv",mSearchParams.optiontypeModel.ver);
-//                mAjax.setData("csv",mSearchParams.brandModel.ver);
-                mAjax.setData("smv",mSearchParams.storeMapdModel.ver);
-                mAjax.setData("adv", IArea.ver);
-            }
-            mAjax.setOnSuccessListener(this);
-            mAjax.send();
-        }
-    }
 
 
     private void renderParamPanel() {
@@ -989,19 +953,13 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         mOptPanelHolder.priceSeekbar.invalidate();
     }
 
-    @Override
-    public void onSuccess(JSONObject jsonObject, Response response) {
-        mSearchParams.clear();
-        mSearchParams.parse(jsonObject);
-
-        IPageCache cache = new IPageCache();
-        cache.set(Config.BASIC_PARAM_CACHEKEY, jsonObject.toString(), 86400);
-
+    public void initParams()
+    {
+        mSearchParams = IMbraApplication.globalBasicParams;
         renderParamPanel();
         if(null!=mHomePg)
             mHomePg.renderParamPanel();
 
-        return;
     }
 
     private void clearFilter() {

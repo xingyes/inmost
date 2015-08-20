@@ -76,7 +76,7 @@ public class Config {
 	
 	public static final String URL_CHECK_VERSION = "URL_CHECK_VERSION";
 
-    public static final String BASIC_PARAM_CACHEKEY = "BASIC_PARAM_CACHEKEY";
+    public static final String DISTRICT_PARAM_CACHEKEY = "DISTRICT_PARAM_CACHEKEY";
 
 
 

@@ -82,7 +82,7 @@ public class ProductModel implements Serializable {
         id = jsonObject.optString("pid");
         brandid = jsonObject.optString("bfid");
         if(jsonObject.has("title"))
-            title = jsonObject.optString("tit");
+            title = jsonObject.optString("title");
         else if(jsonObject.has("tit"))
             title = jsonObject.optString("tit");
         front = jsonObject.optString("pic");

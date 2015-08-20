@@ -124,7 +124,7 @@ public class OrderAdapter extends BaseAdapter {
 
         holder.pricev.setText(mActivity.getString(R.string.rmb_price, orderItem.total_price));
 
-        holder.ordertimev.setText(ToolUtil.formatSuitableDate(orderItem.addtime*1000));
+        holder.ordertimev.setText(orderItem.strAddtime);
 
         holder.delbtn.setTag(position);
         holder.aimgv.setTag(position);

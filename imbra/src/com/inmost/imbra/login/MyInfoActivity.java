@@ -171,8 +171,6 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
                  if(mTabRid == R.id.tab_orderlist) {
                         if (firstVisibleItem + visibleItemCount >= totalItemCount && mOrderNextPageNum > 1
                                 && !bOrderFinished) {
-                            UiUtils.makeToast(MyInfoActivity.this, "first:" + firstVisibleItem + ",vis:" +
-                                    visibleItemCount + ",totalItemCount" + totalItemCount);
                             requestOrderlist(mOrderNextPageNum);
                         }
                     }
@@ -313,7 +311,7 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
 
         showLoadingLayer();
         mAjax.setData("cpon",couponHolder.inputCoupon.getText().toString());
-        mAjax.setData("token",account.token);
+        mAjax.setData("token", account.token);
         mAjax.setOnSuccessListener(new OnSuccessListener<JSONObject>() {
             @Override
             public void onSuccess(JSONObject jsonObject, Response response) {
@@ -407,10 +405,11 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
                     order.parse(feeds.optJSONObject(i));
                     mOrderArray.add(order);
                 }
-                mOrderNextPageNum++;
-                bOrderFinished = false;
             }
-            else
+//                mOrderNextPageNum++;
+//                bOrderFinished = false;
+//            }
+//            else
                 bOrderFinished = true;
             orderAdapter.setData(mOrderArray);
             orderAdapter.notifyDataSetChanged();
