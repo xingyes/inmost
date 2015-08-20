@@ -137,6 +137,13 @@ public class BasicParamModel {
             if(ver!=optiontypeModel.ver) {
                 optiontypeModel.clear();
                 optiontypeModel.parse(item);
+
+                ParamDtModel pm = new ParamDtModel();
+                pm.id = "0";
+                pm.info = "全部";
+                optiontypeModel.dtArray.add(0,pm);
+                optiontypeModel.dtStrArray.add(0,pm.info);
+
                 cache.set(OPTION_CACHE_KEY, item.toString(), 86400);
             }
         }
@@ -267,6 +274,12 @@ public class BasicParamModel {
             if (!TextUtils.isEmpty(content)) {
                 json = new JSONObject(content);
                 optiontypeModel.parse(json);
+
+                ParamDtModel pm = new ParamDtModel();
+                pm.id = "0";
+                pm.info = "全部";
+                optiontypeModel.dtArray.add(0,pm);
+                optiontypeModel.dtStrArray.add(0,pm.info);
             }
 
             content = cache.get(STOREMAP_CACHE_KEY);

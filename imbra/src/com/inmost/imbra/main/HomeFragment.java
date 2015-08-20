@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -37,6 +38,7 @@ import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.DPIUtil;
 import com.xingy.util.ServiceConfig;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
 import com.xingy.util.ajax.Response;
@@ -135,14 +137,16 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,  
-            Bundle savedInstanceState) {  
-		
-		mRootView = inflater.inflate(R.layout.pg_home_floor, container, false);
+            Bundle savedInstanceState) {
+
+        mSearchParams = IMbraApplication.globalBasicParams;
+
+        mRootView = inflater.inflate(R.layout.pg_home_floor, container, false);
 
 
         initView();
-
         initParams();
+
 
         mFloorNextPageNum = 1;
         mProNextPageNum = 1;
@@ -191,7 +195,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
             paramHolder.priceTv.setText("" + mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterLowPriceIdx) + "~"
                     + mSearchParams.pricerangeModel.dtStrArray.get(mSearchParams.filterHighPriceIdx));
 
-            mAjax.setData("prs",mSearchParams.pricerangeModel.dtArray.get(mSearchParams.filterLowPriceIdx).id);
+            mAjax.setData("prs", mSearchParams.pricerangeModel.dtArray.get(mSearchParams.filterLowPriceIdx).id);
             mAjax.setData("pre",mSearchParams.pricerangeModel.dtArray.get(mSearchParams.filterHighPriceIdx).id);
         }
 
@@ -212,7 +216,13 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
             return;
         }
 
+        int idx = mSearchParams.filterHomeIdx < 0 ? 0 : mSearchParams.filterHomeIdx;
+        mAjax.setData("cat",mSearchParams.optiontypeModel.dtArray.get(idx).id);
         mAjax.setData("pn", page);
+
+        mAjax.setData("v",ToolUtil.getApkVersionCode("com.inmost.imbra"));
+
+
         mAjax.setId(mTabIdx);
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(mActivity);
@@ -595,7 +605,6 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 
     private void initParams() {
 
-        mSearchParams = mActivity.mSearchParams;
         renderParamPanel();
 
 //        IPageCache cache = new IPageCache();
@@ -649,9 +658,13 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
         } else
             paramHolder.priceLayout.setVisibility(View.GONE);
 
-        if (mTabIdx != TAB_PRO)
+        if (mTabIdx == TAB_HOME) {
+            mHomeFloors.clear();
+            mFloorNextPageNum = 1;
+            mActivity.showLoadingLayer();
+            requestTopic(mFloorNextPageNum);
             return;
-
+        }
         if (paramHolder.priceLayout.getVisibility() == View.GONE &&
                 paramHolder.brandLayout.getVisibility() == View.GONE &&
                 paramHolder.funcLLayout.getVisibility() == View.GONE)

@@ -1,6 +1,7 @@
 package com.xingy.util;
 
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.text.TextUtils;
 
 import com.xingy.lib.parser.FileParser;
@@ -33,7 +34,13 @@ public class AjaxUtil {
 		{
 			ajax.setRequestHeader("token",MyApplication.GToken);
 		}
-		ajax.setRequestHeader("Charset", "UTF-8");
+
+        ajax.setData("dp", ToolUtil.getAppWidth() + "*" + ToolUtil.getAppHeight());
+        ajax.setData("pf","android");
+        ajax.setData("ts",System.currentTimeMillis());
+        ajax.setData("os", Build.VERSION.RELEASE);
+
+        ajax.setRequestHeader("Charset", "UTF-8");
 		ajax.setRequestHeader("Accept-Encoding", "gzip");
 		
 		/*

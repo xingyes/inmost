@@ -612,7 +612,27 @@ public class ToolUtil {
 		else
 			return qq;
 	}
-	
+
+    public static int getApkVersionCode(String absolutePath) {
+
+        if (absolutePath == null) {
+            return -1;
+        }
+
+        File file = new File(absolutePath);
+
+        if (!file.exists()) {
+            return -1;
+        }
+
+        PackageManager pm = MyApplication.app.getPackageManager();
+        PackageInfo info = pm.getPackageArchiveInfo(absolutePath, PackageManager.GET_ACTIVITIES);
+        if (info == null) {
+            return -1;
+        }
+
+        return info.versionCode;
+    }
 	
 	public static String getApkVersionName(String absolutePath) {
 
