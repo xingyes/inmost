@@ -36,7 +36,7 @@
         android:name=".main.IMbraApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:theme="@style/AppTheme">
+        android:theme="@style/TransparentAppTheme">
         <activity
             android:name=".splash.SplashActivity"
             android:windowSoftInputMode="adjustPan">
@@ -54,8 +54,6 @@
             </intent-filter-->
             </activity>
 
-        <activity android:name=".login.LoginActivity"
-            android:screenOrientation="portrait"/>
         <activity android:name=".login.VerifyLoginActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".login.MyInfoActivity"
