@@ -217,7 +217,8 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
         }
 
         int idx = mSearchParams.filterHomeIdx < 0 ? 0 : mSearchParams.filterHomeIdx;
-        mAjax.setData("cat",mSearchParams.optiontypeModel.dtArray.get(idx).id);
+        mAjax.setData("cat",(mSearchParams.optiontypeModel.dtArray.size() > idx) ?
+                mSearchParams.optiontypeModel.dtArray.get(idx).id : 0);
         mAjax.setData("pn", page);
 
         mAjax.setData("v",ToolUtil.getApkVersionCode("com.inmost.imbra"));

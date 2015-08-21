@@ -36,12 +36,14 @@ import com.inmost.imbra.main.IMbraApplication;
 import com.inmost.imbra.product.ProductDetailActivity;
 import com.inmost.imbra.product.ProductModel;
 import com.inmost.imbra.product.ProductVPAdapter;
+import com.inmost.imbra.util.ShareUtil;
 import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.model.ProvinceModel;
 import com.xingy.lib.ui.AutoHeightImageView;
 import com.xingy.lib.ui.MyScrollView;
 import com.xingy.lib.ui.ScrollStopableViewPager;
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.share.ShareInfo;
 import com.xingy.util.DPIUtil;
 import com.xingy.util.ServiceConfig;
 import com.xingy.util.ToolUtil;
@@ -80,6 +82,7 @@ public class BlogVolleyActivity extends BaseActivity implements
     public boolean scrollIng = false;
     private Account   account;
     private Ajax mAjax;
+    private ShareInfo shareinfo;
 //    private Handler mHandler = new Handler(){
 //        @Override
 //        public void handleMessage(Message msg)
@@ -177,6 +180,13 @@ public class BlogVolleyActivity extends BaseActivity implements
 
 	private void initviews() {
         loadNavBar(R.id.scroll_nav);
+        mNavBar.setRightInfo(R.string.share_loading, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != shareinfo)
+                    ShareUtil.shareInfoOut(BlogVolleyActivity.this, shareinfo, mImgLoader);
+            }
+        });
 
         mScorllV = (MyScrollView) this.findViewById(R.id.scroll_v);
 //        mScorllV.setOnTouchListener(new View.OnTouchListener() {
@@ -245,7 +255,11 @@ public class BlogVolleyActivity extends BaseActivity implements
             imgvIdxMap = new HashMap<ImageView, Integer>();
         }
         contentLayout.removeAllViews();
-        addArticleTitle(contentLayout,BlogVolleyActivity.this,blogjson.optString("tit"));
+
+        String strTitle = blogjson.optString("tit");
+        addArticleTitle(contentLayout,BlogVolleyActivity.this,strTitle);
+        shareinfo = new ShareInfo();
+        shareinfo.title = strTitle;
 
         addArticleAuthor(contentLayout, BlogVolleyActivity.this, blogjson.optString("usr"));
 
@@ -255,10 +269,16 @@ public class BlogVolleyActivity extends BaseActivity implements
             Iterator<String> iter = pi.keys();
             while(iter.hasNext()) {
                 String key = iter.next();
-
                 if (key.equals("txt")) {
                     String txt = pi.optString("txt");
                     addArticleContent(contentLayout, BlogVolleyActivity.this, txt, DPIUtil.dip2px(15));
+                    if(TextUtils.isEmpty(shareinfo.wxMomentsContent))
+                    {
+                        shareinfo.wxMomentsContent = txt;
+                        shareinfo.wxcontent = txt;
+                        shareinfo.url = "http://a.app.qq.com/o/simple.jsp?pkgname=com.nuomi";
+                    }
+
                 }
                 if (key.equals("img")) {
                     //img
@@ -273,9 +293,14 @@ public class BlogVolleyActivity extends BaseActivity implements
                     imgUrlArray.add(imgurl);
                     v.setOnClickListener(this);
                     imgvUrlMap.put(imgurl, v);
+
+                    if(TextUtils.isEmpty(shareinfo.iconUrl))
+                        shareinfo.iconUrl = imgurl;
+
                 }
             }
         }
+
 
 
         final JSONArray relarry = blogjson.optJSONArray("pl");

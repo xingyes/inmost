@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/viewpager"
-        android:background="@color/global_75_transparent"
+        android:background="@color/global_75_black"
         android:clipChildren="false"/>
 
     <include layout="@layout/global_loading" />

@@ -28,9 +28,11 @@ import com.inmost.imbra.main.HomeFloorModel;
 import com.inmost.imbra.main.IMbraApplication;
 import com.inmost.imbra.product.ProductDetailActivity;
 import com.inmost.imbra.product.ProductModel;
+import com.inmost.imbra.util.ShareUtil;
 import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.ui.AutoHeightImageView;
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.share.ShareInfo;
 import com.xingy.util.DPIUtil;
 import com.xingy.util.ServiceConfig;
 import com.xingy.util.ToolUtil;
@@ -65,6 +67,8 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
     // 定义ViewPager适配器
     private ViewPagerAdapter vpAdapter;
     private Account   account;
+
+    private ShareInfo   shareinfo;
 
 
     // 记录当前选中位置
@@ -138,7 +142,13 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
 	private void initPager() {
         loadNavBar(R.id.pg_nav);
         mNavBar.setVisibility(View.VISIBLE);
-
+        mNavBar.setRightInfo(R.string.share_loading,new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(null!=shareinfo)
+                    ShareUtil.shareInfoOut(CollectPagerActivity.this,shareinfo,mImgLoader);
+            }
+        });
         bgImgView = (NetworkImageView) this.findViewById(R.id.pg_bg_imv);
 
 
@@ -229,6 +239,13 @@ public class CollectPagerActivity extends BaseActivity implements ViewPager.OnPa
             return;
         JSONObject dt = ar.optJSONObject(0);
         coverModel.parse(dt);
+
+        shareinfo = new ShareInfo();
+        shareinfo.title = coverModel.title;
+        shareinfo.iconUrl = coverModel.bgUrl;
+        shareinfo.wxMomentsContent = coverModel.intro;
+        shareinfo.wxcontent = coverModel.intro;
+        shareinfo.url = "http://a.app.qq.com/o/simple.jsp?pkgname=com.nuomi";
 
         bgImgView.setImageUrl(HomeFloorModel.formBraUrl(coverModel.bgUrl),mImgLoader);
 

@@ -23,10 +23,12 @@ import com.inmost.imbra.login.ILogin;
 import com.inmost.imbra.login.VerifyLoginActivity;
 import com.inmost.imbra.main.IMbraApplication;
 import com.inmost.imbra.shopping.ShoppingActivity;
+import com.inmost.imbra.util.ShareUtil;
 import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.ui.AutoHeightImageView;
 import com.xingy.lib.ui.MyScrollView;
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.share.ShareInfo;
 import com.xingy.util.DPIUtil;
 import com.xingy.util.ServiceConfig;
 import com.xingy.util.ToolUtil;
@@ -63,7 +65,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
     private ArrayList<String> imgUrlArray;
     private HashMap<ImageView, Integer> imgvIdxMap;
     private Account act;
-
+    private ShareInfo  shareinfo;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,6 +183,13 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
             JSONObject projson = jsonObject.optJSONObject("dt");
             proModel = new ProductModel();
             proModel.parseBra(projson);
+
+            shareinfo = new ShareInfo();
+            shareinfo.title = proModel.title;
+            shareinfo.iconUrl = proModel.front;
+            shareinfo.wxMomentsContent = proModel.title;
+            shareinfo.wxcontent = proModel.title;
+            shareinfo.url = "http://a.app.qq.com/o/simple.jsp?pkgname=com.nuomi";
 
             initProHead();
 
@@ -370,6 +379,10 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
                     UiUtils.startActivity(ProductDetailActivity.this,BrandInfoActivity.class,bundle,true);
                     break;
                 case R.id.share_btn:
+                    if(shareinfo!=null)
+                    {
+                        ShareUtil.shareInfoOut(ProductDetailActivity.this,shareinfo,mImgLoader);
+                    }
                     UiUtils.makeToast(this, "go share");
                     break;
                 case R.id.fav_btn:
