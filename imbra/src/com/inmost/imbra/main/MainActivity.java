@@ -467,7 +467,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         TextView    tv;
     }
     public class MenuAdapter extends BaseAdapter{
-        public   int iconRes[] = {R.drawable.icon_bramax_nor,
+        public   int iconRes[] = {R.drawable.icon_home_nor,
                 R.drawable.icon_bramax_nor,
                 R.drawable.icon_blog_nor,R.drawable.icon_look_nor,
                 R.drawable.icon_o2o_nor,R.drawable.icon_setting_nor};

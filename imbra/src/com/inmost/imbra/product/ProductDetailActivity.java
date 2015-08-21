@@ -383,7 +383,6 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
                     {
                         ShareUtil.shareInfoOut(ProductDetailActivity.this,shareinfo,mImgLoader);
                     }
-                    UiUtils.makeToast(this, "go share");
                     break;
                 case R.id.fav_btn:
                     if(proModel.fav)

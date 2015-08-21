@@ -77,7 +77,7 @@ public class IMbraApplication extends MyApplication {
         mAjax.setOnErrorListener(new OnErrorListener() {
             @Override
             public void onError(Ajax ajax, Response response) {
-                ILogin.clearAccount();
+//                ILogin.clearAccount();
             }
         });
         mAjax.setOnSuccessListener(new OnSuccessListener<JSONObject>() {

@@ -345,7 +345,7 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
     public class WXLoginResponseReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            closeLoadingLayer();
+            showLoadingLayer();
             int nErrCode = intent.getIntExtra("errCode", ConstantsAPI.COMMAND_UNKNOWN);
             int nType = intent.getIntExtra("type", -1);
             final String strCode = intent.getStringExtra("code");
@@ -372,6 +372,7 @@ public class VerifyLoginActivity extends BaseActivity implements OnSuccessListen
                 }
                 else
                 {
+                    closeLoadingLayer();
                     WeixinUtil.informWXLoginResult(VerifyLoginActivity.this,nErrCode);
                 }
             }

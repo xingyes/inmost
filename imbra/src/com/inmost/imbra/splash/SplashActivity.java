@@ -1,6 +1,7 @@
 package com.inmost.imbra.splash;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
@@ -29,6 +30,7 @@ public class SplashActivity extends BaseActivity implements ViewPager.OnPageChan
 	private Preference    defaultPreference;
 //	private List<Fragment> mFragmentList;
 //	private ViewPageAdapter adapter;
+    private Handler handler = new Handler();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +53,14 @@ public class SplashActivity extends BaseActivity implements ViewPager.OnPageChan
 		
 		// no need to show guildViewPager again
 		if (null == defaultPreference || IMbraApplication.mVersionCode <= defaultPreference.getProjVersion()) {
-			activityFinish(false);
-			return;
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    activityFinish(false);
+
+                }
+            },2500);
+            return;
 		}
 		else
 			initStartGuildPage();
@@ -63,6 +71,7 @@ public class SplashActivity extends BaseActivity implements ViewPager.OnPageChan
 	@Override
 	protected void onDestroy() {
 		Preference.getInstance().setProjVersion(IMbraApplication.mVersionCode);
+        Preference.getInstance().savePreference();
 		// for mem
 //		if (null != modal)
 //			modal.removeAllViews();

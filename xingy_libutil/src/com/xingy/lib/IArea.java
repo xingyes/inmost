@@ -68,10 +68,11 @@ public class IArea {
 			byte[] aBytes = new byte[pInputStream.available()];
 			pInputStream.read(aBytes);
 			String strRaw = new String(aBytes);
-			if (strRaw != null && !strRaw.equals("")) {
-				JSONObject json = new JSONObject(strRaw);
+			if (!TextUtils.isEmpty(strRaw))
+            {
+                JSONObject json = new JSONObject(strRaw);
 				FullDistrictModel model  = new FullDistrictModel();
-				model.parse(json.getJSONObject("data"));
+				model.parse(json);
                 provinceModels = model.getProvinceModels();
 			}
 		} catch (IOException ex) {
