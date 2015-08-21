@@ -153,7 +153,10 @@
     <style name="AppTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">@color/global_bra_bg</item>
     </style>
-    
+    <style name="TransparentAppTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
 
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/push_up_in</item>

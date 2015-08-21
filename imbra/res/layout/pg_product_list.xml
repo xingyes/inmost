@@ -12,7 +12,7 @@
         android:alwaysDrawnWithCache="false"
         android:divider="#ffe5e5e5"
         android:dividerHeight="25dp"
-        android:background="#f8f8f8"
+        android:background="@color/global_bra_bg"
         android:id="@+id/pull_refresh_list"
         android:scrollbars="none"/>
 

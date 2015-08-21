@@ -14,14 +14,12 @@ import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -32,13 +30,11 @@ import com.inmost.imbra.main.IMbraApplication;
 import com.inmost.imbra.product.Product2RowAdapter;
 import com.inmost.imbra.product.ProductDetailActivity;
 import com.inmost.imbra.product.ProductModel;
-import com.inmost.imbra.shopping.AddressListActivity;
 import com.inmost.imbra.shopping.OrderActivity;
 import com.inmost.imbra.shopping.OrderAdapter;
 import com.inmost.imbra.shopping.OrderModel;
 import com.inmost.imbra.util.braConfig;
 import com.xingy.lib.ui.CircleImageView;
-import com.xingy.lib.ui.TextField;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
 import com.xingy.util.ToolUtil;
@@ -338,9 +334,6 @@ public class MyInfoActivity extends BaseActivity implements OnSuccessListener<JS
 	{
         switch (v.getId())
         {
-            case R.id.user_img:
-                UploadPhotoUtil.createUploadPhotoDlg(MyInfoActivity.this).show();
-                break;
             case R.id.coupon_usage:
                 UiUtils.makeToast(this, "Show coupon usage");
                 break;

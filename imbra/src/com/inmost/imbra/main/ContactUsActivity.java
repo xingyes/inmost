@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.inmost.imbra.R;
@@ -45,7 +46,10 @@ import java.util.Date;
 public class ContactUsActivity extends BaseActivity implements OnSuccessListener<JSONObject> {
 
 	private Intent  mIntent = null;
-
+    private EditText  nameEt;
+    private EditText  phoneEt;
+    private EditText  infoEt;
+    private Ajax      mAjax;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,29 +69,82 @@ public class ContactUsActivity extends BaseActivity implements OnSuccessListener
 
 	private void initViews() {
 
+        loadNavBar(R.id.contact_nav);
+
+        this.findViewById(R.id.submit_btn).setOnClickListener(this);
+        nameEt = (EditText)this.findViewById(R.id.name);
+        phoneEt = (EditText)this.findViewById(R.id.phone);
+        infoEt = (EditText)this.findViewById(R.id.feedback_content);
+
+
 	}
 
 	@Override
 	public void onClick(View v)
 	{
-//        switch (v.getId())
-//        {
-//
-//		}
+        switch (v.getId())
+        {
+            case R.id.submit_btn:
+                submitInfo();
+                break;
+            default:
+                super.onClick(v);
+                break;
+
+		}
 	}
 
-	private void requestLogin() {
-		Ajax ajax = ServiceConfig.getAjax(braConfig.URL_LOGIN);
-		if (null == ajax)
+	private void submitInfo() {
+        String nick = nameEt.getText().toString();
+        if(ToolUtil.isEmpty(nick))
+        {
+            UiUtils.makeToast(this,R.string.please_input_nickname);
+            return;
+        }
+        String phone = phoneEt.getText().toString();
+        if(ToolUtil.isEmpty(phone))
+        {
+            UiUtils.makeToast(this,R.string.please_input_correct_phone_num);
+            return;
+        }
+        String info = infoEt.getText().toString();
+        if(ToolUtil.isEmpty(info))
+        {
+            UiUtils.makeToast(this,R.string.no_empty_allowed);
+            return;
+        }
+
+
+
+
+        mAjax = ServiceConfig.getAjax(braConfig.URL_CHECK_TOKEN);
+		if (null == mAjax)
 			return;
+
+        showLoadingLayer();
+        mAjax.setOnSuccessListener(this);
+        mAjax.send();
 
 	}
 
 	@Override
-	public void onSuccess(JSONObject v, Response response) {
+	public void onSuccess(JSONObject jsonObject, Response response) {
+        closeLoadingLayer();
+        int err = jsonObject.optInt("err");
+        if(err!=0)
+        {
+            String msg =  jsonObject.optString("msg");
+            UiUtils.makeToast(this, ToolUtil.isEmpty(msg) ? getString(R.string.parser_error_msg): msg);
+            return;
+        }
 
 
-	}
+
+        UiUtils.makeToast(this,R.string.submit_succ);
+        finish();
+
+
+    }
 
     @Override
     protected void onDestroy()

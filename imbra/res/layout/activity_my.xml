@@ -2,6 +2,7 @@
     xmlns:inmost="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/global_bra_bg"
     android:orientation="vertical">
 
     <com.xingy.lib.ui.NavigationBar
@@ -81,7 +82,8 @@
         android:persistentDrawingCache="none"
         android:alwaysDrawnWithCache="false"
         android:divider="@color/transparent"
-        android:background="#f8f8f8"
+        android:background="@color/global_bra_bg"
+
         android:id="@+id/pull_refresh_list"
         android:scrollbars="none"/>
 
