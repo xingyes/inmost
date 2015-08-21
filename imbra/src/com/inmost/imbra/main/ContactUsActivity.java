@@ -121,6 +121,10 @@ public class ContactUsActivity extends BaseActivity implements OnSuccessListener
 		if (null == mAjax)
 			return;
 
+        Account act = ILogin.getActiveAccount();
+        if(null!=act)
+            mAjax.setData("token",act.token);
+
         showLoadingLayer();
         mAjax.setOnSuccessListener(this);
         mAjax.send();
