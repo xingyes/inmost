@@ -218,15 +218,15 @@ public class OrderActivity extends BaseActivity implements OnSuccessListener<JSO
         recevierHolder.address.setText(orderModel.usrmodel.address);
 
 
-        String hintQStr = getResources().getString(R.string.pay_hint_quick);
-        SpannableStringBuilder style=new SpannableStringBuilder(hintQStr);
-
-        style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.global_pink)),2,4, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        payHintTv.setText(style);
 
         if(orderModel.pay_stat == OrderModel.PAY_STAT_WAITING){
             findViewById(R.id.submit_pay).setVisibility(View.VISIBLE);
             findViewById(R.id.submit_pay).setOnClickListener(this);
+            String hintQStr = getResources().getString(R.string.pay_hint_quick);
+            SpannableStringBuilder style = new SpannableStringBuilder(hintQStr);
+
+            style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.global_pink)), 2, 4, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            payHintTv.setText(style);
         }
         else
             findViewById(R.id.submit_pay).setVisibility(View.GONE);

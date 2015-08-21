@@ -442,6 +442,17 @@ public class ShoppingActivity extends BaseActivity implements OnSuccessListener<
             recevierHolder.hintLayout.setVisibility(View.GONE);
             recevierHolder.receiverLayout.setVisibility(View.VISIBLE);
         }
+        else if(requestCode == CODE_SELECT_ADDRESS && resultCode == RESULT_CANCELED && null!=data)
+        {
+            //del all
+            if(0==data.getIntExtra(AddressEditActivity.ADDRESS_NUM,0))
+            {
+                addressModel = null;
+                recevierHolder.hintLayout.setVisibility(View.VISIBLE);
+                recevierHolder.receiverLayout.setVisibility(View.GONE);
+            }
+        }
+
         else if(requestCode == CODE_SELECT_COUPON && resultCode == RESULT_OK && null!=data )
         {
             couponModel = (CouponModel)data.getSerializableExtra(CouponListActivity.COUPON_MODEL);

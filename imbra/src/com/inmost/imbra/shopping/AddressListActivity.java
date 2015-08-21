@@ -151,6 +151,10 @@ public class AddressListActivity extends BaseActivity implements OnSuccessListen
         addressAdapter.notifyDataSetChanged();
 
         emptyView.setVisibility(addressArray.size()<=0 ? View.VISIBLE:View.GONE);
+
+        backIntent.putExtra(AddressEditActivity.ADDRESS_NUM,addressArray.size());
+        setResult(RESULT_CANCELED, backIntent);
+
     }
 
 

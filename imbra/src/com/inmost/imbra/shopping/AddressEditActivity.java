@@ -28,6 +28,7 @@ public class AddressEditActivity extends BaseActivity implements OnSuccessListen
     private boolean  bAddFlag = true;
     private Ajax mAjax;
     public static final String ADDRESS_MODEL = "address_model";
+    public static final String ADDRESS_NUM = "address_num";
 
     private AreaPickerView mAreaPicker;
     private AreaPickerView.OnPickerListener mAreaPickerListener;
