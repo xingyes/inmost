@@ -274,7 +274,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             mO2OPg = new H5Fragment();
             hideFragments().add(R.id.main_content,mO2OPg).show(mO2OPg).commitAllowingStateLoss();
             mO2OPg.setUrl(mSearchParams.storeMapdModel.dtStr);
-            mO2OPg.setZoomable(false);
         }
         else
             hideFragments().show(mO2OPg).commitAllowingStateLoss();

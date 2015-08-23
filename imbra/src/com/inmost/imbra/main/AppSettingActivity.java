@@ -84,6 +84,8 @@ public class AppSettingActivity extends BaseActivity{
             case R.id.clear_cache:
                 IMbraApplication.globalMDCache.clearDiskCache();
                 UiUtils.makeToast(AppSettingActivity.this,R.string.clear_empty_succ);
+                String ab = IMbraApplication.globalMDCache.getImgCacheSize(this);
+                cacheTextfield.setContent(ab);
                 break;
             case R.id.contact_us:
                 UiUtils.startActivity(AppSettingActivity.this,ContactUsActivity.class,true);

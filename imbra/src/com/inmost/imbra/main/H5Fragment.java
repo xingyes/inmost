@@ -51,6 +51,7 @@ public class H5Fragment extends Fragment {
 
     private WebView webview;
     private String  oriUrl = "";
+    private boolean zoomable = true;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -86,6 +87,7 @@ public class H5Fragment extends Fragment {
         webview = (WebView) mRootView.findViewById(R.id.web_container);
         WebSettings mWebSettings = webview.getSettings();
 
+        mWebSettings.setBuiltInZoomControls(zoomable);
         mWebSettings.setJavaScriptEnabled(true);
         mWebSettings.setDomStorageEnabled(true);
         mWebSettings.setSupportZoom(true);
@@ -228,9 +230,7 @@ public class H5Fragment extends Fragment {
 
     public void setZoomable(boolean ab)
     {
-        WebSettings mWebSettings = webview.getSettings();
-        mWebSettings.setBuiltInZoomControls(true);
-
+        zoomable = ab;
     }
     public void setUrl(final String url)
     {

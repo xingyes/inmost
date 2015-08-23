@@ -86,7 +86,7 @@ public class BasicParamModel {
     public void parse(JSONObject json) {
         IPageCache cache = new IPageCache();
         JSONObject item = json.optJSONObject("brand");
-        long ver = 0;
+        long ver = -1;
         if(item!=null)
         {
             ver = item.optLong("v");

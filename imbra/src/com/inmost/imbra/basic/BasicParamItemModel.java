@@ -28,7 +28,7 @@ public class BasicParamItemModel {
             dtStrArray = new ArrayList<String>();
         else
             dtStrArray.clear();
-        ver = 0;
+        ver = -1;
         msg= "";
         idx = -1;
     }

@@ -352,7 +352,6 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
         paramHolder.noHintView.setVisibility(View.GONE);
 
         paramHolder.sizeGroup = (GridView) paramHolder.paramLayout.findViewById(R.id.size_param_group);
-        paramHolder.sizeGroup.setPadding(80,0,80,0);
         paramHolder.sizeAdapter = new SizeCupAdapter();
         paramHolder.sizeGroup.setAdapter(paramHolder.sizeAdapter);
         paramHolder.sizeGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -383,7 +382,6 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 
         paramHolder.cupGroup = (GridView) paramHolder.paramLayout.findViewById(R.id.cup_param_group);
         paramHolder.cupAdapter = new SizeCupAdapter();
-        paramHolder.cupGroup.setPadding(20,0,20,0);
 
         paramHolder.cupGroup.setAdapter(paramHolder.cupAdapter);
         paramHolder.cupGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -589,10 +587,24 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 
     public void renderParamPanel() {
         paramHolder.sizeAdapter.setData(mSearchParams.sizeModel.dtStrArray, -1);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.choose_btn_focus);
+        int w = bm.getWidth();
+        int margin = (DPIUtil.getWidth() - paramHolder.sizeAdapter.getCount()*w)/(paramHolder.sizeAdapter.getCount()+1)/2;
+        if(margin<0)
+        {
+            margin = 10;
+        }
         paramHolder.sizeGroup.setNumColumns(paramHolder.sizeAdapter.getCount());
+        paramHolder.sizeGroup.setPadding(margin,0,margin,0);
         paramHolder.sizeAdapter.notifyDataSetChanged();
 
         paramHolder.cupAdapter.setData(mSearchParams.cupModel.dtStrArray,-1);
+        margin = (DPIUtil.getWidth() - paramHolder.cupAdapter.getCount()*w)/(paramHolder.cupAdapter.getCount()+1)/2;
+        if(margin<0)
+        {
+            margin = 10;
+        }
+        paramHolder.sizeGroup.setPadding(margin,0,margin,0);
         paramHolder.cupGroup.setNumColumns(paramHolder.cupAdapter.getCount());
         paramHolder.cupAdapter.notifyDataSetChanged();
 
@@ -695,7 +707,7 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 
         private ArrayList<String> dataset;
         public int mPickIdx = -1;
-        private RelativeLayout.LayoutParams rl;
+        public int margin;
         public void setData(ArrayList<String> infos, int pick) {
             if (dataset == null)
                 dataset = new ArrayList<String>();
@@ -708,16 +720,16 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
             Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.choose_btn_focus);
             int w = bm.getWidth();
 
-            int margin = (DPIUtil.getWidth() - infos.size()*w)/(infos.size()+1)/2;
+            margin = (DPIUtil.getWidth() - infos.size()*w)/(infos.size()+1)/2;
             if(margin<0)
             {
                 margin = 10;
                 w = (DPIUtil.getWidth() - (infos.size()+1)*margin)/infos.size();
             }
-            rl = new RelativeLayout.LayoutParams(w, w);
-
-                rl.leftMargin = margin;
-                rl.rightMargin = margin;
+//            rl = new RelativeLayout.LayoutParams(w, w);
+//
+//                rl.leftMargin = margin;
+//                rl.rightMargin = margin;
 
             }
 
@@ -748,34 +760,41 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            ItemHolder holder = null;
+            if (null == convertView)
+            {
+                convertView = View.inflate(mActivity, R.layout.radio_center_item, null);
+                holder = new ItemHolder();
+                holder.tv = (TextView) convertView.findViewById(com.xingy.R.id.radio_item_name);
+                holder.rootLayout = (RelativeLayout)convertView.findViewById(R.id.root_layout);
+                holder.rootLayout.setPadding(margin,0,margin,0);
+                convertView.setTag(holder);
+            }
+            else
+                holder = (ItemHolder) convertView.getTag();
 
-//            if (null == convertView)
-//            {
-//                convertView = View.inflate(mActivity, R.layout.radio_center_item, null);
-//                holder = new ItemHolder();
-//                holder.mName = (TextView) convertView.findViewById(com.xingy.R.id.radio_item_name);
-//                holder.mName.setBackgroundResource(R.drawable.param_btn_choose_state);
-//                holder.mName.setTextColor(mActivity.getResources().getColorStateList(R.color.txt_pink_white_selector));
-//                convertView.setTag(holder);
-//            }
-//            else
-//                holder = (ItemHolder) convertView.getTag();
-
-            TextView tv = new TextView(mActivity);
-            tv.setGravity(Gravity.CENTER);
-            tv.setLayoutParams(rl);
+//            TextView tv = new TextView(mActivity);
+//            tv.setGravity(Gravity.CENTER);
+//            tv.setLayoutParams(rl);
 
             String info = dataset.get(position);
-            tv.setText(info);
-            tv.setBackgroundResource(R.drawable.choose_btn_normal);
-            tv.setTextColor(mActivity.getResources().getColor(R.color.global_pink));
+            holder.tv.setText(info);
+            holder.tv.setBackgroundResource(R.drawable.choose_btn_normal);
+            holder.tv.setTextColor(mActivity.getResources().getColor(R.color.global_pink));
             if(mPickIdx == position)
             {
-                tv.setBackgroundResource(R.drawable.choose_btn_focus);
-                tv.setTextColor(mActivity.getResources().getColor(R.color.white));
+                holder.tv.setBackgroundResource(R.drawable.choose_btn_focus);
+                holder.tv.setTextColor(mActivity.getResources().getColor(R.color.white));
             }
-            return tv;
+            return convertView;
         }
+    }
+
+
+    public class ItemHolder
+    {
+        public TextView tv;
+        public RelativeLayout rootLayout;
     }
 
 }
