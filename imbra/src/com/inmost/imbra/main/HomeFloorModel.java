@@ -9,8 +9,8 @@ public class HomeFloorModel {
 //    public static final String TYPE_BLOG = "BLOG";
 //    public static final String TYPE_COLLECTION = "COLLECTION";
 //    public static final String TYPE_LOOKBOOK = "LOOKBOOK";
-    public static final int TYPE_BLOG = 1;
-    public static final int TYPE_COLLECTION = 2;
+    public static final int TYPE_BLOG = 2;
+    public static final int TYPE_COLLECTION = 1;
     public static final int TYPE_LOOKBOOK = 3;
 
     public String id;
@@ -59,7 +59,7 @@ public class HomeFloorModel {
 
     public void parseCollect(JSONObject jsonObject) {
         clear();
-        type = jsonObject.optInt("ty");
+        type = TYPE_COLLECTION;
         id = jsonObject.optString("id");
         coverUrl = jsonObject.optString("pic");
         title = jsonObject.optString("tit");
@@ -87,7 +87,7 @@ public class HomeFloorModel {
 
     public void parseBlog(JSONObject jsonObject) {
         clear();
-        type = jsonObject.optInt("ty");
+        type  = TYPE_BLOG;
         id = jsonObject.optString("id");
         coverUrl = jsonObject.optString("pic");
         if(!coverUrl.startsWith("http://"))
