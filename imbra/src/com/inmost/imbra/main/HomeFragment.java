@@ -297,16 +297,16 @@ public class HomeFragment extends Fragment implements OnSuccessListener<JSONObje
                 if(mTabIdx == TAB_HOME) {
                     if (firstVisibleItem + visibleItemCount >= totalItemCount && mFloorNextPageNum>1
                             && !bFinished) {
-                        UiUtils.makeToast(mActivity, "first:" + firstVisibleItem + ",vis:" +
-                            visibleItemCount + ",totalItemCount" + totalItemCount);
+//                        UiUtils.makeToast(mActivity, "first:" + firstVisibleItem + ",vis:" +
+//                            visibleItemCount + ",totalItemCount" + totalItemCount);
                     requestTopic(mFloorNextPageNum);
                     }
                 }
                 else {
                     if (firstVisibleItem + visibleItemCount >= totalItemCount && mProNextPageNum > 1
                             && !bSearchFinished) {
-                        UiUtils.makeToast(mActivity, "first:" + firstVisibleItem + ",vis:" +
-                                visibleItemCount + ",totalItemCount" + totalItemCount);
+//                        UiUtils.makeToast(mActivity, "first:" + firstVisibleItem + ",vis:" +
+//                                visibleItemCount + ",totalItemCount" + totalItemCount);
                         requestPage(mProNextPageNum);
                     }
                 }

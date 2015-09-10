@@ -103,8 +103,8 @@ public class SplashActivity extends BaseActivity implements ViewPager.OnPageChan
 	private static final int[] pics = { //
 			R.drawable.startup01, //
 			R.drawable.startup02,
-			R.drawable.startup01 //
-			//
+            R.drawable.startup03,
+            R.drawable.startup04
 	};
 
 	// 底部小点的图片

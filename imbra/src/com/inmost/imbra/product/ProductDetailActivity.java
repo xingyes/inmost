@@ -89,8 +89,6 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         contentLayout = (LinearLayout) this.findViewById(R.id.scroll_content);
 
         act = ILogin.getActiveAccount();
-        requestData();
-
     }
 
 

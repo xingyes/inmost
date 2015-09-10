@@ -111,8 +111,8 @@ public class CollectFragment extends Fragment implements OnSuccessListener<JSONO
                                  int visibleItemCount, int totalItemCount) {
                 if (firstVisibleItem + visibleItemCount >= totalItemCount && mNextPageNum > 1
                         && !bFinished) {
-                    UiUtils.makeToast(mActivity, "first:" + firstVisibleItem + ",vis:" +
-                            visibleItemCount + ",totalItemCount" + totalItemCount);
+//                    UiUtils.makeToast(mActivity, "first:" + firstVisibleItem + ",vis:" +
+//                            visibleItemCount + ",totalItemCount" + totalItemCount);
                     requestPage(mNextPageNum);
                 }
             }
