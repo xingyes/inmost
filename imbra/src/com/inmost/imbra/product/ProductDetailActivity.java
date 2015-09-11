@@ -89,6 +89,7 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
         contentLayout = (LinearLayout) this.findViewById(R.id.scroll_content);
 
         act = ILogin.getActiveAccount();
+        requestData();
     }
 
 
@@ -97,7 +98,10 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
     {
         if(null == act) {
             act = ILogin.getActiveAccount();
-            requestData();
+            if(act!=null) {
+                contentLayout.removeAllViews();
+                requestData();
+            }
         }
 
         super.onResume();
@@ -410,9 +414,12 @@ public class ProductDetailActivity extends BaseActivity implements OnSuccessList
     @Override
     public void onNewIntent(Intent intent)
     {
-        mProId = intent.getStringExtra(PRO_ID);
-        contentLayout.removeAllViews();
-        requestData();
+        String apro = intent.getStringExtra(PRO_ID);
+        if(!TextUtils.isEmpty(apro) && !TextUtils.isEmpty(mProId) &&
+                !mProId.equals(apro)) {
+            contentLayout.removeAllViews();
+            requestData();
+        }
 
         super.onNewIntent(intent);
     }
