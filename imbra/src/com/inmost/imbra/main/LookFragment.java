@@ -84,7 +84,7 @@ public class LookFragment extends Fragment implements OnSuccessListener<JSONObje
     }
 
     private void requestPage(int page) {
-        mAjax = ServiceConfig.getAjax(braConfig.URL_GET_LOOK);
+//        mAjax = ServiceConfig.getAjax(braConfig.URL_GET_LOOK);
         if (null == mAjax)
             return;
 

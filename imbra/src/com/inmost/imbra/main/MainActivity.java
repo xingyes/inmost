@@ -36,22 +36,11 @@ import com.inmost.imbra.login.Account;
 import com.inmost.imbra.login.ILogin;
 import com.inmost.imbra.login.MyInfoActivity;
 import com.inmost.imbra.login.VerifyLoginActivity;
-import com.inmost.imbra.util.braConfig;
-import com.xingy.lib.IArea;
-import com.xingy.lib.IPageCache;
 import com.xingy.lib.ui.CircleImageView;
 import com.xingy.lib.ui.NavigationBar.OnLeftButtonClickListener;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.lib.ui.VerticalRangeSeekBar;
-import com.xingy.util.Config;
-import com.xingy.util.ServiceConfig;
 import com.xingy.util.activity.BaseActivity;
-import com.xingy.util.ajax.Ajax;
-import com.xingy.util.ajax.OnSuccessListener;
-import com.xingy.util.ajax.Response;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -468,11 +457,11 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     public class MenuAdapter extends BaseAdapter{
         public   int iconRes[] = {R.drawable.icon_home_nor,
                 R.drawable.icon_bramax_nor,
-                R.drawable.icon_blog_nor,R.drawable.icon_look_nor,
+                R.drawable.icon_collect_nor,R.drawable.icon_blog_nor,
                 R.drawable.icon_o2o_nor,R.drawable.icon_setting_nor};
         public  int [] menuName = {R.string.app_name_china,
-                R.string.menu_bra_max,R.string.menu_blog,
-                R.string.menu_look, R.string.menu_o2o,R.string.menu_setting};
+                R.string.menu_bra_max,R.string.menu_collect,
+                R.string.menu_blog, R.string.menu_o2o,R.string.menu_setting};
         @Override
         public int getCount() {return iconRes.length;}
 

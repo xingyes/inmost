@@ -180,6 +180,7 @@ public class BlogVolleyActivity extends BaseActivity implements
 
 	private void initviews() {
         loadNavBar(R.id.scroll_nav);
+        mNavBar.setText(R.string.menu_blog);
         mNavBar.setRightInfo(R.string.share_loading, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
